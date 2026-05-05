@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lone Star Living — AI Case Study | DFW Technologies</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #6B21A8;
+    --primary-light: #9333EA;
+    --primary-pale: #FAF5FF;
+    --navy: #1A0A2E;
+    --navy-mid: #2D1054;
+    --steel: #4C1D95;
+    --silver: #E9D5FF;
+    --silver-light: #FAF5FF;
+    --white: #FFFFFF;
+    --text: #1A0A2E;
+    --text-muted: #5B3F8A;
+    --accent: #EC4899;
+    --green: #00875A;
+    --warn: #C8102E;
+    --gold: #D4A017;
+    --teal: #0891B2;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--silver-light); color: var(--text); font-size: 13px; line-height: 1.6; }
+
+  .page { width: 1100px; margin: 0 auto 60px; background: white; box-shadow: 0 4px 40px rgba(0,0,0,0.10); position: relative; overflow: hidden; }
+
+  .page-nav { display: flex; background: var(--navy); position: sticky; top: 0; z-index: 100; }
+  .page-nav a { flex: 1; text-align: center; padding: 14px 8px; color: rgba(255,255,255,0.5); text-decoration: none; font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; border-bottom: 3px solid transparent; transition: all 0.2s; }
+  .page-nav a:hover { color: white; border-bottom-color: var(--primary-light); }
+  .page-nav a.active { color: white; border-bottom-color: var(--accent); }
+
+  .section-header { display: flex; align-items: center; gap: 16px; padding: 32px 48px 24px; border-bottom: 1px solid var(--silver); }
+  .section-tag { background: var(--primary); color: white; font-size: 9px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; padding: 4px 10px; border-radius: 2px; }
+  .section-tag.solution { background: var(--navy); }
+  .section-tag.roi { background: var(--green); }
+  .section-tag.arch { background: var(--steel); }
+  .section-title { font-family: 'DM Serif Display', serif; font-size: 22px; color: var(--navy); }
+  .page-num { margin-left: auto; font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text-muted); }
+
+  .hero { background: linear-gradient(135deg, #1A0A2E 0%, #2D1054 55%, #3A1468 100%); padding: 48px 48px 40px; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; top: -70px; right: -70px; width: 360px; height: 360px; background: var(--primary-light); border-radius: 50%; opacity: 0.12; }
+  .hero::after { content: ''; position: absolute; bottom: -40px; left: 200px; width: 220px; height: 220px; background: var(--accent); border-radius: 50%; opacity: 0.07; }
+  .hero-eyebrow { font-size: 10px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; }
+  .hero h1 { font-family: 'DM Serif Display', serif; font-size: 36px; color: white; line-height: 1.15; margin-bottom: 6px; }
+  .hero h1 span { color: #C084FC; font-style: italic; }
+  .hero-sub { color: rgba(255,255,255,0.5); font-size: 13px; margin-bottom: 32px; }
+  .hero-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; }
+  .stat-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 16px 18px; }
+  .stat-card:first-child { border-radius: 4px 0 0 4px; }
+  .stat-card:last-child { border-radius: 0 4px 4px 0; }
+  .stat-val { font-family: 'DM Serif Display', serif; font-size: 28px; color: white; line-height: 1; margin-bottom: 4px; }
+  .stat-val span { font-size: 16px; color: #C084FC; }
+  .stat-lbl { font-size: 10px; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.08em; }
+
+  .content-grid { display: grid; grid-template-columns: 1fr 1fr; }
+  .content-col { padding: 36px 48px; }
+  .content-col + .content-col { border-left: 1px solid var(--silver); }
+  .col-title { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 16px; padding-bottom: 10px; border-bottom: 2px solid var(--primary); display: inline-block; }
+  .body-text { color: var(--text-muted); font-size: 13px; line-height: 1.75; margin-bottom: 16px; }
+
+  .problem-list { display: flex; flex-direction: column; gap: 12px; }
+  .problem-card { border: 1px solid var(--silver); border-left: 3px solid var(--primary); padding: 14px 16px; border-radius: 0 4px 4px 0; background: var(--silver-light); }
+  .problem-card-title { font-weight: 600; font-size: 12px; color: var(--navy); margin-bottom: 4px; display: flex; align-items: center; gap: 8px; }
+  .problem-num { background: var(--primary); color: white; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 700; flex-shrink: 0; }
+  .problem-card p { color: var(--text-muted); font-size: 12px; line-height: 1.6; }
+
+  .journey-section { padding: 32px 48px; border-bottom: 1px solid var(--silver); }
+  .journey-title { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid var(--primary); display: inline-block; }
+  .journey-table { width: 100%; border-collapse: collapse; font-size: 11px; }
+  .journey-table th { background: var(--navy); color: rgba(255,255,255,0.8); padding: 10px 12px; text-align: left; font-size: 10px; font-weight: 700; letter-spacing: 0.06em; }
+  .journey-table th:first-child { border-radius: 4px 0 0 0; }
+  .journey-table th:last-child { border-radius: 0 4px 0 0; }
+  .journey-table td { padding: 10px 12px; border-bottom: 1px solid var(--silver); vertical-align: top; }
+  .journey-table tr:nth-child(even) td { background: var(--silver-light); }
+  .journey-table tr:last-child td { border-bottom: none; }
+  .journey-stage { font-weight: 700; color: var(--navy); font-size: 11px; }
+  .journey-pain { color: var(--warn); font-size: 11px; margin-top: 4px; }
+  .journey-ai { color: var(--green); font-size: 11px; margin-top: 4px; font-weight: 500; }
+
+  .impact-bar { background: var(--navy); color: white; padding: 18px 48px; display: flex; align-items: center; gap: 20px; }
+  .impact-bar-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.4); white-space: nowrap; }
+  .impact-tags { display: flex; gap: 8px; flex-wrap: wrap; }
+  .impact-tag { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.14); padding: 5px 12px; border-radius: 2px; font-size: 11px; color: rgba(255,255,255,0.75); }
+  .impact-tag.hot { border-color: #C084FC; color: #C084FC; }
+
+  .solution-intro { padding: 28px 48px; background: var(--silver-light); border-bottom: 1px solid var(--silver); }
+  .solution-intro p { color: var(--text-muted); max-width: 820px; font-size: 13px; line-height: 1.75; }
+  .solution-intro strong { color: var(--navy); }
+
+  .solution-grid { display: grid; grid-template-columns: 1fr 1fr; border-bottom: 1px solid var(--silver); }
+  .solution-item { padding: 28px 36px; border-right: 1px solid var(--silver); border-bottom: 1px solid var(--silver); }
+  .solution-item:nth-child(2n) { border-right: none; }
+  .solution-item:nth-last-child(-n+2) { border-bottom: none; }
+  .solution-item-header { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 12px; }
+  .solution-icon { width: 36px; height: 36px; background: var(--navy); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+  .solution-item-title { font-weight: 600; font-size: 13px; color: var(--navy); margin-bottom: 3px; }
+  .solution-item-problem { font-size: 11px; color: var(--primary-light); font-weight: 500; }
+  .solution-item p { font-size: 12px; color: var(--text-muted); line-height: 1.7; margin-bottom: 12px; }
+  .tech-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+  .tech-tag { background: var(--silver); color: var(--steel); font-size: 10px; font-weight: 600; padding: 3px 8px; border-radius: 2px; font-family: 'DM Mono', monospace; }
+  .ai-badge { font-size: 9px; font-weight: 700; padding: 2px 7px; border-radius: 2px; letter-spacing: 0.06em; text-transform: uppercase; }
+  .ai-badge.private { background: #F3E8FF; color: #6B21A8; }
+  .ai-badge.public { background: #e6f9f0; color: #00875A; }
+  .ai-badge.hybrid { background: #fff4e6; color: #b85c00; }
+
+  .benchmark-callout { margin: 24px 48px; background: var(--navy); border-left: 4px solid #C084FC; padding: 20px 24px; display: flex; gap: 16px; align-items: flex-start; }
+  .benchmark-callout-icon { font-size: 24px; flex-shrink: 0; }
+  .benchmark-callout-title { font-weight: 700; font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: #C084FC; margin-bottom: 6px; }
+  .benchmark-callout p { font-size: 12px; color: rgba(255,255,255,0.7); line-height: 1.65; }
+
+  .policy-section { padding: 28px 48px; border-top: 1px solid var(--silver); }
+  .policy-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-top: 16px; }
+  .policy-card { border: 1px solid var(--silver); padding: 14px 16px; border-radius: 4px; }
+  .policy-card-title { font-size: 11px; font-weight: 600; color: var(--navy); margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+  .policy-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--primary); flex-shrink: 0; }
+  .policy-card p { font-size: 11px; color: var(--text-muted); line-height: 1.6; }
+
+  .roi-hero { background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%); padding: 36px 48px; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2px; }
+  .roi-big { padding: 24px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); text-align: center; }
+  .roi-big:first-child { border-radius: 4px 0 0 4px; }
+  .roi-big:last-child { border-radius: 0 4px 4px 0; }
+  .roi-big-val { font-family: 'DM Serif Display', serif; font-size: 38px; color: white; line-height: 1; margin-bottom: 6px; }
+  .roi-big-val.green { color: #4ade80; }
+  .roi-big-val.gold { color: var(--gold); }
+  .roi-big-lbl { font-size: 11px; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.08em; }
+
+  .savings-grid { display: grid; grid-template-columns: 1fr 1fr; padding: 36px 48px; gap: 32px; border-bottom: 1px solid var(--silver); }
+  .savings-section-title { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 16px; padding-bottom: 10px; border-bottom: 2px solid var(--green); display: inline-block; }
+  .savings-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--silver); }
+  .savings-row:last-child { border-bottom: none; }
+  .savings-label { font-size: 12px; color: var(--text-muted); }
+  .savings-value { font-weight: 600; font-size: 13px; color: var(--green); font-family: 'DM Mono', monospace; }
+  .savings-value.cost { color: var(--warn); }
+
+  .timeline-section { padding: 28px 48px; border-bottom: 1px solid var(--silver); }
+  .timeline-title { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid var(--navy); display: inline-block; }
+  .timeline-bars { display: flex; flex-direction: column; gap: 10px; }
+  .timeline-row { display: flex; align-items: center; gap: 12px; }
+  .timeline-label { font-size: 11px; color: var(--text-muted); width: 210px; flex-shrink: 0; text-align: right; }
+  .timeline-bar-wrap { flex: 1; height: 28px; background: var(--silver); border-radius: 2px; overflow: hidden; }
+  .timeline-bar { height: 100%; display: flex; align-items: center; padding-left: 10px; font-size: 10px; font-weight: 600; color: white; border-radius: 2px; white-space: nowrap; }
+  .timeline-month { font-size: 10px; color: var(--text-muted); width: 60px; font-family: 'DM Mono', monospace; }
+
+  .capabilities-section { padding: 28px 48px; }
+  .cap-title { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 16px; padding-bottom: 10px; border-bottom: 2px solid var(--accent); display: inline-block; }
+  .cap-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; }
+  .cap-card { background: var(--silver-light); border: 1px solid var(--silver); padding: 16px; border-radius: 4px; }
+  .cap-card-title { font-weight: 600; font-size: 12px; color: var(--navy); margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+  .cap-icon { font-size: 14px; }
+  .cap-card p { font-size: 11px; color: var(--text-muted); line-height: 1.6; }
+  .cap-required { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--primary); margin-top: 8px; }
+
+  .arch-intro { padding: 24px 48px; background: var(--silver-light); border-bottom: 1px solid var(--silver); }
+  .arch-intro p { font-size: 12px; color: var(--text-muted); max-width: 720px; }
+  .arch-diagram { padding: 36px 48px; }
+  svg.arch { width: 100%; height: 590px; font-family: 'DM Sans', sans-serif; }
+  .arch-legend { display: flex; gap: 24px; padding: 16px 48px; background: var(--silver-light); border-top: 1px solid var(--silver); flex-wrap: wrap; }
+  .legend-item { display: flex; align-items: center; gap: 8px; font-size: 11px; color: var(--text-muted); }
+  .legend-dot { width: 12px; height: 12px; border-radius: 2px; flex-shrink: 0; }
+
+  .page-divider { height: 8px; background: var(--primary); margin-bottom: 60px; }
+
+  .routing-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 16px; }
+  .routing-table th { background: var(--navy); color: rgba(255,255,255,0.7); font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600; padding: 10px 14px; text-align: left; }
+  .routing-table td { padding: 10px 14px; border-bottom: 1px solid var(--silver); color: var(--text-muted); }
+  .routing-table tr:last-child td { border-bottom: none; }
+  .routing-table tr:nth-child(even) td { background: var(--silver-light); }
+  .routing-table td:first-child { color: var(--navy); font-weight: 500; }
+
+  @media print {
+    @page { margin: 8mm 10mm; size: A3 landscape; }
+    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+    html, body { width: 100% !important; margin: 0 !important; padding: 0 !important; background: white !important; font-size: 11px !important; }
+    .page-nav { display: none !important; }
+    .page { width: 100% !important; max-width: 100% !important; margin: 0 !important; box-shadow: none !important; page-break-after: always; page-break-inside: avoid; overflow: visible !important; }
+    svg.arch { width: 100% !important; height: auto !important; max-height: 520px !important; }
+    .hero { padding: 28px 40px 24px !important; }
+    .hero h1 { font-size: 28px !important; }
+    .content-col { padding: 24px 36px !important; }
+    .section-header { padding: 20px 36px 16px !important; }
+    .solution-item { padding: 18px 24px !important; }
+    .journey-section, .policy-section, .savings-grid, .timeline-section, .capabilities-section, .arch-diagram { padding: 20px 36px !important; }
+    .roi-hero { padding: 24px 36px !important; }
+    .roi-big-val { font-size: 28px !important; }
+    .arch-diagram { page-break-inside: avoid; }
+    .capabilities-section { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══ PAGE 1: OVERVIEW ══ -->
+<div class="page" id="page1">
+  <nav class="page-nav">
+    <a href="#page1" class="active">01 · Overview</a>
+    <a href="#page2">02 · Solution</a>
+    <a href="#page3">03 · Cost & ROI</a>
+    <a href="#page4">04 · Architecture</a>
+  </nav>
+
+  <div class="hero">
+    <div class="hero-eyebrow">DFW Technologies · AI Case Study · Omnichannel Retail · Hybrid AI</div>
+    <h1>Lone Star<br><span>Living</span></h1>
+    <div class="hero-sub">Home Goods & Lifestyle Retail · DFW Metroplex · 24 Stores + E-Commerce · $185M Annual Revenue</div>
+    <div class="hero-stats">
+      <div class="stat-card"><div class="stat-val">24</div><div class="stat-lbl">Store Locations</div></div>
+      <div class="stat-card"><div class="stat-val">180<span>K</span></div><div class="stat-lbl">Active SKUs</div></div>
+      <div class="stat-card"><div class="stat-val">18<span>%</span></div><div class="stat-lbl">Inventory Write-Off Rate</div></div>
+      <div class="stat-card"><div class="stat-val">31<span>%</span></div><div class="stat-lbl">Customer Lapse Rate</div></div>
+    </div>
+  </div>
+
+  <div class="section-header">
+    <span class="section-tag">Overview</span>
+    <span class="section-title">Company Profile & Operational Scale</span>
+    <span class="page-num">Page 01 / 04</span>
+  </div>
+
+  <div class="content-grid">
+    <div class="content-col">
+      <div class="col-title">About Lone Star Living</div>
+      <p class="body-text">Founded in 2008 and headquartered in the DFW metroplex, Lone Star Living is a regional home goods and lifestyle retail chain operating 24 stores across North Texas alongside a growing e-commerce channel. With $185M in annual revenue and a catalog of 180,000+ active SKUs spanning furniture, décor, kitchenware, outdoor, and seasonal collections, Lone Star Living competes against national chains by emphasizing local curation, Texas-centric product selection, and personalized in-store service.</p>
+      <p class="body-text">The company operates its own distribution center in Coppell and uses a legacy POS system supplemented by Shopify for its e-commerce channel — a fragmented tech stack that creates blind spots between store-level inventory, online demand, and customer behavior. Buying decisions are made seasonally by a team of six buyers with limited data tooling, resulting in both over-buying on slow items and under-buying on breakout trends.</p>
+      <p class="body-text">Lone Star Living's primary competitive advantage — local curation and personalized service — is being eroded by an 18% inventory write-off rate and 31% customer lapse rate that signal a demand forecasting and retention problem that AI can directly address.</p>
+
+      <div class="col-title" style="margin-top:24px;">Operational Pressure Points</div>
+      <div style="display:flex; gap:8px; flex-wrap:wrap;">
+        <span style="background:var(--primary-pale); border:1px solid var(--primary); color:var(--primary); font-size:10px; padding:4px 10px; border-radius:2px; font-weight:600;">18% inventory write-off</span>
+        <span style="background:var(--primary-pale); border:1px solid var(--primary); color:var(--primary); font-size:10px; padding:4px 10px; border-radius:2px; font-weight:600;">31% customer lapse</span>
+        <span style="background:var(--primary-pale); border:1px solid var(--primary); color:var(--primary); font-size:10px; padding:4px 10px; border-radius:2px; font-weight:600;">Fragmented POS + Shopify</span>
+        <span style="background:var(--primary-pale); border:1px solid var(--primary); color:var(--primary); font-size:10px; padding:4px 10px; border-radius:2px; font-weight:600;">Manual clearance markdowns</span>
+        <span style="background:var(--primary-pale); border:1px solid var(--primary); color:var(--primary); font-size:10px; padding:4px 10px; border-radius:2px; font-weight:600;">Excel-based scheduling</span>
+      </div>
+    </div>
+
+    <div class="content-col">
+      <div class="col-title">Key Problems Identified</div>
+      <div class="problem-list">
+        <div class="problem-card">
+          <div class="problem-card-title"><div class="problem-num">1</div>Demand Forecasting & Inventory Overstock</div>
+          <p>18% inventory write-off rate driven by poor seasonal forecasting across 24 stores. Over-buying on slow SKUs while trending items stock out — peak demand spikes (back-to-school, holiday, Texas-specific seasonal events) consistently exceed planning capacity. Each percentage point of write-off rate costs Lone Star approximately $1.8M in inventory value annually.</p>
+        </div>
+        <div class="problem-card">
+          <div class="problem-card-title"><div class="problem-num">2</div>Customer Lapse & Retention Gap</div>
+          <p>31% of customers lapse after a single purchase with no targeted re-engagement. Email campaigns are batch-and-blast with no personalization or purchase cycle intelligence. Loyalty program participation sits at 18% — well below the 35% industry average for specialty home goods retailers. Each lapsed customer represents $480 in lost lifetime value at current average order values.</p>
+        </div>
+        <div class="problem-card">
+          <div class="problem-card-title"><div class="problem-num">3</div>Clearance Pricing — Margin Leakage</div>
+          <p>Manual clearance markdowns applied in bulk too late in the product lifecycle — excessive discounting on items that could have cleared at higher margins, and slow movers that still don't clear despite deep discounts. Each 1% improvement in clearance margin recovery across the 180K SKU catalog represents $900K in gross profit.</p>
+        </div>
+        <div class="problem-card">
+          <div class="problem-card-title"><div class="problem-num">4</div>Store Staffing Disconnected from Demand</div>
+          <p>Staffing schedules built weekly in Excel with no demand signal integration across 24 locations. Weekend traffic surges, seasonal peaks, and local event-driven demand (State Fair, Austin City Limits migration) cause both under-staffing — lost sales from poor floor coverage — and over-staffing during slow periods that compress labor margin.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="journey-section">
+    <div class="journey-title">Customer Journey Map — Lone Star Living Omnichannel Purchase Lifecycle</div>
+    <table class="journey-table">
+      <thead>
+        <tr><th>Stage</th><th>Actions</th><th>Pain Point</th><th>AI Intervention</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><div class="journey-stage">01 · Discovery</div></td>
+          <td>Customer browses online or visits store; sees seasonal display; checks product availability across channels</td>
+          <td class="journey-pain">⚠ Trending items frequently out of stock — breakout SKUs not forecasted; lost sale and negative first impression</td>
+          <td class="journey-ai">🤖 AI demand model detects velocity signals 4–6 weeks early and triggers reorder before stockout — trending items always available</td>
+        </tr>
+        <tr>
+          <td><div class="journey-stage">02 · Purchase</div></td>
+          <td>In-store or online checkout; associate may suggest add-ons; loyalty ID captured at POS</td>
+          <td class="journey-pain">⚠ Associates have no data on customer purchase history — cross-sell suggestions are intuition-based, not data-driven</td>
+          <td class="journey-ai">🤖 Private AI surfaces relevant cross-sell recommendations on associate tablet and e-commerce site based on purchase history</td>
+        </tr>
+        <tr>
+          <td><div class="journey-stage">03 · Post-Purchase</div></td>
+          <td>Generic batch email sent within 7 days; no follow-up personalization; next purchase timing unknown</td>
+          <td class="journey-pain">⚠ 31% churn after first purchase — no predictive outreach tied to individual repurchase cycle</td>
+          <td class="journey-ai">🤖 Private ML predicts individual repurchase window; triggers personalized outreach 7–10 days before predicted next-purchase intent</td>
+        </tr>
+        <tr>
+          <td><div class="journey-stage">04 · Seasonal Peak</div></td>
+          <td>Buyer team manually plans seasonal buys 3–4 months ahead using last year's data and intuition</td>
+          <td class="journey-pain">⚠ Over-buying on slow seasonal SKUs creates clearance problem; under-buying on fast movers creates stockouts at peak</td>
+          <td class="journey-ai">🤖 AI ingests weather patterns, local events, search trend signals, and prior sell-through data → 90-day rolling forecast per SKU per store</td>
+        </tr>
+        <tr>
+          <td><div class="journey-stage">05 · Clearance</div></td>
+          <td>Buyer applies bulk markdown manually when inventory threshold reached — often too late and too deep</td>
+          <td class="journey-pain">⚠ Bulk markdowns destroy margin on items that could have cleared at 20–30% off; others require 60%+ to move</td>
+          <td class="journey-ai">🤖 AI monitors sell-through velocity per SKU and auto-recommends time-phased markdowns — smaller markdowns earlier, deepening only as needed</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="impact-bar">
+    <div class="impact-bar-label">Industry Context</div>
+    <div class="impact-tags">
+      <span class="impact-tag hot">18% write-off rate = $33M annual inventory waste in sector</span>
+      <span class="impact-tag">AI personalization lifts conversion 15–25% in home goods</span>
+      <span class="impact-tag">Dynamic pricing reduces clearance losses 20–35%</span>
+      <span class="impact-tag">Customer PII = private AI; SKU analytics = public AI</span>
+    </div>
+  </div>
+</div>
+<div class="page-divider"></div>
+
+<!-- ══ PAGE 2: SOLUTION ══ -->
+<div class="page" id="page2">
+  <nav class="page-nav">
+    <a href="#page1">01 · Overview</a>
+    <a href="#page2" class="active">02 · Solution</a>
+    <a href="#page3">03 · Cost & ROI</a>
+    <a href="#page4">04 · Architecture</a>
+  </nav>
+
+  <div class="section-header">
+    <span class="section-tag solution">Solution</span>
+    <span class="section-title">AI Solution Stack & Problem Mapping</span>
+    <span class="page-num">Page 02 / 04</span>
+  </div>
+
+  <div class="solution-intro">
+    <p>DFW Technologies proposes a <strong>hybrid AI deployment</strong> for Lone Star Living — private AI for all customer-linked data (purchase history, behavioral profiles, loyalty records, employee schedules) where CCPA/CPRA compliance requires data minimization and residency, and public cloud AI for SKU-level demand forecasting, clearance pricing optimization, and market signal analysis where no customer PII is involved. The routing decision is driven by a simple rule: if the data is linked to a customer or employee identity, it stays private.</p>
+  </div>
+
+  <div class="solution-grid">
+    <div class="solution-item">
+      <div class="solution-item-header">
+        <div class="solution-icon">📦</div>
+        <div><div class="solution-item-title">Demand Forecasting Engine</div><div class="solution-item-problem">↳ Solves: Problem #1 — Inventory Overstock</div></div>
+        <span class="ai-badge public">Public AI</span>
+      </div>
+      <p>Cloud ML model connects Lone Star's historical POS sell-through data, weather patterns, local event calendars (State Fair of Texas, regional sports, holidays), competitor pricing signals, and home décor trend data to generate 90-day rolling demand forecasts per SKU per store. No customer PII involved — aggregate sales velocity and external signals justify public cloud deployment. Reduces over-buying and under-buying cycles by giving buyers a data foundation rather than intuition.</p>
+      <div class="tech-tags"><span class="tech-tag">Azure ML</span><span class="tech-tag">Time-Series ML</span><span class="tech-tag">POS Integration</span><span class="tech-tag">Local Events API</span></div>
+    </div>
+
+    <div class="solution-item">
+      <div class="solution-item-header">
+        <div class="solution-icon">💌</div>
+        <div><div class="solution-item-title">Customer Re-Engagement AI</div><div class="solution-item-problem">↳ Solves: Problem #2 — Lapse Rate</div></div>
+        <span class="ai-badge private">Private AI</span>
+      </div>
+      <p>Private ML model trained on individual customer purchase history, visit frequency, category affinity, and seasonal patterns identifies each customer's predicted repurchase window and triggers personalized outreach 7–10 days before their next likely purchase. Customer PII and behavioral profiles stay in Lone Star's private cloud — only anonymized content generation templates use public APIs. Targets the 31% lapse pool with individually timed, relevant messages rather than batch campaigns.</p>
+      <div class="tech-tags"><span class="tech-tag">Collaborative Filtering</span><span class="tech-tag">Private ML</span><span class="tech-tag">CCPA Compliant</span><span class="tech-tag">CRM Integration</span></div>
+    </div>
+
+    <div class="solution-item">
+      <div class="solution-item-header">
+        <div class="solution-icon">💰</div>
+        <div><div class="solution-item-title">Dynamic Clearance Pricing AI</div><div class="solution-item-problem">↳ Solves: Problem #3 — Margin Leakage</div></div>
+        <span class="ai-badge public">Public AI</span>
+      </div>
+      <p>AI monitors real-time sell-through velocity per SKU across all 24 stores and e-commerce — comparing current velocity against target sell-through by end-of-season. Automatically recommends time-phased markdown schedules: a modest 15–20% discount early if velocity is slightly below target, deepening only when necessary. Clears inventory at higher average margin than bulk-markdown approach. No customer PII involved — SKU-level analytics are appropriate for public cloud.</p>
+      <div class="tech-tags"><span class="tech-tag">Sell-Through ML</span><span class="tech-tag">Dynamic Pricing API</span><span class="tech-tag">POS/Shopify Feed</span><span class="tech-tag">Markdown Optimization</span></div>
+    </div>
+
+    <div class="solution-item">
+      <div class="solution-item-header">
+        <div class="solution-icon">🗓️</div>
+        <div><div class="solution-item-title">AI Store Staffing Optimization</div><div class="solution-item-problem">↳ Solves: Problem #4 — Labor Inefficiency</div></div>
+        <span class="ai-badge hybrid">Hybrid AI</span>
+      </div>
+      <p>Demand forecast feeds an AI scheduling engine that recommends hourly staffing levels per store based on predicted traffic — replacing the weekly Excel process. Employee availability and preference data stays in Lone Star's private cloud (employment data requires strict access controls). Predicted traffic patterns by hour and store use public cloud. Reduces both under-staffing during peaks and over-staffing during slow periods, improving labor margin 18–22%.</p>
+      <div class="tech-tags"><span class="tech-tag">Hybrid Routing</span><span class="tech-tag">HRIS Private Layer</span><span class="tech-tag">Traffic Forecast Public</span><span class="tech-tag">Schedule Engine</span></div>
+    </div>
+
+    <div class="solution-item">
+      <div class="solution-item-header">
+        <div class="solution-icon">🎯</div>
+        <div><div class="solution-item-title">Product Recommendation Engine</div><div class="solution-item-problem">↳ Solves: Problem #2 — Cross-Sell & AOV</div></div>
+        <span class="ai-badge private">Private AI</span>
+      </div>
+      <p>Collaborative filtering model on purchase history and browsing behavior surfaces personalized product recommendations on the Shopify e-commerce site and on associate tablets in-store. Associates see "customers like this one also bought" suggestions during checkout — turning intuition-based cross-selling into data-driven recommendations. Increases average order value 12–18% and cross-category attachment rate. Customer behavior data stays in private cloud.</p>
+      <div class="tech-tags"><span class="tech-tag">Collaborative Filtering</span><span class="tech-tag">Shopify Integration</span><span class="tech-tag">Associate Tablet App</span><span class="tech-tag">Private ML</span></div>
+    </div>
+
+    <div class="solution-item">
+      <div class="solution-item-header">
+        <div class="solution-icon" style="background:var(--primary);">📊</div>
+        <div><div class="solution-item-title">Unified Retail Analytics Dashboard</div><div class="solution-item-problem">↳ All Problems — Visibility Layer</div></div>
+        <span class="ai-badge hybrid">Hybrid AI</span>
+      </div>
+      <p>Single operational view for Lone Star's buying team and store managers — inventory health per SKU, sell-through velocity, clearance status, demand forecast accuracy, customer lapse risk score, and staffing efficiency across all 24 stores. Buyers see the full portfolio; store managers see their location. Private data layer handles customer-linked metrics; public layer handles SKU analytics. Replaces fragmented Excel reporting with a live, decision-ready system.</p>
+      <div class="tech-tags"><span class="tech-tag">Power BI / Tableau</span><span class="tech-tag">Hybrid Data Layer</span><span class="tech-tag">Role-Based Access</span><span class="tech-tag">Real-time Refresh</span></div>
+    </div>
+  </div>
+
+  <div class="benchmark-callout" style="margin: 24px 48px;">
+    <div class="benchmark-callout-icon">🔬</div>
+    <div>
+      <div class="benchmark-callout-title">Industry Benchmark: Atelier x Accenture — $86B Beauty & Home Goods Supply Chain Report + Prada Beauty Stockout Case</div>
+      <p>Accenture's $86B beauty and home goods supply chain analysis (co-authored with Atelier) quantified how AI-driven demand forecasting reduces inventory write-off rates by 20–35% in specialty retail — the exact problem Lone Star Living faces. The report's Prada Beauty stockout case study is particularly instructive: a viral TikTok moment caused demand to spike 400% in 48 hours for a single SKU, and retailers with AI-powered demand sensing restocked within 5 days while those on manual planning waited 3–4 weeks. At Lone Star Living's scale, an 18% write-off rate represents approximately $33M in annual inventory waste — bringing that to 8% through AI forecasting recovers $18M/year in inventory value and margin protection. DFW Technologies applies this same AI demand-sensing methodology to Lone Star's 180K SKU catalog and 24-store network, calibrated to DFW-market seasonality signals.</p>
+    </div>
+  </div>
+
+  <div class="policy-section">
+    <div class="col-title">Policies, Compliance & Restrictions to Address</div>
+    <div class="policy-grid">
+      <div class="policy-card">
+        <div class="policy-card-title"><div class="policy-dot"></div>CCPA / CPRA — Customer PII</div>
+        <p>California Privacy Rights Act applies to any customer data from California residents — even for a Texas retailer with e-commerce. Customer purchase history, behavioral profiles, and contact data must stay in private cloud with explicit consent management, opt-out honoring, and data deletion capabilities.</p>
+      </div>
+      <div class="policy-card">
+        <div class="policy-card-title"><div class="policy-dot"></div>CAN-SPAM / TCPA — Re-Engagement</div>
+        <p>AI-triggered re-engagement messages via email and SMS must comply with opt-out requirements. CAN-SPAM requires commercial emails to honor unsubscribe requests within 10 business days. TCPA requires express written consent for automated SMS marketing — AI outreach must check consent status before every send.</p>
+      </div>
+      <div class="policy-card">
+        <div class="policy-card-title"><div class="policy-dot"></div>NLRA — AI Scheduling</div>
+        <p>AI scheduling recommendations affect employee work hours and must comply with National Labor Relations Act provisions. In any partially unionized context, changes to scheduling methodology may require advance notice. Managers must retain override authority — AI assists scheduling decisions, does not replace them.</p>
+      </div>
+      <div class="policy-card">
+        <div class="policy-card-title"><div class="policy-dot"></div>Texas Consumer Privacy Act (TCPA 2024)</div>
+        <p>Texas enacted its own consumer data privacy law effective July 2024. Lone Star Living's customer database must support data access requests, correction rights, and deletion requests. AI models trained on customer data must document data lineage and honor deletion propagation through model pipelines.</p>
+      </div>
+      <div class="policy-card">
+        <div class="policy-card-title"><div class="policy-dot"></div>Price Discrimination — Dynamic Pricing</div>
+        <p>Dynamic clearance pricing must apply uniformly to all customers — AI pricing cannot vary by customer demographic, location, or inferred personal characteristics. Clearance pricing recommendations are SKU-level and store-level only, never customer-specific, to avoid unlawful price discrimination exposure.</p>
+      </div>
+      <div class="policy-card">
+        <div class="policy-card-title"><div class="policy-dot"></div>AI Routing Decision</div>
+        <p>Customer purchase history, behavioral profiles, loyalty data, and employee records = private AI only. SKU-level demand forecasting, clearance pricing optimization, and traffic pattern analytics = public cloud AI appropriate (no customer or employee identity involved).</p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="page-divider"></div>
+
+<!-- ══ PAGE 3: COST & ROI ══ -->
+<div class="page" id="page3">
+  <nav class="page-nav">
+    <a href="#page1">01 · Overview</a>
+    <a href="#page2">02 · Solution</a>
+    <a href="#page3" class="active">03 · Cost & ROI</a>
+    <a href="#page4">04 · Architecture</a>
+  </nav>
+
+  <div class="section-header">
+    <span class="section-tag roi">Cost & ROI</span>
+    <span class="section-title">Financial Impact & DFW Tech Capabilities Required</span>
+    <span class="page-num">Page 03 / 04</span>
+  </div>
+
+  <div class="roi-hero">
+    <div class="roi-big"><div class="roi-big-val gold">$280K–$480K</div><div class="roi-big-lbl">Total Investment · 12 Months</div></div>
+    <div class="roi-big"><div class="roi-big-val green">$1.9M–$3.1M</div><div class="roi-big-lbl">Estimated Annual Savings</div></div>
+    <div class="roi-big"><div class="roi-big-val">10–14 mo</div><div class="roi-big-lbl">Payback Period</div></div>
+  </div>
+
+  <div class="savings-grid">
+    <div>
+      <div class="savings-section-title">Projected Annual Savings</div>
+      <div class="savings-row"><span class="savings-label">Inventory Write-Off Reduction (18% → 8%) on $185M Revenue</span><span class="savings-value">$700K–$1.1M</span></div>
+      <div class="savings-row"><span class="savings-label">Customer Re-Engagement — Lapse Reduction Revenue Lift</span><span class="savings-value">$480K–$820K</span></div>
+      <div class="savings-row"><span class="savings-label">Clearance Margin Recovery — Dynamic vs. Bulk Markdowns</span><span class="savings-value">$380K–$640K</span></div>
+      <div class="savings-row"><span class="savings-label">Labor Efficiency — Demand-Driven Scheduling (18–22% reduction)</span><span class="savings-value">$340K–$540K</span></div>
+      <div class="savings-row" style="border-top: 2px solid var(--green); padding-top:14px; margin-top:4px;">
+        <span class="savings-label" style="font-weight:600; color:var(--navy);">Total Estimated Annual Savings</span>
+        <span class="savings-value" style="font-size:16px;">$1.9M–$3.1M</span>
+      </div>
+    </div>
+
+    <div>
+      <div class="savings-section-title">Investment Breakdown</div>
+      <div class="savings-row"><span class="savings-label">Phase 1: POS + Shopify Data Integration Assessment (4 weeks)</span><span class="savings-value cost">$22K–$38K</span></div>
+      <div class="savings-row"><span class="savings-label">Phase 2: Demand Forecasting + Clearance AI (Months 2–5)</span><span class="savings-value cost">$95K–$160K</span></div>
+      <div class="savings-row"><span class="savings-label">Phase 3: Re-Engagement Engine + Recommendations (Months 5–9)</span><span class="savings-value cost">$90K–$150K</span></div>
+      <div class="savings-row"><span class="savings-label">Phase 4: Scheduling AI + Unified Dashboard (Months 9–12)</span><span class="savings-value cost">$73K–$132K</span></div>
+      <div class="savings-row"><span class="savings-label">Annual Maintenance & Model Retraining (Year 2+)</span><span class="savings-value cost">$35K–$65K/yr</span></div>
+      <div class="savings-row" style="border-top: 2px solid var(--warn); padding-top:14px; margin-top:4px;">
+        <span class="savings-label" style="font-weight:600; color:var(--navy);">Total 12-Month Investment</span>
+        <span class="savings-value cost" style="font-size:16px;">$280K–$480K</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="timeline-section">
+    <div class="timeline-title">Implementation Timeline</div>
+    <div style="display:flex; gap:8px; margin-bottom:12px; font-size:10px; color:var(--text-muted); padding-left:222px;">
+      <span style="flex:1; text-align:left;">Month 0</span>
+      <span style="flex:1; text-align:center;">Month 6</span>
+      <span style="flex:1; text-align:right;">Month 12</span>
+    </div>
+    <div class="timeline-bars">
+      <div class="timeline-row">
+        <div class="timeline-label">POS + Shopify Integration</div>
+        <div class="timeline-bar-wrap"><div class="timeline-bar" style="width:20%; background:var(--steel);">Weeks 1–4</div></div>
+        <div class="timeline-month">4 wks</div>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-label">Demand Forecasting Engine</div>
+        <div class="timeline-bar-wrap"><div class="timeline-bar" style="width:80%; margin-left:18%; background:var(--primary);">Months 2–12 (Pilot → 24 Stores)</div></div>
+        <div class="timeline-month">10 mo</div>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-label">Dynamic Clearance Pricing</div>
+        <div class="timeline-bar-wrap"><div class="timeline-bar" style="width:70%; margin-left:18%; background:var(--navy);">Months 2–10</div></div>
+        <div class="timeline-month">9 mo</div>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-label">Customer Re-Engagement AI</div>
+        <div class="timeline-bar-wrap"><div class="timeline-bar" style="width:55%; margin-left:40%; background:var(--steel);">Months 5–11</div></div>
+        <div class="timeline-month">7 mo</div>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-label">Product Recommendations</div>
+        <div class="timeline-bar-wrap"><div class="timeline-bar" style="width:50%; margin-left:40%; background:var(--gold); color:var(--navy);">Months 5–10</div></div>
+        <div class="timeline-month">6 mo</div>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-label">Scheduling AI + Dashboard</div>
+        <div class="timeline-bar-wrap"><div class="timeline-bar" style="width:35%; margin-left:65%; background:var(--accent);">Months 9–12</div></div>
+        <div class="timeline-month">4 mo</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="capabilities-section">
+    <div class="cap-title">DFW Technologies Capabilities Required</div>
+    <div class="cap-grid">
+      <div class="cap-card">
+        <div class="cap-card-title"><span class="cap-icon">🔗</span> POS + Shopify Data Integration</div>
+        <p>Unify Lone Star's fragmented tech stack — connecting legacy POS transaction data with Shopify e-commerce data and CRM customer records into a single analytics-ready data warehouse. Requires custom ETL pipelines, data normalization across systems, and real-time sync for demand signals.</p>
+        <div class="cap-required">⚠ Core Prerequisite</div>
+      </div>
+      <div class="cap-card">
+        <div class="cap-card-title"><span class="cap-icon">📦</span> Retail Demand Forecasting ML</div>
+        <p>Build and maintain the time-series demand forecasting model — ingesting sell-through velocity, weather, local events, and external trend signals. Must produce SKU-level, store-level forecasts accurate enough to change buyer decisions and reduce over/under-buying cycles.</p>
+        <div class="cap-required">⚠ Core Requirement</div>
+      </div>
+      <div class="cap-card">
+        <div class="cap-card-title"><span class="cap-icon">💌</span> Customer Analytics & ML</div>
+        <p>Build private ML pipelines for customer lapse prediction, repurchase timing, and product recommendation. Must handle CCPA/Texas privacy compliance from the data model level — consent tracking, deletion propagation, and minimum-necessary data access per model.</p>
+        <div class="cap-required">⚠ Core Requirement</div>
+      </div>
+      <div class="cap-card">
+        <div class="cap-card-title"><span class="cap-icon">💰</span> Dynamic Pricing Engine</div>
+        <p>Build the clearance pricing recommendation system — monitoring sell-through velocity against targets and generating time-phased markdown recommendations per SKU. Must integrate with both POS and Shopify pricing systems for omnichannel consistency.</p>
+        <div class="cap-required">Required</div>
+      </div>
+      <div class="cap-card">
+        <div class="cap-card-title"><span class="cap-icon">📊</span> Unified Analytics Dashboard</div>
+        <p>Build the Power BI or Tableau dashboard aggregating inventory health, demand forecasts, clearance status, customer lapse risk, and staffing efficiency across all 24 stores. Requires role-based access controls — buyers see portfolio view; store managers see their location only.</p>
+        <div class="cap-required">Required</div>
+      </div>
+      <div class="cap-card">
+        <div class="cap-card-title"><span class="cap-icon">🗓️</span> Scheduling Optimization</div>
+        <p>Integrate demand forecast outputs with workforce scheduling — generating recommended hourly staffing levels per store. Must work with Lone Star's existing HRIS while keeping employee data in the private layer. Build manager override UI and approval workflow.</p>
+        <div class="cap-required">Required</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="page-divider"></div>
+
+<!-- ══ PAGE 4: ARCHITECTURE ══ -->
+<div class="page" id="page4">
+  <nav class="page-nav">
+    <a href="#page1">01 · Overview</a>
+    <a href="#page2">02 · Solution</a>
+    <a href="#page3">03 · Cost & ROI</a>
+    <a href="#page4" class="active">04 · Architecture</a>
+  </nav>
+
+  <div class="section-header">
+    <span class="section-tag arch">Architecture</span>
+    <span class="section-title">Hybrid AI Architecture — Lone Star Living</span>
+    <span class="page-num">Page 04 / 04</span>
+  </div>
+
+  <div class="arch-intro">
+    <p>Lone Star Living uses a <strong>hybrid two-domain architecture</strong>: a <strong>Private Customer Domain</strong> for all customer-linked data (purchase history, behavioral profiles, loyalty records, employee schedules) where CCPA compliance and data minimization principles require private cloud residency, and a <strong>Public Cloud Domain</strong> for SKU-level demand forecasting, clearance pricing optimization, and market signal analytics where no customer or employee identity is involved.</p>
+  </div>
+
+  <div class="arch-diagram">
+    <svg class="arch" viewBox="0 0 1000 560" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="arrowR" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#4C1D95"/></marker>
+        <marker id="arrowRP" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#6B21A8"/></marker>
+        <marker id="arrowRO" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#EC4899"/></marker>
+        <marker id="arrowRG" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#D4A017"/></marker>
+      </defs>
+
+      <!-- Private Domain -->
+      <rect x="10" y="10" width="455" height="540" rx="6" fill="#FAF5FF" stroke="#6B21A8" stroke-width="1.5" stroke-dasharray="6,3"/>
+      <text x="22" y="30" font-size="9" font-weight="700" fill="#6B21A8" letter-spacing="1" font-family="DM Sans, sans-serif">🔒 PRIVATE CUSTOMER DOMAIN (On-Premises)</text>
+
+      <!-- Public Cloud Domain -->
+      <rect x="535" y="10" width="455" height="540" rx="6" fill="#FFF5FA" stroke="#EC4899" stroke-width="1.5" stroke-dasharray="6,3"/>
+      <text x="547" y="30" font-size="9" font-weight="700" fill="#EC4899" letter-spacing="1" font-family="DM Sans, sans-serif">☁️ PUBLIC CLOUD DOMAIN (No PII)</text>
+
+      <!-- Gateway -->
+      <rect x="467" y="10" width="64" height="540" fill="#1A0A2E"/>
+      <text x="499" y="300" font-size="8" font-weight="700" fill="rgba(255,255,255,0.5)" letter-spacing="1" font-family="DM Sans, sans-serif" transform="rotate(-90,499,300)">API GATEWAY · CUSTOMER IDENTITY STAYS PRIVATE</text>
+
+      <!-- Private Data Sources -->
+      <rect x="28" y="460" width="118" height="76" rx="4" fill="#1A0A2E" stroke="#4C1D95" stroke-width="1"/>
+      <text x="87" y="484" font-size="9" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">👤 Customer</text>
+      <text x="87" y="498" font-size="8" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">Profiles + CRM</text>
+      <text x="87" y="514" font-size="8" fill="#C084FC" text-anchor="middle" font-family="DM Mono, sans-serif">Private CRM API</text>
+
+      <rect x="158" y="460" width="118" height="76" rx="4" fill="#1A0A2E" stroke="#4C1D95" stroke-width="1"/>
+      <text x="217" y="484" font-size="9" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">🛒 POS + Loyalty</text>
+      <text x="217" y="498" font-size="8" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">Purchase History</text>
+      <text x="217" y="514" font-size="8" fill="#C084FC" text-anchor="middle" font-family="DM Mono, sans-serif">POS API (Private)</text>
+
+      <rect x="288" y="460" width="118" height="76" rx="4" fill="#1A0A2E" stroke="#4C1D95" stroke-width="1"/>
+      <text x="347" y="484" font-size="9" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">👥 HRIS</text>
+      <text x="347" y="498" font-size="8" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">Employee Schedules</text>
+      <text x="347" y="514" font-size="8" fill="#C084FC" text-anchor="middle" font-family="DM Mono, sans-serif">HRIS API</text>
+
+      <!-- Public Data Sources -->
+      <rect x="553" y="460" width="118" height="76" rx="4" fill="#2A001A" stroke="#8B0045" stroke-width="1"/>
+      <text x="612" y="484" font-size="9" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">📊 POS Agg.</text>
+      <text x="612" y="498" font-size="8" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">SKU Sell-Through</text>
+      <text x="612" y="514" font-size="8" fill="#FB7185" text-anchor="middle" font-family="DM Mono, sans-serif">Anonymized</text>
+
+      <rect x="683" y="460" width="118" height="76" rx="4" fill="#2A001A" stroke="#8B0045" stroke-width="1"/>
+      <text x="742" y="484" font-size="9" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">🌤️ Weather +</text>
+      <text x="742" y="498" font-size="8" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">Local Events</text>
+      <text x="742" y="514" font-size="8" fill="#FB7185" text-anchor="middle" font-family="DM Mono, sans-serif">Public API</text>
+
+      <rect x="813" y="460" width="118" height="76" rx="4" fill="#2A001A" stroke="#8B0045" stroke-width="1"/>
+      <text x="872" y="484" font-size="9" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">📈 Shopify</text>
+      <text x="872" y="498" font-size="8" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">E-Comm SKU Data</text>
+      <text x="872" y="514" font-size="8" fill="#FB7185" text-anchor="middle" font-family="DM Mono, sans-serif">Shopify API</text>
+
+      <!-- Private AI Models -->
+      <rect x="28" y="300" width="118" height="130" rx="4" fill="#4C1D95" stroke="#6B21A8" stroke-width="1"/>
+      <text x="87" y="322" font-size="8" font-weight="700" fill="rgba(255,255,255,0.5)" text-anchor="middle" font-family="DM Sans, sans-serif">PRIVATE AI</text>
+      <text x="87" y="338" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Re-Engagement</text>
+      <text x="87" y="352" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Prediction</text>
+      <text x="87" y="370" font-size="8" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">Collab. Filtering</text>
+      <text x="87" y="383" font-size="8" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">Lapse detection</text>
+      <text x="87" y="420" font-size="8" fill="rgba(255,255,255,0.35)" text-anchor="middle" font-family="DM Mono, sans-serif">→ Outreach</td>
+
+      <rect x="158" y="300" width="118" height="130" rx="4" fill="#4C1D95" stroke="#6B21A8" stroke-width="1"/>
+      <text x="217" y="322" font-size="8" font-weight="700" fill="rgba(255,255,255,0.5)" text-anchor="middle" font-family="DM Sans, sans-serif">PRIVATE AI</text>
+      <text x="217" y="338" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Product</text>
+      <text x="217" y="352" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Recommend.</text>
+      <text x="217" y="370" font-size="8" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">Purchase history</text>
+      <text x="217" y="383" font-size="8" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">Affinity ML</text>
+      <text x="217" y="420" font-size="8" fill="rgba(255,255,255,0.35)" text-anchor="middle" font-family="DM Mono, sans-serif">→ Web + In-Store</text>
+
+      <rect x="288" y="300" width="118" height="130" rx="4" fill="#4C1D95" stroke="#6B21A8" stroke-width="1"/>
+      <text x="347" y="322" font-size="8" font-weight="700" fill="rgba(255,255,255,0.5)" text-anchor="middle" font-family="DM Sans, sans-serif">PRIVATE AI</text>
+      <text x="347" y="338" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Staffing</text>
+      <text x="347" y="352" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Optimizer</text>
+      <text x="347" y="370" font-size="8" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">HRIS + Demand</text>
+      <text x="347" y="383" font-size="8" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">Schedule engine</text>
+      <text x="347" y="420" font-size="8" fill="rgba(255,255,255,0.35)" text-anchor="middle" font-family="DM Mono, sans-serif">→ Store Schedules</text>
+
+      <!-- Public AI Models -->
+      <rect x="553" y="300" width="118" height="130" rx="4" fill="#3D001A" stroke="#8B0045" stroke-width="1"/>
+      <text x="612" y="322" font-size="8" font-weight="700" fill="rgba(255,255,255,0.5)" text-anchor="middle" font-family="DM Sans, sans-serif">PUBLIC AI</text>
+      <text x="612" y="338" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Demand</text>
+      <text x="612" y="352" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Forecasting</text>
+      <text x="612" y="370" font-size="8" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">Azure ML</text>
+      <text x="612" y="383" font-size="8" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">SKU-level forecast</text>
+      <text x="612" y="420" font-size="8" fill="rgba(255,255,255,0.35)" text-anchor="middle" font-family="DM Mono, sans-serif">→ Buyer Dashboard</text>
+
+      <rect x="683" y="300" width="118" height="130" rx="4" fill="#3D001A" stroke="#8B0045" stroke-width="1"/>
+      <text x="742" y="322" font-size="8" font-weight="700" fill="rgba(255,255,255,0.5)" text-anchor="middle" font-family="DM Sans, sans-serif">PUBLIC AI</text>
+      <text x="742" y="338" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Clearance</text>
+      <text x="742" y="352" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Pricing AI</text>
+      <text x="742" y="370" font-size="8" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">Sell-through ML</text>
+      <text x="742" y="383" font-size="8" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">Markdown optim.</text>
+      <text x="742" y="420" font-size="8" fill="rgba(255,255,255,0.35)" text-anchor="middle" font-family="DM Mono, sans-serif">→ POS + Shopify</text>
+
+      <rect x="813" y="300" width="118" height="130" rx="4" fill="#3D001A" stroke="#8B0045" stroke-width="1"/>
+      <text x="872" y="322" font-size="8" font-weight="700" fill="rgba(255,255,255,0.5)" text-anchor="middle" font-family="DM Sans, sans-serif">PUBLIC AI</text>
+      <text x="872" y="338" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Comms</text>
+      <text x="872" y="352" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Generator</text>
+      <text x="872" y="370" font-size="8" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">Claude API</text>
+      <text x="872" y="383" font-size="8" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">Anon. templates</text>
+      <text x="872" y="420" font-size="8" fill="rgba(255,255,255,0.35)" text-anchor="middle" font-family="DM Mono, sans-serif">→ Email/SMS</text>
+
+      <!-- Outputs -->
+      <rect x="28" y="148" width="408" height="120" rx="4" fill="#1A0A2E" stroke="#6B21A8" stroke-width="1.5"/>
+      <text x="232" y="168" font-size="9" font-weight="700" fill="#C084FC" text-anchor="middle" letter-spacing="0.1em" font-family="DM Sans, sans-serif">LONE STAR OPERATIONS CENTER (Private)</text>
+      <rect x="42" y="176" width="118" height="76" rx="3" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+      <text x="101" y="198" font-size="9" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">💌 Re-Engage</text>
+      <text x="101" y="212" font-size="9" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Outreach</text>
+      <text x="101" y="234" font-size="8" fill="rgba(255,255,255,0.4)" text-anchor="middle" font-family="DM Mono, sans-serif">Marketing team</text>
+      <rect x="172" y="176" width="118" height="76" rx="3" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+      <text x="231" y="198" font-size="9" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">🎯 Recomm.</text>
+      <text x="231" y="212" font-size="9" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Engine Live</text>
+      <text x="231" y="234" font-size="8" fill="rgba(255,255,255,0.4)" text-anchor="middle" font-family="DM Mono, sans-serif">Web + Associates</text>
+      <rect x="302" y="176" width="120" height="76" rx="3" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+      <text x="362" y="198" font-size="9" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">🗓️ Store</text>
+      <text x="362" y="212" font-size="9" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Schedules</text>
+      <text x="362" y="234" font-size="8" fill="rgba(255,255,255,0.4)" text-anchor="middle" font-family="DM Mono, sans-serif">Store managers</text>
+
+      <rect x="553" y="148" width="420" height="120" rx="4" fill="#2A001A" stroke="#EC4899" stroke-width="1.5"/>
+      <text x="763" y="168" font-size="9" font-weight="700" fill="#FB7185" text-anchor="middle" letter-spacing="0.1em" font-family="DM Sans, sans-serif">BUYING & MERCHANDISING PLATFORM (Cloud)</text>
+      <rect x="567" y="176" width="118" height="76" rx="3" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+      <text x="626" y="198" font-size="9" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">📦 90-Day</text>
+      <text x="626" y="212" font-size="9" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">SKU Forecasts</text>
+      <text x="626" y="234" font-size="8" fill="rgba(255,255,255,0.4)" text-anchor="middle" font-family="DM Mono, sans-serif">Buyer dashboard</text>
+      <rect x="697" y="176" width="118" height="76" rx="3" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+      <text x="756" y="198" font-size="9" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">💰 Markdown</text>
+      <text x="756" y="212" font-size="9" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Recs Live</text>
+      <text x="756" y="234" font-size="8" fill="rgba(255,255,255,0.4)" text-anchor="middle" font-family="DM Mono, sans-serif">POS + Shopify</text>
+      <rect x="827" y="176" width="130" height="76" rx="3" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+      <text x="892" y="198" font-size="9" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">📧 Anon.</text>
+      <text x="892" y="212" font-size="9" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Msg Templates</text>
+      <text x="892" y="234" font-size="8" fill="rgba(255,255,255,0.4)" text-anchor="middle" font-family="DM Mono, sans-serif">No PII sent</text>
+
+      <!-- Arrows -->
+      <line x1="87" y1="460" x2="87" y2="432" stroke="#6B21A8" stroke-width="1.5" marker-end="url(#arrowRP)"/>
+      <line x1="217" y1="460" x2="217" y2="432" stroke="#6B21A8" stroke-width="1.5" marker-end="url(#arrowRP)"/>
+      <line x1="347" y1="460" x2="347" y2="432" stroke="#6B21A8" stroke-width="1.5" marker-end="url(#arrowRP)"/>
+      <line x1="612" y1="460" x2="612" y2="432" stroke="#EC4899" stroke-width="1.5" marker-end="url(#arrowRO)"/>
+      <line x1="742" y1="460" x2="742" y2="432" stroke="#EC4899" stroke-width="1.5" marker-end="url(#arrowRO)"/>
+      <line x1="872" y1="460" x2="872" y2="432" stroke="#EC4899" stroke-width="1.5" marker-end="url(#arrowRO)"/>
+      <line x1="87" y1="300" x2="101" y2="270" stroke="#6B21A8" stroke-width="1.5" marker-end="url(#arrowRP)"/>
+      <line x1="217" y1="300" x2="231" y2="270" stroke="#6B21A8" stroke-width="1.5" marker-end="url(#arrowRP)"/>
+      <line x1="347" y1="300" x2="362" y2="270" stroke="#6B21A8" stroke-width="1.5" marker-end="url(#arrowRP)"/>
+      <line x1="612" y1="300" x2="626" y2="270" stroke="#EC4899" stroke-width="1.5" marker-end="url(#arrowRO)"/>
+      <line x1="742" y1="300" x2="756" y2="270" stroke="#EC4899" stroke-width="1.5" marker-end="url(#arrowRO)"/>
+      <line x1="872" y1="300" x2="892" y2="270" stroke="#EC4899" stroke-width="1.5" marker-end="url(#arrowRO)"/>
+      <line x1="450" y1="250" x2="467" y2="250" stroke="#D4A017" stroke-width="2" marker-end="url(#arrowRG)"/>
+      <line x1="535" y1="250" x2="519" y2="250" stroke="#D4A017" stroke-width="2" marker-end="url(#arrowRG)"/>
+      <text x="499" y="244" font-size="7" fill="rgba(255,255,255,0.45)" text-anchor="middle" font-family="DM Mono, sans-serif">TLS/HTTPS</text>
+      <text x="499" y="256" font-size="7" fill="rgba(255,255,255,0.3)" text-anchor="middle" font-family="DM Mono, sans-serif">No PII crosses</text>
+
+      <text x="6" y="520" font-size="8" fill="#5B3F8A" font-family="DM Mono, sans-serif" transform="rotate(-90,6,520)">DATA SOURCES</text>
+      <text x="6" y="390" font-size="8" fill="#5B3F8A" font-family="DM Mono, sans-serif" transform="rotate(-90,6,390)">AI MODELS</text>
+      <text x="6" y="230" font-size="8" fill="#5B3F8A" font-family="DM Mono, sans-serif" transform="rotate(-90,6,230)">OUTPUTS</text>
+    </svg>
+  </div>
+
+  <div class="arch-legend">
+    <div class="legend-item"><div class="legend-dot" style="background:#4C1D95;"></div>Private AI (Customer Data)</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#3D001A;"></div>Public Cloud AI (SKU Analytics)</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#D4A017;"></div>API Gateway (No PII Crosses)</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#6B21A8;"></div>Private Data Flow</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#EC4899;"></div>Cloud Data Flow</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#1A0A2E;"></div>Data Sources</div>
+  </div>
+
+  <div style="padding: 20px 48px; border-top: 1px solid var(--silver);">
+    <div class="col-title">AI Routing Decision Summary</div>
+    <table class="routing-table">
+      <thead><tr><th>Workload</th><th>AI Routing</th><th>Rationale</th><th>Primary Output</th></tr></thead>
+      <tbody>
+        <tr><td>Customer Re-Engagement Prediction</td><td><span class="ai-badge private">Private AI</span></td><td>Purchase history and behavioral profiles are customer PII — CCPA compliance requires private cloud</td><td>Personalized outreach triggered at individual repurchase window</td></tr>
+        <tr><td>Product Recommendation Engine</td><td><span class="ai-badge private">Private AI</span></td><td>Customer affinity and purchase data linked to identity — must stay in private infrastructure</td><td>Personalized recommendations on website and associate tablets</td></tr>
+        <tr><td>Staffing Optimization</td><td><span class="ai-badge hybrid">Hybrid AI</span></td><td>Employee schedules (private) combined with demand forecasts (public) — hybrid routing required</td><td>Recommended hourly staffing levels per store per day</td></tr>
+        <tr><td>Demand Forecasting (SKU Level)</td><td><span class="ai-badge public">Public AI</span></td><td>Aggregate sell-through data + external signals — no customer identity involved, public cloud appropriate</td><td>90-day rolling SKU forecasts for buyer team planning</td></tr>
+        <tr><td>Dynamic Clearance Pricing</td><td><span class="ai-badge public">Public AI</span></td><td>SKU velocity data only — no customer identity linked, pricing is uniform across all customers</td><td>Time-phased markdown recommendations pushed to POS and Shopify</td></tr>
+        <tr><td>Customer Communication Content</td><td><span class="ai-badge public">Public AI</span></td><td>Anonymized message templates only — customer identity handled in private layer before send</td><td>Email and SMS message templates for re-engagement campaigns</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll('.page-nav a').forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.querySelector(link.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      document.querySelectorAll('.page-nav a').forEach(a => a.classList.remove('active'));
+      link.classList.add('active');
+    });
+  });
+</script>
+</body>
+</html>
