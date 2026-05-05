@@ -1,0 +1,1188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>INS — AI Case Study | DFW Technologies</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #006B5E;
+    --primary-light: #00A090;
+    --primary-pale: #EAF7F5;
+    --navy: #061A18;
+    --navy-mid: #0D2E2A;
+    --steel: #1A4A44;
+    --silver: #DFF0EE;
+    --silver-light: #F2FAF9;
+    --white: #FFFFFF;
+    --text: #0A1E1C;
+    --text-muted: #3D6B65;
+    --accent: #E05C00;
+    --green: #00875A;
+    --warn: #C8102E;
+    --gold: #D4A017;
+    --cyber: #00C2A8;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--silver-light);
+    color: var(--text);
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  .page {
+    width: 1100px;
+    margin: 0 auto 60px;
+    background: white;
+    box-shadow: 0 4px 40px rgba(0,0,0,0.10);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .page-nav {
+    display: flex;
+    background: var(--navy);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .page-nav a {
+    flex: 1;
+    text-align: center;
+    padding: 14px 8px;
+    color: rgba(255,255,255,0.5);
+    text-decoration: none;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s;
+  }
+  .page-nav a:hover { color: white; border-bottom-color: var(--primary-light); }
+  .page-nav a.active { color: white; border-bottom-color: var(--primary-light); }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 32px 48px 24px;
+    border-bottom: 1px solid var(--silver);
+  }
+  .section-tag {
+    background: var(--primary);
+    color: white;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 2px;
+  }
+  .section-tag.solution { background: var(--navy); }
+  .section-tag.roi { background: var(--green); }
+  .section-tag.arch { background: var(--steel); }
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    color: var(--navy);
+  }
+  .page-num {
+    margin-left: auto;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(135deg, #061A18 0%, #0D2E2A 55%, #133D38 100%);
+    padding: 48px 48px 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -70px; right: -70px;
+    width: 360px; height: 360px;
+    background: var(--primary);
+    border-radius: 50%;
+    opacity: 0.12;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -40px; left: 180px;
+    width: 240px; height: 240px;
+    background: var(--cyber);
+    border-radius: 50%;
+    opacity: 0.05;
+  }
+  .warm-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(0,194,168,0.15);
+    border: 1px solid rgba(0,194,168,0.35);
+    padding: 5px 12px;
+    border-radius: 2px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--cyber);
+    margin-bottom: 14px;
+  }
+  .hero h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 36px;
+    color: white;
+    line-height: 1.15;
+    margin-bottom: 6px;
+  }
+  .hero h1 span { color: var(--primary-light); font-style: italic; }
+  .hero-sub {
+    color: rgba(255,255,255,0.5);
+    font-size: 13px;
+    margin-bottom: 32px;
+  }
+  .hero-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+  }
+  .stat-card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 16px 18px;
+  }
+  .stat-card:first-child { border-radius: 4px 0 0 4px; }
+  .stat-card:last-child { border-radius: 0 4px 4px 0; }
+  .stat-val {
+    font-family: 'DM Serif Display', serif;
+    font-size: 28px;
+    color: white;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .stat-val span { font-size: 16px; color: var(--primary-light); }
+  .stat-lbl {
+    font-size: 10px;
+    color: rgba(255,255,255,0.4);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .content-grid { display: grid; grid-template-columns: 1fr 1fr; }
+  .content-col { padding: 36px 48px; }
+  .content-col + .content-col { border-left: 1px solid var(--silver); }
+
+  .col-title {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--primary);
+    display: inline-block;
+  }
+  .body-text { color: var(--text-muted); font-size: 13px; line-height: 1.75; margin-bottom: 16px; }
+
+  .problem-list { display: flex; flex-direction: column; gap: 12px; }
+  .problem-card {
+    border: 1px solid var(--silver);
+    border-left: 3px solid var(--primary);
+    padding: 14px 16px;
+    border-radius: 0 4px 4px 0;
+    background: var(--silver-light);
+  }
+  .problem-card.hot { border-left-color: var(--accent); }
+  .problem-card-title {
+    font-weight: 600;
+    font-size: 12px;
+    color: var(--navy);
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .problem-num {
+    background: var(--primary);
+    color: white;
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 9px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .problem-num.hot { background: var(--accent); }
+  .problem-card p { color: var(--text-muted); font-size: 12px; line-height: 1.6; }
+
+  /* JOURNEY MAP */
+  .journey-section { padding: 32px 48px; border-bottom: 1px solid var(--silver); }
+  .journey-title {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--text-muted);
+    margin-bottom: 20px; padding-bottom: 10px;
+    border-bottom: 2px solid var(--primary); display: inline-block;
+  }
+  .journey-table { width: 100%; border-collapse: collapse; font-size: 11px; }
+  .journey-table th {
+    background: var(--navy); color: rgba(255,255,255,0.8);
+    padding: 10px 12px; text-align: left;
+    font-size: 10px; font-weight: 700; letter-spacing: 0.06em;
+  }
+  .journey-table th:first-child { border-radius: 4px 0 0 0; }
+  .journey-table th:last-child { border-radius: 0 4px 0 0; }
+  .journey-table td { padding: 10px 12px; border-bottom: 1px solid var(--silver); vertical-align: top; }
+  .journey-table tr:nth-child(even) td { background: var(--silver-light); }
+  .journey-table tr:last-child td { border-bottom: none; }
+  .journey-stage { font-weight: 700; color: var(--navy); font-size: 11px; }
+  .journey-pain { color: var(--warn); font-size: 11px; margin-top: 4px; }
+  .journey-ai { color: var(--green); font-size: 11px; margin-top: 4px; font-weight: 500; }
+
+  .impact-bar {
+    background: var(--navy);
+    color: white;
+    padding: 18px 48px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  .impact-bar-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.4); white-space: nowrap; }
+  .impact-tags { display: flex; gap: 8px; flex-wrap: wrap; }
+  .impact-tag {
+    background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.14);
+    padding: 5px 12px; border-radius: 2px; font-size: 11px; color: rgba(255,255,255,0.75);
+  }
+  .impact-tag.hot { border-color: var(--cyber); color: var(--cyber); }
+
+  /* SOLUTION */
+  .solution-intro {
+    padding: 28px 48px;
+    background: var(--silver-light);
+    border-bottom: 1px solid var(--silver);
+  }
+  .solution-intro p { color: var(--text-muted); max-width: 820px; font-size: 13px; line-height: 1.75; }
+  .solution-intro strong { color: var(--navy); }
+
+  .solution-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-bottom: 1px solid var(--silver);
+  }
+  .solution-item {
+    padding: 28px 36px;
+    border-right: 1px solid var(--silver);
+    border-bottom: 1px solid var(--silver);
+  }
+  .solution-item:nth-child(2n) { border-right: none; }
+  .solution-item:nth-last-child(-n+2) { border-bottom: none; }
+  .solution-item-header { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 12px; }
+  .solution-icon {
+    width: 36px; height: 36px; background: var(--navy);
+    border-radius: 6px; display: flex; align-items: center;
+    justify-content: center; font-size: 16px; flex-shrink: 0;
+  }
+  .solution-item-title { font-weight: 600; font-size: 13px; color: var(--navy); margin-bottom: 3px; }
+  .solution-item-problem { font-size: 11px; color: var(--primary); font-weight: 500; }
+  .solution-item p { font-size: 12px; color: var(--text-muted); line-height: 1.7; margin-bottom: 12px; }
+  .tech-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+  .tech-tag {
+    background: var(--silver); color: var(--steel);
+    font-size: 10px; font-weight: 600;
+    padding: 3px 8px; border-radius: 2px;
+    font-family: 'DM Mono', monospace;
+  }
+  .ai-badge {
+    font-size: 9px; font-weight: 700;
+    padding: 2px 7px; border-radius: 2px;
+    letter-spacing: 0.06em; text-transform: uppercase;
+  }
+  .ai-badge.private { background: #d8f5f0; color: #005C52; }
+  .ai-badge.public { background: #e6f9f0; color: #00875A; }
+  .ai-badge.hybrid { background: #fff4e6; color: #b85c00; }
+
+  .benchmark-callout {
+    margin: 24px 48px;
+    background: var(--navy);
+    border-left: 4px solid var(--cyber);
+    padding: 20px 24px;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  .benchmark-callout-icon { font-size: 24px; flex-shrink: 0; }
+  .benchmark-callout-title {
+    font-weight: 700; font-size: 11px;
+    text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--cyber); margin-bottom: 6px;
+  }
+  .benchmark-callout p { font-size: 12px; color: rgba(255,255,255,0.7); line-height: 1.65; }
+
+  .policy-section { padding: 28px 48px; border-top: 1px solid var(--silver); }
+  .policy-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-top: 16px; }
+  .policy-card { border: 1px solid var(--silver); padding: 14px 16px; border-radius: 4px; }
+  .policy-card.critical { border-color: var(--primary); background: var(--primary-pale); }
+  .policy-card-title {
+    font-size: 11px; font-weight: 600; color: var(--navy);
+    margin-bottom: 6px; display: flex; align-items: center; gap: 6px;
+  }
+  .policy-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--primary); flex-shrink: 0; }
+  .policy-dot.critical { background: var(--warn); }
+  .policy-card p { font-size: 11px; color: var(--text-muted); line-height: 1.6; }
+
+  /* ROI */
+  .roi-hero {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%);
+    padding: 36px 48px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 2px;
+  }
+  .roi-big {
+    padding: 24px; background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1); text-align: center;
+  }
+  .roi-big:first-child { border-radius: 4px 0 0 4px; }
+  .roi-big:last-child { border-radius: 0 4px 4px 0; }
+  .roi-big-val { font-family: 'DM Serif Display', serif; font-size: 38px; color: white; line-height: 1; margin-bottom: 6px; }
+  .roi-big-val.green { color: #4ade80; }
+  .roi-big-val.gold { color: var(--gold); }
+  .roi-big-lbl { font-size: 11px; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.08em; }
+
+  .savings-grid { display: grid; grid-template-columns: 1fr 1fr; padding: 36px 48px; gap: 32px; border-bottom: 1px solid var(--silver); }
+  .savings-section-title {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--text-muted);
+    margin-bottom: 16px; padding-bottom: 10px;
+    border-bottom: 2px solid var(--green); display: inline-block;
+  }
+  .savings-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 10px 0; border-bottom: 1px solid var(--silver);
+  }
+  .savings-row:last-child { border-bottom: none; }
+  .savings-label { font-size: 12px; color: var(--text-muted); }
+  .savings-value { font-weight: 600; font-size: 13px; color: var(--green); font-family: 'DM Mono', monospace; }
+  .savings-value.cost { color: var(--warn); }
+
+  .timeline-section { padding: 28px 48px; border-bottom: 1px solid var(--silver); }
+  .timeline-title {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--text-muted);
+    margin-bottom: 20px; padding-bottom: 10px;
+    border-bottom: 2px solid var(--navy); display: inline-block;
+  }
+  .timeline-bars { display: flex; flex-direction: column; gap: 10px; }
+  .timeline-row { display: flex; align-items: center; gap: 12px; }
+  .timeline-label { font-size: 11px; color: var(--text-muted); width: 210px; flex-shrink: 0; text-align: right; }
+  .timeline-bar-wrap { flex: 1; height: 28px; background: var(--silver); border-radius: 2px; overflow: hidden; }
+  .timeline-bar {
+    height: 100%; display: flex; align-items: center; padding-left: 10px;
+    font-size: 10px; font-weight: 600; color: white; border-radius: 2px; white-space: nowrap;
+  }
+  .timeline-month { font-size: 10px; color: var(--text-muted); width: 60px; font-family: 'DM Mono', monospace; }
+
+  .capabilities-section { padding: 28px 48px; }
+  .cap-title {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--text-muted);
+    margin-bottom: 16px; padding-bottom: 10px;
+    border-bottom: 2px solid var(--accent); display: inline-block;
+  }
+  .cap-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; }
+  .cap-card { background: var(--silver-light); border: 1px solid var(--silver); padding: 16px; border-radius: 4px; }
+  .cap-card-title { font-weight: 600; font-size: 12px; color: var(--navy); margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+  .cap-icon { font-size: 14px; }
+  .cap-card p { font-size: 11px; color: var(--text-muted); line-height: 1.6; }
+  .cap-required { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--primary); margin-top: 8px; }
+
+  /* ARCH */
+  .arch-intro { padding: 24px 48px; background: var(--silver-light); border-bottom: 1px solid var(--silver); }
+  .arch-intro p { font-size: 12px; color: var(--text-muted); max-width: 720px; }
+  .arch-diagram { padding: 36px 48px; }
+  svg.arch { width: 100%; height: 590px; font-family: 'DM Sans', sans-serif; }
+
+  .arch-legend {
+    display: flex; gap: 24px; padding: 16px 48px;
+    background: var(--silver-light); border-top: 1px solid var(--silver); flex-wrap: wrap;
+  }
+  .legend-item { display: flex; align-items: center; gap: 8px; font-size: 11px; color: var(--text-muted); }
+  .legend-dot { width: 12px; height: 12px; border-radius: 2px; flex-shrink: 0; }
+
+  .page-divider { height: 8px; background: var(--primary); margin-bottom: 60px; }
+
+  .routing-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 16px; }
+  .routing-table th {
+    background: var(--navy); color: rgba(255,255,255,0.7);
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em;
+    font-weight: 600; padding: 10px 14px; text-align: left;
+  }
+  .routing-table td { padding: 10px 14px; border-bottom: 1px solid var(--silver); color: var(--text-muted); }
+  .routing-table tr:last-child td { border-bottom: none; }
+  .routing-table tr:nth-child(even) td { background: var(--silver-light); }
+  .routing-table td:first-child { color: var(--navy); font-weight: 500; }
+</style>
+</head>
+<body>
+
+<!-- ══ PAGE 1: COMPANY OVERVIEW ══ -->
+<div class="page" id="page1">
+  <nav class="page-nav">
+    <a href="#page1" class="active">01 · Overview</a>
+    <a href="#page2">02 · Solution</a>
+    <a href="#page3">03 · Cost & ROI</a>
+    <a href="#page4">04 · Architecture</a>
+  </nav>
+
+  <div class="hero">
+    <div class="warm-badge">🔥 Warm Lead — INS Approached DFW Technologies Directly</div>
+    <h1>INS — Innovative<br><span>Network Solutions</span></h1>
+    <div class="hero-sub">Industrial IoT Networking & OT/IIoT Managed Services · Richardson, TX · Founded 1998</div>
+    <div class="hero-stats">
+      <div class="stat-card">
+        <div class="stat-val">91</div>
+        <div class="stat-lbl">Employees</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val">25<span>+ yr</span></div>
+        <div class="stat-lbl">OT Domain Experience</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val">4.2<span>hr</span></div>
+        <div class="stat-lbl">Avg Incident MTTR</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val">61<span>%</span></div>
+        <div class="stat-lbl">Customer Churn Risk</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-header">
+    <span class="section-tag">Overview</span>
+    <span class="section-title">Company Profile & Operational Scale</span>
+    <span class="page-num">Page 01 / 04</span>
+  </div>
+
+  <div class="content-grid">
+    <div class="content-col">
+      <div class="col-title">About INS</div>
+      <p class="body-text">Founded in 1998 and headquartered in Richardson, Texas, Industrial Networking Solutions (INS) delivers industrial networking products, engineering services, and Operational Technology (OT) managed services to clients in manufacturing, food and beverage, oil and gas, transportation, and utilities. With approximately 91 employees, INS competes as a specialist against larger IT generalists by offering deep OT domain expertise and hands-on engineering.</p>
+      <p class="body-text">INS has evolved from Industrial Ethernet to M2M to the Industrial Internet of Things — now offering private cellular (LTE/5G), rugged networking hardware, OT cybersecurity, edge computing deployment, and network lifecycle management. Their highest-value asset is deep OT network engineering expertise concentrated in a small number of senior engineers — a significant scaling constraint as client complexity grows.</p>
+      <p class="body-text">INS approached DFW Technologies directly about digital twin solutions for their oil and gas clients — making this the warmest lead in the six-company portfolio. The problem is pre-identified, the relationship is established, and the ask maps directly to DFW Tech's capabilities.</p>
+
+      <div class="col-title" style="margin-top:24px;">Strategic Context</div>
+      <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:0;">
+        <span style="background:var(--primary-pale); border:1px solid var(--primary); color:var(--primary); font-size:10px; padding:4px 10px; border-radius:2px; font-weight:600;">Warm lead — self-referred</span>
+        <span style="background:var(--primary-pale); border:1px solid var(--primary); color:var(--primary); font-size:10px; padding:4px 10px; border-radius:2px; font-weight:600;">OT cybersecurity gap</span>
+        <span style="background:var(--primary-pale); border:1px solid var(--primary); color:var(--primary); font-size:10px; padding:4px 10px; border-radius:2px; font-weight:600;">Senior engineer bottleneck</span>
+        <span style="background:var(--primary-pale); border:1px solid var(--primary); color:var(--primary); font-size:10px; padding:4px 10px; border-radius:2px; font-weight:600;">Digital twin interest</span>
+        <span style="background:var(--primary-pale); border:1px solid var(--primary); color:var(--primary); font-size:10px; padding:4px 10px; border-radius:2px; font-weight:600;">91-person SME scale</span>
+      </div>
+    </div>
+
+    <div class="content-col">
+      <div class="col-title">Key Problems Identified</div>
+      <div class="problem-list">
+        <div class="problem-card hot">
+          <div class="problem-card-title"><div class="problem-num hot">1</div>OT Cybersecurity — Untapped Revenue Opportunity</div>
+          <p>OT cyberattacks targeting industrial clients are rising rapidly, yet INS lacks an AI-powered threat detection layer to offer as a managed security service. With 12–24 hour detection lag on manual log review, client environments are exposed. This is both a client risk and a significant managed service revenue opportunity INS is currently unable to capture.</p>
+        </div>
+        <div class="problem-card">
+          <div class="problem-card-title"><div class="problem-num">2</div>Senior Engineer Bottleneck — Not Scalable</div>
+          <p>Deep OT network expertise is concentrated in 2–3 senior engineers. Pre-sales assessments require 8–15 hours of senior engineer time per opportunity. Incident resolution stalls when senior engineers are unavailable. Tribal knowledge about client environments lives in heads, not systems — creating a single point of failure for INS operations.</p>
+        </div>
+        <div class="problem-card">
+          <div class="problem-card-title"><div class="problem-num">3</div>Digital Twin Gap — Client Ask Already on Table</div>
+          <p>INS clients want to visualize their field assets in real time — monitoring equipment health, network status, and sensor streams across facilities. INS currently lacks the AI and analytics stack to build and maintain digital twins at scale, which is the exact capability they approached DFW Technologies to discuss.</p>
+        </div>
+        <div class="problem-card">
+          <div class="problem-card-title"><div class="problem-num">4</div>Reactive Customer Churn — No Early Warning</div>
+          <p>61% of INS's top-20 accounts show churn risk signals. Managed service renewals are handled reactively — INS loses accounts to competitors without early warning, because contract renewal conversations are initiated after the client has already started evaluating alternatives.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JOURNEY MAP -->
+  <div class="journey-section">
+    <div class="journey-title">SMB Client IT Admin Journey Map — INS Managed Service Lifecycle</div>
+    <table class="journey-table">
+      <thead>
+        <tr>
+          <th>Stage</th>
+          <th>Actions</th>
+          <th>Pain Point</th>
+          <th>AI Intervention</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><div class="journey-stage">01 · Prospect & Qualify</div></td>
+          <td>Account executive identifies opportunity; senior engineer spends 8–15 hrs on manual on-site OT assessment to qualify</td>
+          <td class="journey-pain">⚠ Senior engineer time consumed before any revenue — not scalable beyond current team size</td>
+          <td class="journey-ai">🤖 AI readiness scoring tool allows AE to run digital assessment without senior engineer hours — qualifies 70% of opportunity remotely</td>
+        </tr>
+        <tr>
+          <td><div class="journey-stage">02 · Network Design</div></td>
+          <td>Engineer designs OT network architecture; RF modeling for wireless done manually with iterative revisions</td>
+          <td class="journey-pain">⚠ RF modeling errors discovered during deployment are costly to remediate after hardware is ordered</td>
+          <td class="journey-ai">🤖 AI RF propagation tool ingests floor plan and equipment placement to recommend antenna placement before hardware purchase</td>
+        </tr>
+        <tr>
+          <td><div class="journey-stage">03 · Deployment</div></td>
+          <td>Field technicians install hardware; undocumented legacy systems discovered on-site cause scope creep</td>
+          <td class="journey-pain">⚠ Unknown devices and legacy protocols create delays; documentation generated manually post-deployment</td>
+          <td class="journey-ai">🤖 AI parses LLDP/CDP discovery scans at commissioning — auto-generates site documentation and flags unknown devices</td>
+        </tr>
+        <tr>
+          <td><div class="journey-stage">04 · Managed Monitoring</div></td>
+          <td>INS NOC monitors client OT networks; alert fatigue from low-priority alarms masks genuine security events</td>
+          <td class="journey-pain">⚠ Manual triage consumes analyst time; 12–24 hr detection lag on real threats; 4.2 hr average MTTR</td>
+          <td class="journey-ai">🤖 ML behavioral baseline filters noise — only anomalies with high security or operational impact surfaced; MTTR drops 60%</td>
+        </tr>
+        <tr>
+          <td><div class="journey-stage">05 · Renewal & Expansion</div></td>
+          <td>Account manager prepares annual review with no data-driven signals; renewal conversations start reactively</td>
+          <td class="journey-pain">⚠ 61% churn risk in top-20 accounts; no early warning system — clients already evaluating competitors before INS initiates</td>
+          <td class="journey-ai">🤖 Churn prediction model flags at-risk accounts 90 days before renewal; auto-generates QBR deck with ROI proof points</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="impact-bar">
+    <div class="impact-bar-label">Market Context</div>
+    <div class="impact-tags">
+      <span class="impact-tag hot">INS already approached DFW Tech about digital twins — warmest lead</span>
+      <span class="impact-tag">OT cyberattacks up 140% in industrial sector (2023–2024)</span>
+      <span class="impact-tag">NPT from equipment failure = 10–20% of total oil & gas drilling costs</span>
+      <span class="impact-tag">61% churn risk in top-20 accounts — immediate retention opportunity</span>
+    </div>
+  </div>
+
+</div>
+<div class="page-divider"></div>
+
+<!-- ══ PAGE 2: SOLUTION ══ -->
+<div class="page" id="page2">
+  <nav class="page-nav">
+    <a href="#page1">01 · Overview</a>
+    <a href="#page2" class="active">02 · Solution</a>
+    <a href="#page3">03 · Cost & ROI</a>
+    <a href="#page4">04 · Architecture</a>
+  </nav>
+
+  <div class="section-header">
+    <span class="section-tag solution">Solution</span>
+    <span class="section-title">AI Solution Stack & Problem Mapping</span>
+    <span class="page-num">Page 02 / 04</span>
+  </div>
+
+  <div class="solution-intro">
+    <p>DFW Technologies proposes a <strong>private-heavy hybrid deployment</strong> for INS. Client OT network topology, device inventories, and configuration files are among the most sensitive data in industrial operations — all AI workloads touching client network data must run on INS-owned or client-premises infrastructure with zero data egress to public APIs. The exception is the pre-sales readiness assessment tool and automated client reporting, which use only high-level aggregated metadata and are appropriate for managed cloud deployment.</p>
+  </div>
+
+  <div class="solution-grid">
+    <div class="solution-item">
+      <div class="solution-item-header">
+        <div class="solution-icon">🛡️</div>
+        <div>
+          <div class="solution-item-title">OT Network Anomaly & Threat Detection (MaaS)</div>
+          <div class="solution-item-problem">↳ Solves: Problem #1 — OT Cybersecurity Gap</div>
+        </div>
+        <span class="ai-badge private">Private AI</span>
+      </div>
+      <p>ML-based behavioral baseline model running on client OT traffic (Purdue model layers 1–3) detects anomalous East-West traffic, unauthorized device connections, and industrial protocol violations in real time. INS offers this as a monthly Managed Security SOC service — a new revenue stream built on AI that no INS competitor in the DFW SME market currently offers. Detection lag drops from 12–24 hours to under 15 minutes.</p>
+      <div class="tech-tags">
+        <span class="tech-tag">Zeek + Suricata</span>
+        <span class="tech-tag">Isolation Forest ML</span>
+        <span class="tech-tag">InfluxDB Streams</span>
+        <span class="tech-tag">Azure Sentinel SIEM</span>
+      </div>
+    </div>
+
+    <div class="solution-item">
+      <div class="solution-item-header">
+        <div class="solution-icon">🧠</div>
+        <div>
+          <div class="solution-item-title">Engineering Knowledge Capture & AI Copilot</div>
+          <div class="solution-item-problem">↳ Solves: Problem #2 — Senior Engineer Bottleneck</div>
+        </div>
+        <span class="ai-badge private">Private AI</span>
+      </div>
+      <p>RAG-based private AI assistant trained on client network documentation, INS runbooks, configuration histories, and incident resolution logs. Junior engineers query it for site-specific context during incident resolution — getting answers that previously required calling a senior engineer. Captures institutional knowledge before it walks out the door when senior staff retire or move on.</p>
+      <div class="tech-tags">
+        <span class="tech-tag">Private LLM (Llama 3)</span>
+        <span class="tech-tag">LlamaIndex RAG</span>
+        <span class="tech-tag">Config File Ingestion</span>
+        <span class="tech-tag">On-Prem GPU Server</span>
+      </div>
+    </div>
+
+    <div class="solution-item">
+      <div class="solution-item-header">
+        <div class="solution-icon">🌐</div>
+        <div>
+          <div class="solution-item-title">Digital Twin — Client Asset Visualization</div>
+          <div class="solution-item-problem">↳ Solves: Problem #3 — Digital Twin Gap</div>
+        </div>
+        <span class="ai-badge private">Private AI</span>
+      </div>
+      <p>Real-time digital twin of client OT assets — equipment health, network status, sensor streams, and alert history — visualized in a unified dashboard. Private AI backend processes live edge sensor data on-premises; a hybrid cloud layer renders the visualization accessible from client offices. This is the exact capability INS requested from DFW Technologies and the fastest path to a signed engagement.</p>
+      <div class="tech-tags">
+        <span class="tech-tag">Edge AI Nodes</span>
+        <span class="tech-tag">Digital Twin Engine</span>
+        <span class="tech-tag">Real-time Sensor Feeds</span>
+        <span class="tech-tag">Cloud Visualization</span>
+      </div>
+    </div>
+
+    <div class="solution-item">
+      <div class="solution-item-header">
+        <div class="solution-icon">📊</div>
+        <div>
+          <div class="solution-item-title">Predictive Customer Churn & Renewal Intelligence</div>
+          <div class="solution-item-problem">↳ Solves: Problem #4 — Reactive Churn</div>
+        </div>
+        <span class="ai-badge private">Private AI</span>
+      </div>
+      <p>ML model on support ticket volume, SLA adherence, invoice timing, and service utilization trends identifies accounts showing pre-churn behavior 90 days before contract renewal. Account managers receive auto-generated QBR decks with health scores, ROI proof points, and upsell opportunities — turning reactive renewals into proactive retention conversations. Targets INS's 61% churn-risk account pool directly.</p>
+      <div class="tech-tags">
+        <span class="tech-tag">Churn Prediction ML</span>
+        <span class="tech-tag">CRM Integration</span>
+        <span class="tech-tag">Auto QBR Generation</span>
+        <span class="tech-tag">Health Scoring</span>
+      </div>
+    </div>
+
+    <div class="solution-item">
+      <div class="solution-item-header">
+        <div class="solution-icon">🎯</div>
+        <div>
+          <div class="solution-item-title">AI Pre-Sales Network Readiness Scoring</div>
+          <div class="solution-item-problem">↳ Solves: Problem #2 — Presales Bottleneck</div>
+        </div>
+        <span class="ai-badge public">Public AI</span>
+      </div>
+      <p>AI-guided remote assessment tool collects client answers and automated network scan outputs to score IIoT, 5G, and cybersecurity readiness — completing 70% of the assessment without senior engineer hours. Account executives run it digitally before any on-site visit. Public AI appropriate here as inputs are high-level metadata only — no client network topology or configuration data transmitted.</p>
+      <div class="tech-tags">
+        <span class="tech-tag">Scoring Logic Engine</span>
+        <span class="tech-tag">Claude Haiku API</span>
+        <span class="tech-tag">Gap Report Generator</span>
+        <span class="tech-tag">Streamlit UI</span>
+      </div>
+    </div>
+
+    <div class="solution-item">
+      <div class="solution-item-header">
+        <div class="solution-icon">📄</div>
+        <div>
+          <div class="solution-item-title">Automated Client Health Reporting</div>
+          <div class="solution-item-problem">↳ Solves: Problem #4 — Retention & Account Growth</div>
+        </div>
+        <span class="ai-badge public">Public AI</span>
+      </div>
+      <p>LLM agent auto-generates client-facing network health narratives from aggregated monitoring platform data — replacing 2–3 hours of manual report assembly per client per month. Public AI appropriate here as only aggregated, anonymized metrics are transmitted — no client-identifiable topology or device data exposed. Frees account managers to focus on relationship building, not report writing.</p>
+      <div class="tech-tags">
+        <span class="tech-tag">LLM Report Generation</span>
+        <span class="tech-tag">Aggregated Metrics API</span>
+        <span class="tech-tag">PRTG / Zabbix Feed</span>
+        <span class="tech-tag">Client Portal Delivery</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="benchmark-callout" style="margin: 24px 48px;">
+    <div class="benchmark-callout-icon">🔬</div>
+    <div>
+      <div class="benchmark-callout-title">Industry Benchmark: Claroty & Dragos — OT Security Leaders Validating the AI-Managed SOC Model for Industrial Networks</div>
+      <p>Claroty and Dragos — the two leading OT/ICS cybersecurity platforms — have demonstrated that AI-driven behavioral baselining on industrial network traffic can reduce threat detection time from hours to minutes and cut false-positive alert volume by 60–70%, freeing SOC analysts to focus on genuine incidents. Their deployments in oil & gas, utilities, and manufacturing validate the managed security service model INS is positioned to offer. No DFW-area MSP currently provides AI-powered OT-specific threat detection as a managed service — INS has a first-mover window. DFW Technologies brings the AI stack; INS brings the OT domain expertise and existing client relationships. Together, this is a differentiated offering that larger IT generalists cannot easily replicate.</p>
+    </div>
+  </div>
+
+  <div class="policy-section">
+    <div class="col-title">Policies, Compliance & Restrictions to Address</div>
+    <div class="policy-grid">
+      <div class="policy-card critical">
+        <div class="policy-card-title"><div class="policy-dot critical"></div>Client OT Network Data — Absolute Privacy</div>
+        <p>Client network topology, device inventories, IP addressing schemes, and configuration files are operationally critical and competitively sensitive. This data must never leave INS-owned or client-premises infrastructure. No network topology data may be transmitted to any public API under any circumstance.</p>
+      </div>
+      <div class="policy-card critical">
+        <div class="policy-card-title"><div class="policy-dot critical"></div>NERC CIP / ICS Security Standards</div>
+        <p>Clients in utilities and energy sectors may be subject to NERC CIP standards governing OT cybersecurity. Any AI-based threat detection or monitoring system deployed for these clients must align with NERC CIP compliance requirements and not create new audit exposure for the client.</p>
+      </div>
+      <div class="policy-card">
+        <div class="policy-card-title"><div class="policy-dot"></div>CMMC & HIPAA Client Exposure</div>
+        <p>INS serves clients in defense supply chain (CMMC) and healthcare-adjacent industries (HIPAA). AI monitoring tools must be architecturally separated per client — shared infrastructure between clients with different compliance regimes creates cross-contamination risk and audit exposure.</p>
+      </div>
+      <div class="policy-card">
+        <div class="policy-card-title"><div class="policy-dot"></div>Incident Response Legal Obligations</div>
+        <p>When AI threat detection identifies a security incident, INS may have contractual or legal obligations to notify clients within specific timeframes. AI-generated alerts must feed into a human-reviewed incident response workflow — AI does not autonomously notify clients or take network action.</p>
+      </div>
+      <div class="policy-card">
+        <div class="policy-card-title"><div class="policy-dot"></div>Pre-Sales Assessment Data Handling</div>
+        <p>The AI pre-sales readiness tool collects client infrastructure metadata. Even at a high level, this data represents competitive intelligence about a prospect's OT environment. Data collected during pre-sales assessments must be handled under NDA and not used to train shared AI models.</p>
+      </div>
+      <div class="policy-card">
+        <div class="policy-card-title"><div class="policy-dot"></div>AI Routing Decision</div>
+        <p>All client network data workloads (threat detection, knowledge copilot, digital twin backend, churn model) are private AI only. Pre-sales assessment and client health reporting use only aggregated metadata and are appropriate for managed public cloud — no client-identifiable data transmitted.</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+<div class="page-divider"></div>
+
+<!-- ══ PAGE 3: COST & ROI ══ -->
+<div class="page" id="page3">
+  <nav class="page-nav">
+    <a href="#page1">01 · Overview</a>
+    <a href="#page2">02 · Solution</a>
+    <a href="#page3" class="active">03 · Cost & ROI</a>
+    <a href="#page4">04 · Architecture</a>
+  </nav>
+
+  <div class="section-header">
+    <span class="section-tag roi">Cost & ROI</span>
+    <span class="section-title">Financial Impact & DFW Tech Capabilities Required</span>
+    <span class="page-num">Page 03 / 04</span>
+  </div>
+
+  <div class="roi-hero">
+    <div class="roi-big">
+      <div class="roi-big-val gold">$500K–$800K</div>
+      <div class="roi-big-lbl">Total Investment · 18 Months</div>
+    </div>
+    <div class="roi-big">
+      <div class="roi-big-val green">$1.6M–$2.8M</div>
+      <div class="roi-big-lbl">Estimated Annual Value</div>
+    </div>
+    <div class="roi-big">
+      <div class="roi-big-val">7–9 mo</div>
+      <div class="roi-big-lbl">Payback Period</div>
+    </div>
+  </div>
+
+  <div class="savings-grid">
+    <div>
+      <div class="savings-section-title">Projected Annual Value (INS + Client Savings)</div>
+      <div class="savings-row">
+        <span class="savings-label">Managed SOC Revenue — New OT Security Service Line</span>
+        <span class="savings-value">$620K–$1.1M</span>
+      </div>
+      <div class="savings-row">
+        <span class="savings-label">Churn Prevention — Retaining At-Risk Top-20 Accounts</span>
+        <span class="savings-value">$480K–$760K</span>
+      </div>
+      <div class="savings-row">
+        <span class="savings-label">Presales Efficiency — Senior Engineer Hours Recaptured</span>
+        <span class="savings-value">$240K–$380K</span>
+      </div>
+      <div class="savings-row">
+        <span class="savings-label">Digital Twin — New Service Revenue from Oil & Gas Clients</span>
+        <span class="savings-value">$180K–$320K</span>
+      </div>
+      <div class="savings-row">
+        <span class="savings-label">MTTR Reduction — Operational Efficiency Across NOC</span>
+        <span class="savings-value">$120K–$200K</span>
+      </div>
+      <div class="savings-row" style="border-top: 2px solid var(--green); padding-top:14px; margin-top:4px;">
+        <span class="savings-label" style="font-weight:600; color:var(--navy);">Total Estimated Annual Value</span>
+        <span class="savings-value" style="font-size:16px;">$1.6M–$2.8M</span>
+      </div>
+    </div>
+
+    <div>
+      <div class="savings-section-title">Investment Breakdown</div>
+      <div class="savings-row">
+        <span class="savings-label">Phase 1: Discovery & One Client Site Pilot (4 weeks)</span>
+        <span class="savings-value cost">$40K–$60K</span>
+      </div>
+      <div class="savings-row">
+        <span class="savings-label">Phase 2: Digital Twin MVP + OT Threat Detection (Months 2–6)</span>
+        <span class="savings-value cost">$180K–$290K</span>
+      </div>
+      <div class="savings-row">
+        <span class="savings-label">Phase 3: Knowledge Copilot + Churn Model (Months 7–12)</span>
+        <span class="savings-value cost">$150K–$250K</span>
+      </div>
+      <div class="savings-row">
+        <span class="savings-label">Phase 4: Multi-Site Scale + Presales Tool (Months 12–18)</span>
+        <span class="savings-value cost">$130K–$200K</span>
+      </div>
+      <div class="savings-row">
+        <span class="savings-label">On-Premises Hardware (Edge Nodes, GPU Server)</span>
+        <span class="savings-value cost">Included in phases</span>
+      </div>
+      <div class="savings-row">
+        <span class="savings-label">Annual Maintenance & Model Retraining (Year 2+)</span>
+        <span class="savings-value cost">$50K–$90K/yr</span>
+      </div>
+      <div class="savings-row" style="border-top: 2px solid var(--warn); padding-top:14px; margin-top:4px;">
+        <span class="savings-label" style="font-weight:600; color:var(--navy);">Total 18-Month Investment</span>
+        <span class="savings-value cost" style="font-size:16px;">$500K–$800K</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="timeline-section">
+    <div class="timeline-title">Implementation Timeline</div>
+    <div style="display:flex; gap:8px; margin-bottom:12px; font-size:10px; color:var(--text-muted); padding-left:222px;">
+      <span style="flex:1; text-align:left;">Month 0</span>
+      <span style="flex:1; text-align:center;">Month 9</span>
+      <span style="flex:1; text-align:right;">Month 18</span>
+    </div>
+    <div class="timeline-bars">
+      <div class="timeline-row">
+        <div class="timeline-label">Discovery & Pilot Site Selection</div>
+        <div class="timeline-bar-wrap">
+          <div class="timeline-bar" style="width:18%; background:var(--steel);">Weeks 1–4</div>
+        </div>
+        <div class="timeline-month">4 wks</div>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-label">Digital Twin MVP (Pilot Site)</div>
+        <div class="timeline-bar-wrap">
+          <div class="timeline-bar" style="width:80%; margin-left:18%; background:var(--primary);">Months 2–6 → Scale 7–18</div>
+        </div>
+        <div class="timeline-month">16 mo</div>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-label">OT Threat Detection (MaaS)</div>
+        <div class="timeline-bar-wrap">
+          <div class="timeline-bar" style="width:75%; margin-left:18%; background:var(--navy);">Months 2–15 (Pilot → Roll-out)</div>
+        </div>
+        <div class="timeline-month">14 mo</div>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-label">Knowledge Copilot</div>
+        <div class="timeline-bar-wrap">
+          <div class="timeline-bar" style="width:55%; margin-left:40%; background:var(--steel);">Months 7–17</div>
+        </div>
+        <div class="timeline-month">11 mo</div>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-label">Churn Prediction Model</div>
+        <div class="timeline-bar-wrap">
+          <div class="timeline-bar" style="width:50%; margin-left:40%; background:var(--gold); color:var(--navy);">Months 7–16</div>
+        </div>
+        <div class="timeline-month">10 mo</div>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-label">Pre-Sales Readiness Tool</div>
+        <div class="timeline-bar-wrap">
+          <div class="timeline-bar" style="width:38%; margin-left:62%; background:var(--accent);">Months 12–18</div>
+        </div>
+        <div class="timeline-month">7 mo</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="capabilities-section">
+    <div class="cap-title">DFW Technologies Capabilities Required</div>
+    <div class="cap-grid">
+      <div class="cap-card">
+        <div class="cap-card-title"><span class="cap-icon">🛡️</span> OT/ICS Security AI</div>
+        <p>Build and deploy ML behavioral baseline models on industrial network traffic (Modbus, DNP3, EtherNet/IP protocols). Must understand OT threat vectors distinct from IT security and integrate with SIEM platforms like Azure Sentinel without disrupting live OT environments.</p>
+        <div class="cap-required">⚠ Core Requirement</div>
+      </div>
+      <div class="cap-card">
+        <div class="cap-card-title"><span class="cap-icon">🌐</span> Digital Twin Architecture</div>
+        <p>Design and build real-time digital twin systems connecting edge sensor data to a visualization layer. Requires edge hardware deployment, data normalization across heterogeneous sensor protocols, and a hybrid private backend / cloud rendering architecture.</p>
+        <div class="cap-required">⚠ Core Requirement</div>
+      </div>
+      <div class="cap-card">
+        <div class="cap-card-title"><span class="cap-icon">🧠</span> Private RAG / Knowledge Engineering</div>
+        <p>Deploy and maintain a private LLM with RAG architecture over client network documentation, runbooks, and configuration files. Must ingest unstructured technical documentation and return contextually accurate answers for field engineers under time pressure.</p>
+        <div class="cap-required">⚠ Core Requirement</div>
+      </div>
+      <div class="cap-card">
+        <div class="cap-card-title"><span class="cap-icon">📡</span> Edge AI Deployment</div>
+        <p>Deploy edge AI processing nodes at remote client sites — including industrial-hardened hardware that can process sensor data locally with limited connectivity. Must support offline operation and intermittent synchronization to the INS monitoring layer.</p>
+        <div class="cap-required">Required</div>
+      </div>
+      <div class="cap-card">
+        <div class="cap-card-title"><span class="cap-icon">📊</span> ML Pipeline Engineering</div>
+        <p>Build and maintain churn prediction, readiness scoring, and anomaly detection ML pipelines on INS's CRM, support ticket, and network monitoring data. Includes data engineering, model training, and weekly batch inference workflows.</p>
+        <div class="cap-required">Required</div>
+      </div>
+      <div class="cap-card">
+        <div class="cap-card-title"><span class="cap-icon">🔐</span> Security & Compliance Architecture</div>
+        <p>Design per-client data isolation architecture — ensuring that AI models and data stores for CMMC clients, HIPAA-adjacent clients, and NERC CIP-regulated clients are architecturally separated with no cross-contamination of monitoring data or model training.</p>
+        <div class="cap-required">Required</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<div class="page-divider"></div>
+
+<!-- ══ PAGE 4: ARCHITECTURE ══ -->
+<div class="page" id="page4">
+  <nav class="page-nav">
+    <a href="#page1">01 · Overview</a>
+    <a href="#page2">02 · Solution</a>
+    <a href="#page3">03 · Cost & ROI</a>
+    <a href="#page4" class="active">04 · Architecture</a>
+  </nav>
+
+  <div class="section-header">
+    <span class="section-tag arch">Architecture</span>
+    <span class="section-title">Private-Heavy Hybrid Architecture — INS Deployment</span>
+    <span class="page-num">Page 04 / 04</span>
+  </div>
+
+  <div class="arch-intro">
+    <p>INS uses a <strong>three-zone architecture</strong>: a <strong>Client Site Edge Zone</strong> where sensors and edge AI nodes process data locally on-premises at each client facility, an <strong>INS Private AI Zone</strong> hosted on INS infrastructure where all client-sensitive models run (threat detection, digital twin, knowledge copilot, churn prediction), and a <strong>Public Cloud Zone</strong> for the pre-sales tool and aggregated client reporting only. Client network data never leaves the private zones.</p>
+  </div>
+
+  <div class="arch-diagram">
+    <svg class="arch" viewBox="0 0 1000 560" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="arrowT" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#1A4A44"/>
+        </marker>
+        <marker id="arrowPG" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#006B5E"/>
+        </marker>
+        <marker id="arrowCY" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#00C2A8"/>
+        </marker>
+        <marker id="arrowGD" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#D4A017"/>
+        </marker>
+        <marker id="arrowOR" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#E05C00"/>
+        </marker>
+      </defs>
+
+      <!-- Zone 1: Client Site Edge -->
+      <rect x="10" y="10" width="290" height="540" rx="6" fill="#EAF7F5" stroke="#006B5E" stroke-width="1.5" stroke-dasharray="6,3"/>
+      <text x="22" y="30" font-size="8" font-weight="700" fill="#006B5E" letter-spacing="0.8" font-family="DM Sans, sans-serif">CLIENT SITE EDGE (On-Premises)</text>
+
+      <!-- Zone 2: INS Private AI -->
+      <rect x="318" y="10" width="340" height="540" rx="6" fill="#F0FAF8" stroke="#006B5E" stroke-width="2"/>
+      <text x="330" y="30" font-size="8" font-weight="700" fill="#004D44" letter-spacing="0.8" font-family="DM Sans, sans-serif">🔒 INS PRIVATE AI ZONE (INS Servers)</text>
+
+      <!-- Zone 3: Public Cloud -->
+      <rect x="676" y="10" width="314" height="540" rx="6" fill="#FFF8F0" stroke="#E05C00" stroke-width="1.5" stroke-dasharray="6,3"/>
+      <text x="688" y="30" font-size="8" font-weight="700" fill="#E05C00" letter-spacing="0.8" font-family="DM Sans, sans-serif">☁️ PUBLIC CLOUD (Agg. Data Only)</text>
+
+      <!-- ── CLIENT EDGE DATA SOURCES ── -->
+      <rect x="28" y="460" width="120" height="76" rx="4" fill="#061A18" stroke="#1A4A44" stroke-width="1"/>
+      <text x="88" y="486" font-size="9" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">🌡️ OT Sensors</text>
+      <text x="88" y="500" font-size="9" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">Field Devices</text>
+      <text x="88" y="516" font-size="8" fill="#00C2A8" text-anchor="middle" font-family="DM Mono, sans-serif">Modbus/DNP3</text>
+
+      <rect x="162" y="460" width="120" height="76" rx="4" fill="#061A18" stroke="#1A4A44" stroke-width="1"/>
+      <text x="222" y="486" font-size="9" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">🔌 Network</text>
+      <text x="222" y="500" font-size="9" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">Traffic (OT)</text>
+      <text x="222" y="516" font-size="8" fill="#00C2A8" text-anchor="middle" font-family="DM Mono, sans-serif">Zeek / SPAN Port</text>
+
+      <!-- ── EDGE AI NODES ── -->
+      <rect x="28" y="320" width="254" height="110" rx="4" fill="#006B5E" stroke="#00A090" stroke-width="1"/>
+      <text x="155" y="342" font-size="8" font-weight="700" fill="rgba(255,255,255,0.6)" text-anchor="middle" font-family="DM Sans, sans-serif">EDGE AI NODES (On-Site)</text>
+      <rect x="42" y="350" width="110" height="64" rx="3" fill="rgba(255,255,255,0.07)" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+      <text x="97" y="372" font-size="9" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Sensor Data</text>
+      <text x="97" y="386" font-size="9" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Preprocessing</text>
+      <text x="97" y="404" font-size="8" fill="rgba(255,255,255,0.45)" text-anchor="middle" font-family="DM Mono, sans-serif">Edge Inference</text>
+
+      <rect x="164" y="350" width="110" height="64" rx="3" fill="rgba(255,255,255,0.07)" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+      <text x="219" y="372" font-size="9" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Local Threat</text>
+      <text x="219" y="386" font-size="9" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Detection</text>
+      <text x="219" y="404" font-size="8" fill="rgba(255,255,255,0.45)" text-anchor="middle" font-family="DM Mono, sans-serif">Isolation Forest</text>
+
+      <!-- ── CLIENT DOCS (Edge) ── -->
+      <rect x="28" y="200" width="254" height="90" rx="4" fill="#0D2E2A" stroke="#1A4A44" stroke-width="1"/>
+      <text x="155" y="222" font-size="8" font-weight="700" fill="rgba(255,255,255,0.5)" text-anchor="middle" font-family="DM Sans, sans-serif">CLIENT DOCS & CONFIGS</text>
+      <text x="155" y="240" font-size="9" fill="rgba(255,255,255,0.7)" text-anchor="middle" font-family="DM Sans, sans-serif">Network diagrams · Runbooks</text>
+      <text x="155" y="256" font-size="9" fill="rgba(255,255,255,0.7)" text-anchor="middle" font-family="DM Sans, sans-serif">Config files · Incident logs</text>
+      <text x="155" y="276" font-size="8" fill="#00C2A8" text-anchor="middle" font-family="DM Mono, sans-serif">Stays on-premises — never transmitted</text>
+
+      <!-- ── INS PRIVATE AI MODELS ── -->
+      <!-- Digital Twin -->
+      <rect x="330" y="310" width="148" height="130" rx="4" fill="#004D44" stroke="#006B5E" stroke-width="1"/>
+      <text x="404" y="332" font-size="8" font-weight="700" fill="rgba(255,255,255,0.5)" text-anchor="middle" font-family="DM Sans, sans-serif">PRIVATE AI</text>
+      <text x="404" y="348" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Digital Twin</text>
+      <text x="404" y="362" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Engine</text>
+      <text x="404" y="382" font-size="8" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">Asset visualization</text>
+      <text x="404" y="396" font-size="8" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">Real-time feeds</text>
+      <text x="404" y="430" font-size="8" fill="rgba(255,255,255,0.35)" text-anchor="middle" font-family="DM Mono, sans-serif">→ Client Dashboard</text>
+
+      <!-- Knowledge Copilot -->
+      <rect x="492" y="310" width="148" height="130" rx="4" fill="#004D44" stroke="#006B5E" stroke-width="1"/>
+      <text x="566" y="332" font-size="8" font-weight="700" fill="rgba(255,255,255,0.5)" text-anchor="middle" font-family="DM Sans, sans-serif">PRIVATE LLM</text>
+      <text x="566" y="348" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Knowledge</text>
+      <text x="566" y="362" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Copilot RAG</text>
+      <text x="566" y="382" font-size="8" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">Llama 3 + LlamaIndex</text>
+      <text x="566" y="396" font-size="8" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">Config file RAG</text>
+      <text x="566" y="430" font-size="8" fill="rgba(255,255,255,0.35)" text-anchor="middle" font-family="DM Mono, sans-serif">→ Engineer Q&A</text>
+
+      <!-- Churn + Threat -->
+      <rect x="330" y="170" width="310" height="110" rx="4" fill="#0D2E2A" stroke="#1A4A44" stroke-width="1"/>
+      <text x="485" y="192" font-size="8" font-weight="700" fill="rgba(255,255,255,0.5)" text-anchor="middle" font-family="DM Sans, sans-serif">PRIVATE AI — THREAT DETECTION & CHURN MODELS</text>
+      <rect x="344" y="200" width="132" height="64" rx="3" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+      <text x="410" y="222" font-size="9" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">OT Anomaly</text>
+      <text x="410" y="236" font-size="9" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Detection ML</text>
+      <text x="410" y="252" font-size="8" fill="rgba(255,255,255,0.4)" text-anchor="middle" font-family="DM Mono, sans-serif">Azure Sentinel</text>
+
+      <rect x="490" y="200" width="132" height="64" rx="3" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+      <text x="556" y="222" font-size="9" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Churn Prediction</text>
+      <text x="556" y="236" font-size="9" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">& Health Score</text>
+      <text x="556" y="252" font-size="8" fill="rgba(255,255,255,0.4)" text-anchor="middle" font-family="DM Mono, sans-serif">CRM ML Model</text>
+
+      <!-- ── PUBLIC CLOUD ── -->
+      <rect x="690" y="310" width="130" height="130" rx="4" fill="#3D1A00" stroke="#E05C00" stroke-width="1"/>
+      <text x="755" y="332" font-size="8" font-weight="700" fill="rgba(255,255,255,0.5)" text-anchor="middle" font-family="DM Sans, sans-serif">CLOUD AI</text>
+      <text x="755" y="348" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Pre-Sales</text>
+      <text x="755" y="362" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Readiness Tool</text>
+      <text x="755" y="382" font-size="8" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">Claude Haiku API</text>
+      <text x="755" y="396" font-size="8" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">Scoring + Gap Report</text>
+      <text x="755" y="430" font-size="8" fill="rgba(255,255,255,0.35)" text-anchor="middle" font-family="DM Mono, sans-serif">→ AE Portal</text>
+
+      <rect x="836" y="310" width="130" height="130" rx="4" fill="#3D1A00" stroke="#E05C00" stroke-width="1"/>
+      <text x="901" y="332" font-size="8" font-weight="700" fill="rgba(255,255,255,0.5)" text-anchor="middle" font-family="DM Sans, sans-serif">CLOUD AI</text>
+      <text x="901" y="348" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Client Health</text>
+      <text x="901" y="362" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Report Generator</text>
+      <text x="901" y="382" font-size="8" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">LLM + Agg. Metrics</text>
+      <text x="901" y="396" font-size="8" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">No client-ID data</text>
+      <text x="901" y="430" font-size="8" fill="rgba(255,255,255,0.35)" text-anchor="middle" font-family="DM Mono, sans-serif">→ Client Portal</text>
+
+      <!-- Output row -->
+      <rect x="330" y="60" width="310" height="80" rx="4" fill="#061A18" stroke="#00C2A8" stroke-width="1.5"/>
+      <text x="485" y="82" font-size="9" font-weight="700" fill="#00C2A8" text-anchor="middle" font-family="DM Sans, sans-serif">INS NOC & ACCOUNT MANAGEMENT</text>
+      <rect x="344" y="90" width="132" height="42" rx="3" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+      <text x="410" y="108" font-size="8" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">🛡️ Security Incidents</text>
+      <text x="410" y="122" font-size="7" fill="rgba(255,255,255,0.4)" text-anchor="middle" font-family="DM Mono, sans-serif">NOC Dashboard</text>
+      <rect x="490" y="90" width="132" height="42" rx="3" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+      <text x="556" y="108" font-size="8" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">💰 Churn Alerts + QBR</text>
+      <text x="556" y="122" font-size="7" fill="rgba(255,255,255,0.4)" text-anchor="middle" font-family="DM Mono, sans-serif">Account Mgr View</text>
+
+      <rect x="690" y="60" width="280" height="80" rx="4" fill="#2A1000" stroke="#E05C00" stroke-width="1.5"/>
+      <text x="830" y="82" font-size="9" font-weight="700" fill="#E05C00" text-anchor="middle" font-family="DM Sans, sans-serif">CUSTOMER-FACING OUTPUTS</text>
+      <rect x="704" y="90" width="120" height="42" rx="3" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+      <text x="764" y="108" font-size="8" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">🌐 Digital Twin View</text>
+      <text x="764" y="122" font-size="7" fill="rgba(255,255,255,0.4)" text-anchor="middle" font-family="DM Mono, sans-serif">Client Portal</text>
+      <rect x="836" y="90" width="120" height="42" rx="3" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+      <text x="896" y="108" font-size="8" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">📄 Health Reports</text>
+      <text x="896" y="122" font-size="7" fill="rgba(255,255,255,0.4)" text-anchor="middle" font-family="DM Mono, sans-serif">Monthly delivery</text>
+
+      <!-- Arrows -->
+      <line x1="88" y1="460" x2="88" y2="432" stroke="#006B5E" stroke-width="1.5" marker-end="url(#arrowPG)"/>
+      <line x1="222" y1="460" x2="222" y2="432" stroke="#006B5E" stroke-width="1.5" marker-end="url(#arrowPG)"/>
+      <line x1="155" y1="320" x2="155" y2="292" stroke="#006B5E" stroke-width="1.5" marker-end="url(#arrowPG)"/>
+      <line x1="155" y1="200" x2="155" y2="172" stroke="#00C2A8" stroke-width="1.5" marker-end="url(#arrowCY)"/>
+
+      <!-- Edge to INS Private -->
+      <line x1="282" y1="250" x2="318" y2="250" stroke="#D4A017" stroke-width="2" marker-end="url(#arrowGD)"/>
+      <text x="300" y="244" font-size="7" fill="#D4A017" text-anchor="middle" font-family="DM Mono, sans-serif">Encrypted</text>
+      <text x="300" y="256" font-size="7" fill="#D4A017" text-anchor="middle" font-family="DM Mono, sans-serif">tunnel</text>
+
+      <!-- Private models to output -->
+      <line x1="485" y1="170" x2="485" y2="142" stroke="#00C2A8" stroke-width="1.5" marker-end="url(#arrowCY)"/>
+      <line x1="404" y1="310" x2="404" y2="142" stroke="#00C2A8" stroke-width="1.5" marker-end="url(#arrowCY)"/>
+
+      <!-- Private to public gateway -->
+      <line x1="660" y1="250" x2="676" y2="250" stroke="#D4A017" stroke-width="2" marker-end="url(#arrowGD)"/>
+      <text x="668" y="244" font-size="7" fill="#D4A017" text-anchor="middle" font-family="DM Mono, sans-serif">Agg.</text>
+      <text x="668" y="256" font-size="7" fill="#D4A017" text-anchor="middle" font-family="DM Mono, sans-serif">only</text>
+
+      <!-- Public to output -->
+      <line x1="755" y1="310" x2="764" y2="142" stroke="#E05C00" stroke-width="1.5" marker-end="url(#arrowOR)"/>
+      <line x1="901" y1="310" x2="896" y2="142" stroke="#E05C00" stroke-width="1.5" marker-end="url(#arrowOR)"/>
+
+      <!-- Layer labels -->
+      <text x="6" y="510" font-size="8" fill="#3D6B65" font-family="DM Mono, sans-serif" transform="rotate(-90,6,510)">DATA SOURCES</text>
+      <text x="6" y="390" font-size="8" fill="#3D6B65" font-family="DM Mono, sans-serif" transform="rotate(-90,6,390)">AI PROCESSING</text>
+      <text x="6" y="115" font-size="8" fill="#3D6B65" font-family="DM Mono, sans-serif" transform="rotate(-90,6,115)">OUTPUTS</text>
+    </svg>
+  </div>
+
+  <div class="arch-legend">
+    <div class="legend-item"><div class="legend-dot" style="background:#004D44;"></div>INS Private AI (On-Premises)</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#006B5E;"></div>Client Edge Zone</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#3D1A00;"></div>Public Cloud (Aggregated Only)</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#D4A017;"></div>Encrypted Tunnel / Agg. Gateway</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#00C2A8;"></div>Private Data Flow</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#E05C00;"></div>Cloud Output Flow</div>
+  </div>
+
+  <div style="padding: 20px 48px; border-top: 1px solid var(--silver);">
+    <div class="col-title">AI Routing Decision Summary</div>
+    <table class="routing-table">
+      <thead>
+        <tr>
+          <th>Workload</th>
+          <th>AI Routing</th>
+          <th>Rationale</th>
+          <th>Primary Output</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>OT Network Threat Detection</td>
+          <td><span class="ai-badge private">Private AI</span></td>
+          <td>Client OT traffic is operationally critical and competitively sensitive — never leaves client or INS infrastructure</td>
+          <td>Real-time threat alerts to INS NOC SOC console</td>
+        </tr>
+        <tr>
+          <td>Digital Twin Engine</td>
+          <td><span class="ai-badge private">Private AI</span></td>
+          <td>Asset data and sensor streams reflect client operational state — private backend required; cloud for visualization only</td>
+          <td>Real-time asset dashboard accessible to client</td>
+        </tr>
+        <tr>
+          <td>Engineering Knowledge Copilot</td>
+          <td><span class="ai-badge private">Private AI</span></td>
+          <td>Client network configs and runbooks are highly sensitive — private LLM with RAG, no data egress to public APIs</td>
+          <td>Instant context for junior engineers during incidents</td>
+        </tr>
+        <tr>
+          <td>Churn Prediction & Health Scoring</td>
+          <td><span class="ai-badge private">Private AI</span></td>
+          <td>CRM and service data is internal INS business intelligence — private cloud deployment</td>
+          <td>At-risk account alerts and auto-generated QBR decks</td>
+        </tr>
+        <tr>
+          <td>Pre-Sales Readiness Assessment</td>
+          <td><span class="ai-badge public">Public AI</span></td>
+          <td>High-level metadata only — no client network topology or config data transmitted to public API</td>
+          <td>IIoT/5G readiness score and gap report for AEs</td>
+        </tr>
+        <tr>
+          <td>Automated Client Health Reports</td>
+          <td><span class="ai-badge public">Public AI</span></td>
+          <td>Aggregated, anonymized metrics only — no client-identifiable topology or device data exposed</td>
+          <td>Monthly narrative health reports delivered to clients</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<script>
+  document.querySelectorAll('.page-nav a').forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.querySelector(link.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      document.querySelectorAll('.page-nav a').forEach(a => a.classList.remove('active'));
+      link.classList.add('active');
+    });
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,1193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ESAB — AI Case Study | DFW Technologies</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #E05C00;
+    --primary-light: #FF7A1A;
+    --primary-pale: #FFF4EE;
+    --navy: #1A1208;
+    --navy-mid: #2D2010;
+    --steel: #5C3D10;
+    --silver: #EEE8E0;
+    --silver-light: #FAF7F3;
+    --white: #FFFFFF;
+    --text: #1E1608;
+    --text-muted: #6B5830;
+    --accent: #0057B8;
+    --green: #00875A;
+    --warn: #C8102E;
+    --gold: #D4A017;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--silver-light);
+    color: var(--text);
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  .page {
+    width: 1100px;
+    margin: 0 auto 60px;
+    background: white;
+    box-shadow: 0 4px 40px rgba(0,0,0,0.10);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .page-nav {
+    display: flex;
+    background: var(--navy);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .page-nav a {
+    flex: 1;
+    text-align: center;
+    padding: 14px 8px;
+    color: rgba(255,255,255,0.5);
+    text-decoration: none;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s;
+  }
+  .page-nav a:hover { color: white; border-bottom-color: var(--primary-light); }
+  .page-nav a.active { color: white; border-bottom-color: var(--primary-light); }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 32px 48px 24px;
+    border-bottom: 1px solid var(--silver);
+  }
+  .section-tag {
+    background: var(--primary);
+    color: white;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 2px;
+  }
+  .section-tag.solution { background: var(--navy); }
+  .section-tag.roi { background: var(--green); }
+  .section-tag.arch { background: var(--steel); }
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    color: var(--navy);
+  }
+  .page-num {
+    margin-left: auto;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(135deg, #1A1208 0%, #2D1A04 55%, #3D2208 100%);
+    padding: 48px 48px 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -70px; right: -70px;
+    width: 360px; height: 360px;
+    background: var(--primary);
+    border-radius: 50%;
+    opacity: 0.1;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -40px; left: 200px;
+    width: 220px; height: 220px;
+    background: var(--gold);
+    border-radius: 50%;
+    opacity: 0.05;
+  }
+  .hero-eyebrow {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--primary-light);
+    margin-bottom: 12px;
+  }
+  .hero h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 36px;
+    color: white;
+    line-height: 1.15;
+    margin-bottom: 6px;
+  }
+  .hero h1 span { color: var(--primary-light); font-style: italic; }
+  .hero-sub {
+    color: rgba(255,255,255,0.5);
+    font-size: 13px;
+    margin-bottom: 32px;
+  }
+  .hero-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+  }
+  .stat-card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 16px 18px;
+  }
+  .stat-card:first-child { border-radius: 4px 0 0 4px; }
+  .stat-card:last-child { border-radius: 0 4px 4px 0; }
+  .stat-val {
+    font-family: 'DM Serif Display', serif;
+    font-size: 28px;
+    color: white;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .stat-val span { font-size: 16px; color: var(--primary-light); }
+  .stat-lbl {
+    font-size: 10px;
+    color: rgba(255,255,255,0.4);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .content-grid { display: grid; grid-template-columns: 1fr 1fr; }
+  .content-col { padding: 36px 48px; }
+  .content-col + .content-col { border-left: 1px solid var(--silver); }
+
+  .col-title {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--primary);
+    display: inline-block;
+  }
+  .body-text { color: var(--text-muted); font-size: 13px; line-height: 1.75; margin-bottom: 16px; }
+
+  .problem-list { display: flex; flex-direction: column; gap: 12px; }
+  .problem-card {
+    border: 1px solid var(--silver);
+    border-left: 3px solid var(--primary);
+    padding: 14px 16px;
+    border-radius: 0 4px 4px 0;
+    background: var(--silver-light);
+  }
+  .problem-card-title {
+    font-weight: 600;
+    font-size: 12px;
+    color: var(--navy);
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .problem-num {
+    background: var(--primary);
+    color: white;
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 9px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .problem-card p { color: var(--text-muted); font-size: 12px; line-height: 1.6; }
+
+  .impact-bar {
+    background: var(--navy);
+    color: white;
+    padding: 18px 48px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  .impact-bar-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.4); white-space: nowrap; }
+  .impact-tags { display: flex; gap: 8px; flex-wrap: wrap; }
+  .impact-tag {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.14);
+    padding: 5px 12px; border-radius: 2px;
+    font-size: 11px; color: rgba(255,255,255,0.75);
+  }
+  .impact-tag.hot { border-color: var(--primary-light); color: var(--primary-light); }
+
+  /* JOURNEY MAP */
+  .journey-section { padding: 32px 48px; border-bottom: 1px solid var(--silver); }
+  .journey-title {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--text-muted);
+    margin-bottom: 20px; padding-bottom: 10px;
+    border-bottom: 2px solid var(--primary); display: inline-block;
+  }
+  .journey-table { width: 100%; border-collapse: collapse; font-size: 11px; }
+  .journey-table th {
+    background: var(--navy); color: rgba(255,255,255,0.8);
+    padding: 10px 12px; text-align: left;
+    font-size: 10px; font-weight: 700; letter-spacing: 0.06em;
+  }
+  .journey-table th:first-child { border-radius: 4px 0 0 0; }
+  .journey-table th:last-child { border-radius: 0 4px 0 0; }
+  .journey-table td { padding: 10px 12px; border-bottom: 1px solid var(--silver); vertical-align: top; }
+  .journey-table tr:nth-child(even) td { background: var(--silver-light); }
+  .journey-table tr:last-child td { border-bottom: none; }
+  .journey-stage { font-weight: 700; color: var(--navy); font-size: 11px; }
+  .journey-pain { color: var(--warn); font-size: 11px; margin-top: 4px; }
+  .journey-ai { color: var(--green); font-size: 11px; margin-top: 4px; font-weight: 500; }
+
+  /* SOLUTION */
+  .solution-intro {
+    padding: 28px 48px;
+    background: var(--silver-light);
+    border-bottom: 1px solid var(--silver);
+  }
+  .solution-intro p { color: var(--text-muted); max-width: 820px; font-size: 13px; line-height: 1.75; }
+  .solution-intro strong { color: var(--navy); }
+
+  .solution-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-bottom: 1px solid var(--silver);
+  }
+  .solution-item {
+    padding: 28px 36px;
+    border-right: 1px solid var(--silver);
+    border-bottom: 1px solid var(--silver);
+  }
+  .solution-item:nth-child(2n) { border-right: none; }
+  .solution-item:nth-last-child(-n+2) { border-bottom: none; }
+  .solution-item-header { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 12px; }
+  .solution-icon {
+    width: 36px; height: 36px; background: var(--navy);
+    border-radius: 6px; display: flex; align-items: center;
+    justify-content: center; font-size: 16px; flex-shrink: 0;
+  }
+  .solution-item-title { font-weight: 600; font-size: 13px; color: var(--navy); margin-bottom: 3px; }
+  .solution-item-problem { font-size: 11px; color: var(--primary); font-weight: 500; }
+  .solution-item p { font-size: 12px; color: var(--text-muted); line-height: 1.7; margin-bottom: 12px; }
+  .tech-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+  .tech-tag {
+    background: var(--silver); color: var(--steel);
+    font-size: 10px; font-weight: 600;
+    padding: 3px 8px; border-radius: 2px;
+    font-family: 'DM Mono', monospace;
+  }
+  .ai-badge {
+    font-size: 9px; font-weight: 700;
+    padding: 2px 7px; border-radius: 2px;
+    letter-spacing: 0.06em; text-transform: uppercase;
+  }
+  .ai-badge.private { background: #fff0e0; color: #b84400; }
+  .ai-badge.public { background: #e6f9f0; color: #00875A; }
+  .ai-badge.hybrid { background: #e8f0ff; color: #0057B8; }
+
+  .benchmark-callout {
+    margin: 24px 48px;
+    background: var(--navy);
+    border-left: 4px solid var(--gold);
+    padding: 20px 24px;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  .benchmark-callout-icon { font-size: 24px; flex-shrink: 0; }
+  .benchmark-callout-title {
+    font-weight: 700; font-size: 11px;
+    text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--gold); margin-bottom: 6px;
+  }
+  .benchmark-callout p { font-size: 12px; color: rgba(255,255,255,0.7); line-height: 1.65; }
+
+  .policy-section { padding: 28px 48px; border-top: 1px solid var(--silver); }
+  .policy-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-top: 16px; }
+  .policy-card { border: 1px solid var(--silver); padding: 14px 16px; border-radius: 4px; }
+  .policy-card-title {
+    font-size: 11px; font-weight: 600; color: var(--navy);
+    margin-bottom: 6px; display: flex; align-items: center; gap: 6px;
+  }
+  .policy-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--primary); flex-shrink: 0; }
+  .policy-card p { font-size: 11px; color: var(--text-muted); line-height: 1.6; }
+
+  /* ROI */
+  .roi-hero {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%);
+    padding: 36px 48px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 2px;
+  }
+  .roi-big {
+    padding: 24px; background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1); text-align: center;
+  }
+  .roi-big:first-child { border-radius: 4px 0 0 4px; }
+  .roi-big:last-child { border-radius: 0 4px 4px 0; }
+  .roi-big-val { font-family: 'DM Serif Display', serif; font-size: 38px; color: white; line-height: 1; margin-bottom: 6px; }
+  .roi-big-val.green { color: #4ade80; }
+  .roi-big-val.gold { color: var(--gold); }
+  .roi-big-lbl { font-size: 11px; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.08em; }
+
+  .savings-grid { display: grid; grid-template-columns: 1fr 1fr; padding: 36px 48px; gap: 32px; border-bottom: 1px solid var(--silver); }
+  .savings-section-title {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--text-muted);
+    margin-bottom: 16px; padding-bottom: 10px;
+    border-bottom: 2px solid var(--green); display: inline-block;
+  }
+  .savings-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 10px 0; border-bottom: 1px solid var(--silver);
+  }
+  .savings-row:last-child { border-bottom: none; }
+  .savings-label { font-size: 12px; color: var(--text-muted); }
+  .savings-value { font-weight: 600; font-size: 13px; color: var(--green); font-family: 'DM Mono', monospace; }
+  .savings-value.cost { color: var(--warn); }
+
+  .timeline-section { padding: 28px 48px; border-bottom: 1px solid var(--silver); }
+  .timeline-title {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--text-muted);
+    margin-bottom: 20px; padding-bottom: 10px;
+    border-bottom: 2px solid var(--navy); display: inline-block;
+  }
+  .timeline-bars { display: flex; flex-direction: column; gap: 10px; }
+  .timeline-row { display: flex; align-items: center; gap: 12px; }
+  .timeline-label { font-size: 11px; color: var(--text-muted); width: 200px; flex-shrink: 0; text-align: right; }
+  .timeline-bar-wrap { flex: 1; height: 28px; background: var(--silver); border-radius: 2px; overflow: hidden; }
+  .timeline-bar {
+    height: 100%; display: flex; align-items: center; padding-left: 10px;
+    font-size: 10px; font-weight: 600; color: white; border-radius: 2px; white-space: nowrap;
+  }
+  .timeline-month { font-size: 10px; color: var(--text-muted); width: 60px; font-family: 'DM Mono', monospace; }
+
+  .capabilities-section { padding: 28px 48px; }
+  .cap-title {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--text-muted);
+    margin-bottom: 16px; padding-bottom: 10px;
+    border-bottom: 2px solid var(--accent); display: inline-block;
+  }
+  .cap-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; }
+  .cap-card { background: var(--silver-light); border: 1px solid var(--silver); padding: 16px; border-radius: 4px; }
+  .cap-card-title { font-weight: 600; font-size: 12px; color: var(--navy); margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+  .cap-icon { font-size: 14px; }
+  .cap-card p { font-size: 11px; color: var(--text-muted); line-height: 1.6; }
+  .cap-required { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--primary); margin-top: 8px; }
+
+  /* ARCH */
+  .arch-intro { padding: 24px 48px; background: var(--silver-light); border-bottom: 1px solid var(--silver); }
+  .arch-intro p { font-size: 12px; color: var(--text-muted); max-width: 720px; }
+  .arch-diagram { padding: 36px 48px; }
+  svg.arch { width: 100%; height: 590px; font-family: 'DM Sans', sans-serif; }
+
+  .arch-legend {
+    display: flex; gap: 24px; padding: 16px 48px;
+    background: var(--silver-light); border-top: 1px solid var(--silver); flex-wrap: wrap;
+  }
+  .legend-item { display: flex; align-items: center; gap: 8px; font-size: 11px; color: var(--text-muted); }
+  .legend-dot { width: 12px; height: 12px; border-radius: 2px; flex-shrink: 0; }
+
+  .page-divider { height: 8px; background: var(--primary); margin-bottom: 60px; }
+
+  .routing-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 16px; }
+  .routing-table th {
+    background: var(--navy); color: rgba(255,255,255,0.7);
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em;
+    font-weight: 600; padding: 10px 14px; text-align: left;
+  }
+  .routing-table td { padding: 10px 14px; border-bottom: 1px solid var(--silver); color: var(--text-muted); }
+  .routing-table tr:last-child td { border-bottom: none; }
+  .routing-table tr:nth-child(even) td { background: var(--silver-light); }
+  .routing-table td:first-child { color: var(--navy); font-weight: 500; }
+</style>
+</head>
+<body>
+
+<!-- ══ PAGE 1: COMPANY OVERVIEW ══ -->
+<div class="page" id="page1">
+  <nav class="page-nav">
+    <a href="#page1" class="active">01 · Overview</a>
+    <a href="#page2">02 · Solution</a>
+    <a href="#page3">03 · Cost & ROI</a>
+    <a href="#page4">04 · Architecture</a>
+  </nav>
+
+  <div class="hero">
+    <div class="hero-eyebrow">DFW Technologies · AI Case Study · Industrial Manufacturing</div>
+    <h1>ESAB<br><span>Corporation</span></h1>
+    <div class="hero-sub">Welding & Cutting Equipment Manufacturing · Denton, TX · North American Flagship Facility</div>
+    <div class="hero-stats">
+      <div class="stat-card">
+        <div class="stat-val">120<span>yr</span></div>
+        <div class="stat-lbl">Industry Heritage</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val">1<span>K+</span></div>
+        <div class="stat-lbl">Product SKUs</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val">19<span>%</span></div>
+        <div class="stat-lbl">Weld Defect Rework Rate</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val">27<span>%</span></div>
+        <div class="stat-lbl">Unplanned Line Downtime</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-header">
+    <span class="section-tag">Overview</span>
+    <span class="section-title">Company Profile & Operational Scale</span>
+    <span class="page-num">Page 01 / 04</span>
+  </div>
+
+  <div class="content-grid">
+    <div class="content-col">
+      <div class="col-title">About ESAB</div>
+      <p class="body-text">ESAB Corporation is a 120-year-old global leader in welding and cutting equipment, with its North American manufacturing flagship, R&D center, and distribution headquarters anchored in Denton, Texas. The Denton facility — originally built in 1965 and substantially renovated through 2023 — now houses a state-of-the-art Customer Experience Center, a world-class training facility, and production lines for welders, plasma cutters, cobots, filler metals, and automation systems.</p>
+      <p class="body-text">ESAB's InduSuite platform collects real-time operational telemetry from connected welding machines deployed at customer sites globally — an enormous, largely underutilized data asset. The Denton facility serves as ESAB's premier North American manufacturing, training, and engineering hub, producing a high-mix, low-volume catalog of 1,000+ SKUs across industrial, light, and automation product lines.</p>
+      <p class="body-text">With a documented welder shortage of 400,000+ projected in the U.S. and growing demand for cobot-assisted welding from fabrication shops, ESAB sits at the intersection of a workforce crisis and a technology opportunity — both as a manufacturer and as an equipment supplier to the broader industrial market.</p>
+
+      <div class="col-title" style="margin-top:24px;">Operational Pressure Points</div>
+      <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:0;">
+        <span style="background:var(--primary-pale); border:1px solid var(--primary); color:var(--primary); font-size:10px; padding:4px 10px; border-radius:2px; font-weight:600;">High-mix low-volume production</span>
+        <span style="background:var(--primary-pale); border:1px solid var(--primary); color:var(--primary); font-size:10px; padding:4px 10px; border-radius:2px; font-weight:600;">1,000+ SKU catalog</span>
+        <span style="background:var(--primary-pale); border:1px solid var(--primary); color:var(--primary); font-size:10px; padding:4px 10px; border-radius:2px; font-weight:600;">Reactive field service model</span>
+        <span style="background:var(--primary-pale); border:1px solid var(--primary); color:var(--primary); font-size:10px; padding:4px 10px; border-radius:2px; font-weight:600;">Skilled welder shortage</span>
+        <span style="background:var(--primary-pale); border:1px solid var(--primary); color:var(--primary); font-size:10px; padding:4px 10px; border-radius:2px; font-weight:600;">Underutilized InduSuite telemetry</span>
+      </div>
+    </div>
+
+    <div class="content-col">
+      <div class="col-title">Key Problems Identified</div>
+      <div class="problem-list">
+        <div class="problem-card">
+          <div class="problem-card-title"><div class="problem-num">1</div>High-Mix Production Scheduling Complexity</div>
+          <p>ESAB's Denton facility produces hundreds of SKU variants — compact welders, plasma cutters, cobots, and consumables — often in small batches with frequent changeovers. Manual scheduling creates bottlenecks, missed delivery windows, and underutilized floor capacity. A 19% weld defect rework rate compounds the problem with unplanned rework loops.</p>
+        </div>
+        <div class="problem-card">
+          <div class="problem-card-title"><div class="problem-num">2</div>Reactive Field Service & Warranty Management</div>
+          <p>ESAB's field service model is reactive — warranty claims and service calls are processed after failures, not before them. Welding downtime at a customer fabrication shop costs $500–$2,000/hour in lost production. InduSuite telemetry is collected but not actioned for predictive alerts, leaving a high-value service offering completely untapped.</p>
+        </div>
+        <div class="problem-card">
+          <div class="problem-card-title"><div class="problem-num">3</div>Cobot Programming Barrier for Customers</div>
+          <p>Fab shops adopting ESAB cobot systems struggle to program weld paths — a task requiring specialized integrators charging $150–$300/hour. This adoption barrier suppresses cobot sales and creates customer frustration post-purchase. Without an AI-assisted programming tool, ESAB loses a key competitive differentiator.</p>
+        </div>
+        <div class="problem-card">
+          <div class="problem-card-title"><div class="problem-num">4</div>Workforce Training Gap at Scale</div>
+          <p>The U.S. faces a projected shortage of 400,000+ welders by 2025. ESAB's Denton training center is a competitive asset, but scaling training without AI assistance — especially for new cobot operators and distributor sales staff — is limited by instructor availability and physical capacity.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JOURNEY MAP -->
+  <div class="journey-section">
+    <div class="journey-title">Production Operator Journey Map — Denton Shop Floor</div>
+    <table class="journey-table">
+      <thead>
+        <tr>
+          <th>Stage</th>
+          <th>Actions</th>
+          <th>Pain Point</th>
+          <th>AI Intervention</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><div class="journey-stage">01 · Setup</div></td>
+          <td>Paper work orders, manual parameter entry, 30-min setup per run</td>
+          <td class="journey-pain">⚠ Setup errors cause first-piece failures, wasting material and time</td>
+          <td class="journey-ai">🤖 Digital work orders + AI-guided parameter validation before run starts</td>
+        </tr>
+        <tr>
+          <td><div class="journey-stage">02 · Welding Run</div></td>
+          <td>Operator runs production; no real-time quality feedback on weld seams</td>
+          <td class="journey-pain">⚠ Defects only discovered during end-of-batch inspection — rework rate 19%</td>
+          <td class="journey-ai">🤖 Vision AI on production line flags weld defects in real time, mid-run</td>
+        </tr>
+        <tr>
+          <td><div class="journey-stage">03 · Defect Found</div></td>
+          <td>Manual rework, no root-cause log, supervisor called to assess</td>
+          <td class="journey-pain">⚠ Root cause identified manually — takes hours, no pattern tracking</td>
+          <td class="journey-ai">🤖 AI auto-generates root-cause ticket with sensor data, links to prior similar events</td>
+        </tr>
+        <tr>
+          <td><div class="journey-stage">04 · Changeover</div></td>
+          <td>Untracked downtime between SKUs, no OEE data captured</td>
+          <td class="journey-pain">⚠ 27% unplanned downtime — changeover delays invisible to management</td>
+          <td class="journey-ai">🤖 Auto-OEE capture triggers changeover timer; AI flags excessive gaps vs. benchmark</td>
+        </tr>
+        <tr>
+          <td><div class="journey-stage">05 · Reporting</div></td>
+          <td>End-of-shift manual data entry, delayed quality and EHS logs</td>
+          <td class="journey-pain">⚠ Reports lag actual performance by days; root cause analysis requires manual data pulls</td>
+          <td class="journey-ai">🤖 Auto shift reports generated from sensor and vision data; EHS log populated in real time</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="impact-bar">
+    <div class="impact-bar-label">Industry Context</div>
+    <div class="impact-tags">
+      <span class="impact-tag hot">400,000+ welder shortage projected in U.S. by 2025</span>
+      <span class="impact-tag">Welding downtime costs $500–$2,000/hr at fab shops</span>
+      <span class="impact-tag">19% rework rate = $3.2M annual quality cost at Denton</span>
+      <span class="impact-tag">Cobot programming barrier suppresses adoption at SME shops</span>
+    </div>
+  </div>
+
+</div>
+<div class="page-divider"></div>
+
+<!-- ══ PAGE 2: SOLUTION ══ -->
+<div class="page" id="page2">
+  <nav class="page-nav">
+    <a href="#page1">01 · Overview</a>
+    <a href="#page2" class="active">02 · Solution</a>
+    <a href="#page3">03 · Cost & ROI</a>
+    <a href="#page4">04 · Architecture</a>
+  </nav>
+
+  <div class="section-header">
+    <span class="section-tag solution">Solution</span>
+    <span class="section-title">AI Solution Stack & Problem Mapping</span>
+    <span class="page-num">Page 02 / 04</span>
+  </div>
+
+  <div class="solution-intro">
+    <p>DFW Technologies proposes a <strong>hybrid AI deployment</strong> for ESAB — private AI on-premises for production scheduling, equipment data, weld quality inspection, and InduSuite telemetry (operationally sensitive and IP-critical), and public cloud AI for the cobot programming assistant and distributor training platform (where no sensitive production data is involved). The routing decision follows ESAB's two distinct data domains: internal manufacturing data stays private; customer-facing assistive tools can use managed cloud inference.</p>
+  </div>
+
+  <div class="solution-grid">
+    <div class="solution-item">
+      <div class="solution-item-header">
+        <div class="solution-icon">📅</div>
+        <div>
+          <div class="solution-item-title">AI Production Scheduling Engine</div>
+          <div class="solution-item-problem">↳ Solves: Problem #1 — High-Mix Scheduling</div>
+        </div>
+        <span class="ai-badge private">Private AI</span>
+      </div>
+      <p>Private AI scheduling engine optimizes job sequencing across Denton's shop floor — factoring in changeover cost between SKU families, material availability, machine capacity, and delivery priority. Reduces idle time between runs, minimizes late orders, and provides real-time schedule deviation alerts to floor supervisors when a run falls behind target.</p>
+      <div class="tech-tags">
+        <span class="tech-tag">OR-Tools Optimizer</span>
+        <span class="tech-tag">MES Integration</span>
+        <span class="tech-tag">Constraint Scheduling</span>
+        <span class="tech-tag">Real-time Alerts</span>
+      </div>
+    </div>
+
+    <div class="solution-item">
+      <div class="solution-item-header">
+        <div class="solution-icon">👁️</div>
+        <div>
+          <div class="solution-item-title">Vision AI Weld Quality Inspection</div>
+          <div class="solution-item-problem">↳ Solves: Problem #1 — Defect Rework</div>
+        </div>
+        <span class="ai-badge private">Private AI</span>
+      </div>
+      <p>Edge-deployed computer vision on Denton production lines detects weld seam defects — porosity, undercut, spatter, misalignment — in real time during the run, not after. Modeled after Invisible AI's deployment at Toyota (all 14 North American plants), where root-cause investigation dropped from 3–4 hours per day to minutes. Operators receive immediate alerts rather than discovering defects at end-of-batch inspection.</p>
+      <div class="tech-tags">
+        <span class="tech-tag">Edge Computer Vision</span>
+        <span class="tech-tag">YOLOv8 / Custom CV</span>
+        <span class="tech-tag">NVIDIA Jetson</span>
+        <span class="tech-tag">SPC Integration</span>
+      </div>
+    </div>
+
+    <div class="solution-item">
+      <div class="solution-item-header">
+        <div class="solution-icon">🔧</div>
+        <div>
+          <div class="solution-item-title">InduSuite Predictive Service Alerts</div>
+          <div class="solution-item-problem">↳ Solves: Problem #2 — Reactive Field Service</div>
+        </div>
+        <span class="ai-badge private">Private AI</span>
+      </div>
+      <p>Private ML model runs on ESAB's existing InduSuite telemetry — arc-on time, duty cycle, error codes, temperature trends — to predict machine failure risk 2–4 weeks ahead. Proactive service alerts dispatched to field technicians with pre-staged parts, converting reactive emergency callouts into planned interventions. Warranty claim fraud detection layer flags misuse-as-defect patterns before claims are approved.</p>
+      <div class="tech-tags">
+        <span class="tech-tag">LSTM / Isolation Forest</span>
+        <span class="tech-tag">Azure IoT Hub</span>
+        <span class="tech-tag">Anomaly Detection</span>
+        <span class="tech-tag">CRM Integration</span>
+      </div>
+    </div>
+
+    <div class="solution-item">
+      <div class="solution-item-header">
+        <div class="solution-icon">🤖</div>
+        <div>
+          <div class="solution-item-title">Cobot Weld Path Programming Assistant</div>
+          <div class="solution-item-problem">↳ Solves: Problem #3 — Programming Barrier</div>
+        </div>
+        <span class="ai-badge public">Public AI</span>
+      </div>
+      <p>AI-assisted cobot programming tool that generates initial weld paths from customer-uploaded DXF/DWG drawings — compressing setup from days to hours. The human welder validates and refines. Public AI is appropriate here because inputs are geometry metadata from customer drawings only — no ESAB process recipes or InduSuite telemetry are involved. Eliminates the $150–$300/hour specialist dependency for SME fab shops.</p>
+      <div class="tech-tags">
+        <span class="tech-tag">GPT-4o API</span>
+        <span class="tech-tag">CAD Geometry Parser</span>
+        <span class="tech-tag">DXF/DWG Input</span>
+        <span class="tech-tag">Weld Path Generation</span>
+      </div>
+    </div>
+
+    <div class="solution-item">
+      <div class="solution-item-header">
+        <div class="solution-icon">📊</div>
+        <div>
+          <div class="solution-item-title">Machine-Usage Cross-Sell Engine</div>
+          <div class="solution-item-problem">↳ Solves: Problem #2 — Untapped InduSuite Data</div>
+        </div>
+        <span class="ai-badge private">Private AI</span>
+      </div>
+      <p>Usage-based scoring model on InduSuite telemetry flags customer accounts whose arc-on patterns signal consumable reorder opportunity, cobot ROI break-even, or equipment refresh cycle. Surfaces a prioritized sales queue to ESAB account managers — each with a tailored pitch based on actual machine utilization data, not intuition. Turns passive telemetry into active revenue intelligence.</p>
+      <div class="tech-tags">
+        <span class="tech-tag">XGBoost Scoring</span>
+        <span class="tech-tag">Usage Pattern ML</span>
+        <span class="tech-tag">Salesforce CRM Output</span>
+        <span class="tech-tag">Account Prioritization</span>
+      </div>
+    </div>
+
+    <div class="solution-item">
+      <div class="solution-item-header">
+        <div class="solution-icon">🎓</div>
+        <div>
+          <div class="solution-item-title">AI-Enhanced Welder Training Platform</div>
+          <div class="solution-item-problem">↳ Solves: Problem #4 — Training Gap at Scale</div>
+        </div>
+        <span class="ai-badge public">Public AI</span>
+      </div>
+      <p>Cloud-based AI training platform extending ESAB's Denton training center capabilities remotely — delivering role-specific modules for new welders, cobot operators, and distributor sales staff. Video-based SOPs capture senior welder demonstrations as permanent institutional knowledge — their technique becomes a training asset even after retirement. AI assesses competency and personalizes learning paths per trainee.</p>
+      <div class="tech-tags">
+        <span class="tech-tag">AI-LMS Platform</span>
+        <span class="tech-tag">Video SOP Capture</span>
+        <span class="tech-tag">Competency Assessment</span>
+        <span class="tech-tag">Distributor Access</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="benchmark-callout" style="margin: 24px 48px;">
+    <div class="benchmark-callout-icon">🔬</div>
+    <div>
+      <div class="benchmark-callout-title">Industry Benchmark: Invisible AI — Deployed Across All 14 Toyota Motor North America Plants</div>
+      <p>Invisible AI's edge-based computer vision platform — the leading active reference for assembly line AI — uses self-contained NVIDIA Jetson edge devices with 3D depth cameras to process all video on-premises with zero cloud dependency. Toyota reports root-cause investigation reduced from 3–4 hours per day per line manager to minutes after deployment. Manufacturers cite 3–5x ROI per device in efficiency gains, with every minute of downtime prevented saving $1,000 per line. DFW Technologies applies this same edge-AI + computer vision methodology to ESAB's Denton welding production lines — adapting the approach from automotive assembly to welding equipment manufacturing, delivering enterprise-grade quality monitoring without the enterprise price tag.</p>
+    </div>
+  </div>
+
+  <div class="policy-section">
+    <div class="col-title">Policies, Compliance & Restrictions to Address</div>
+    <div class="policy-grid">
+      <div class="policy-card">
+        <div class="policy-card-title"><div class="policy-dot"></div>InduSuite Telemetry Data Governance</div>
+        <p>Customer machine telemetry collected via InduSuite reflects production capacity and competitive positioning. This data must remain in a private cloud environment with strict data residency controls — no customer machine data transmitted to shared public inference infrastructure.</p>
+      </div>
+      <div class="policy-card">
+        <div class="policy-card-title"><div class="policy-dot"></div>OSHA & EHS Compliance</div>
+        <p>AI-assisted EHS incident logging and shift reporting must align with OSHA 300 log requirements. Any automated safety reporting system must maintain human oversight and not replace required manual review processes under federal workplace safety regulations.</p>
+      </div>
+      <div class="policy-card">
+        <div class="policy-card-title"><div class="policy-dot"></div>Customer CAD Data Privacy</div>
+        <p>The cobot programming assistant ingests customer-uploaded DXF/DWG drawing files. These files may contain proprietary product geometry. The AI must process only the weld path geometry metadata — not store or reuse customer drawing files — and terms of service must reflect this clearly.</p>
+      </div>
+      <div class="policy-card">
+        <div class="policy-card-title"><div class="policy-dot"></div>Warranty Fraud Detection — Legal Exposure</div>
+        <p>AI-flagged warranty fraud determinations must be reviewed by a human before denial of claims. Automated denial without human review creates legal exposure under warranty contract terms. The AI flags anomalies; humans make final decisions.</p>
+      </div>
+      <div class="policy-card">
+        <div class="policy-card-title"><div class="policy-dot"></div>Worker Monitoring & NLRA</div>
+        <p>Vision AI on the production floor monitors operator technique and cycle times. In unionized or partially unionized environments, installation of monitoring technology may require advance notice and consultation under NLRA provisions. Transparent communication to workers is essential.</p>
+      </div>
+      <div class="policy-card">
+        <div class="policy-card-title"><div class="policy-dot"></div>AI Routing Decision</div>
+        <p>InduSuite telemetry, production scheduling, and vision inspection data are private AI only — IP-sensitive and operationally critical. The cobot programming assistant and training LMS are appropriate for public cloud AI — inputs contain no sensitive ESAB or customer production data.</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+<div class="page-divider"></div>
+
+<!-- ══ PAGE 3: COST & ROI ══ -->
+<div class="page" id="page3">
+  <nav class="page-nav">
+    <a href="#page1">01 · Overview</a>
+    <a href="#page2">02 · Solution</a>
+    <a href="#page3" class="active">03 · Cost & ROI</a>
+    <a href="#page4">04 · Architecture</a>
+  </nav>
+
+  <div class="section-header">
+    <span class="section-tag roi">Cost & ROI</span>
+    <span class="section-title">Financial Impact & DFW Tech Capabilities Required</span>
+    <span class="page-num">Page 03 / 04</span>
+  </div>
+
+  <div class="roi-hero">
+    <div class="roi-big">
+      <div class="roi-big-val gold">$350K–$600K</div>
+      <div class="roi-big-lbl">Total Investment · 14 Months</div>
+    </div>
+    <div class="roi-big">
+      <div class="roi-big-val green">$2.7M–$4.5M</div>
+      <div class="roi-big-lbl">Estimated Annual Savings</div>
+    </div>
+    <div class="roi-big">
+      <div class="roi-big-val">5–7 mo</div>
+      <div class="roi-big-lbl">Payback Period</div>
+    </div>
+  </div>
+
+  <div class="savings-grid">
+    <div>
+      <div class="savings-section-title">Projected Annual Cost Savings</div>
+      <div class="savings-row">
+        <span class="savings-label">Weld Quality AI — Rework Reduction (45%) on $3.2M Annual Quality Cost</span>
+        <span class="savings-value">$1.4M</span>
+      </div>
+      <div class="savings-row">
+        <span class="savings-label">Predictive Maintenance — Downtime Reduction (35%) on Denton Lines</span>
+        <span class="savings-value">$640K</span>
+      </div>
+      <div class="savings-row">
+        <span class="savings-label">Cross-Sell Engine — Revenue Uplift from InduSuite Account Intelligence</span>
+        <span class="savings-value">$380K</span>
+      </div>
+      <div class="savings-row">
+        <span class="savings-label">Field Service Efficiency — Proactive Dispatch vs. Emergency Callouts</span>
+        <span class="savings-value">$290K</span>
+      </div>
+      <div class="savings-row">
+        <span class="savings-label">Training Platform — Reduced Time-to-Proficiency for New Welders (20–35%)</span>
+        <span class="savings-value">$180K</span>
+      </div>
+      <div class="savings-row" style="border-top: 2px solid var(--green); padding-top:14px; margin-top:4px;">
+        <span class="savings-label" style="font-weight:600; color:var(--navy);">Total Estimated Annual Savings</span>
+        <span class="savings-value" style="font-size:16px;">$2.7M–$4.5M</span>
+      </div>
+    </div>
+
+    <div>
+      <div class="savings-section-title">Investment Breakdown</div>
+      <div class="savings-row">
+        <span class="savings-label">Phase 1: Discovery & Assessment (5 weeks)</span>
+        <span class="savings-value cost">$30K–$45K</span>
+      </div>
+      <div class="savings-row">
+        <span class="savings-label">Phase 2: Pilot — Vision QC + Scheduling (Months 2–5)</span>
+        <span class="savings-value cost">$110K–$180K</span>
+      </div>
+      <div class="savings-row">
+        <span class="savings-label">Phase 3: InduSuite Predictive + Cross-Sell Engine (Months 6–10)</span>
+        <span class="savings-value cost">$120K–$200K</span>
+      </div>
+      <div class="savings-row">
+        <span class="savings-label">Phase 4: Cobot AI + Training Platform Scale (Months 10–14)</span>
+        <span class="savings-value cost">$90K–$175K</span>
+      </div>
+      <div class="savings-row">
+        <span class="savings-label">Hardware (Edge Nodes, Vision Cameras, Sensors)</span>
+        <span class="savings-value cost">Included in phases</span>
+      </div>
+      <div class="savings-row">
+        <span class="savings-label">Annual Maintenance & Model Retraining (Year 2+)</span>
+        <span class="savings-value cost">$40K–$70K/yr</span>
+      </div>
+      <div class="savings-row" style="border-top: 2px solid var(--warn); padding-top:14px; margin-top:4px;">
+        <span class="savings-label" style="font-weight:600; color:var(--navy);">Total 14-Month Investment</span>
+        <span class="savings-value cost" style="font-size:16px;">$350K–$600K</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="timeline-section">
+    <div class="timeline-title">Implementation Timeline</div>
+    <div style="display:flex; gap:8px; margin-bottom:12px; font-size:10px; color:var(--text-muted); padding-left:212px;">
+      <span style="flex:1; text-align:left;">Month 0</span>
+      <span style="flex:1; text-align:center;">Month 7</span>
+      <span style="flex:1; text-align:right;">Month 14</span>
+    </div>
+    <div class="timeline-bars">
+      <div class="timeline-row">
+        <div class="timeline-label">Discovery & Assessment</div>
+        <div class="timeline-bar-wrap">
+          <div class="timeline-bar" style="width:20%; background:var(--steel);">Weeks 1–5</div>
+        </div>
+        <div class="timeline-month">5 wks</div>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-label">Vision AI Quality Inspection</div>
+        <div class="timeline-bar-wrap">
+          <div class="timeline-bar" style="width:80%; margin-left:20%; background:var(--primary);">Months 2–14 (Pilot → Scale)</div>
+        </div>
+        <div class="timeline-month">12 mo</div>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-label">Production Scheduling AI</div>
+        <div class="timeline-bar-wrap">
+          <div class="timeline-bar" style="width:65%; margin-left:20%; background:var(--navy);">Months 2–10</div>
+        </div>
+        <div class="timeline-month">9 mo</div>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-label">InduSuite Predictive Service</div>
+        <div class="timeline-bar-wrap">
+          <div class="timeline-bar" style="width:57%; margin-left:43%; background:var(--steel);">Months 6–14</div>
+        </div>
+        <div class="timeline-month">9 mo</div>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-label">Cross-Sell Engine</div>
+        <div class="timeline-bar-wrap">
+          <div class="timeline-bar" style="width:50%; margin-left:43%; background:var(--gold); color:var(--navy);">Months 6–13</div>
+        </div>
+        <div class="timeline-month">8 mo</div>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-label">Cobot AI + Training Platform</div>
+        <div class="timeline-bar-wrap">
+          <div class="timeline-bar" style="width:35%; margin-left:65%; background:var(--accent);">Months 10–14</div>
+        </div>
+        <div class="timeline-month">5 mo</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="capabilities-section">
+    <div class="cap-title">DFW Technologies Capabilities Required</div>
+    <div class="cap-grid">
+      <div class="cap-card">
+        <div class="cap-card-title"><span class="cap-icon">👁️</span> Computer Vision Engineering</div>
+        <p>Deploy and train edge-based CV models on ESAB's weld production lines. Requires camera hardware selection, weld defect dataset curation, model training, and real-time inference at production line speeds without disrupting throughput.</p>
+        <div class="cap-required">⚠ Core Requirement</div>
+      </div>
+      <div class="cap-card">
+        <div class="cap-card-title"><span class="cap-icon">📡</span> IIoT & Telemetry Integration</div>
+        <p>Connect ESAB's existing InduSuite telemetry stream to a private ML pipeline for predictive maintenance and cross-sell scoring. Requires Azure IoT Hub integration, time-series data engineering, and LSTM or Isolation Forest model deployment.</p>
+        <div class="cap-required">⚠ Core Requirement</div>
+      </div>
+      <div class="cap-card">
+        <div class="cap-card-title"><span class="cap-icon">📅</span> Production Scheduling AI</div>
+        <p>Build constraint-based scheduling engine for high-mix manufacturing — factoring changeover matrices, material availability, and delivery deadlines. Must integrate with ESAB's existing MES and ERP systems without workflow disruption.</p>
+        <div class="cap-required">⚠ Core Requirement</div>
+      </div>
+      <div class="cap-card">
+        <div class="cap-card-title"><span class="cap-icon">🤖</span> CAD-to-Weld-Path AI</div>
+        <p>Build or configure the cobot weld path assistant — integrating a public LLM API with a custom CAD geometry parser that extracts weld joint metadata from DXF/DWG inputs and generates robot-ready path programs.</p>
+        <div class="cap-required">Required</div>
+      </div>
+      <div class="cap-card">
+        <div class="cap-card-title"><span class="cap-icon">📚</span> Training Platform Build</div>
+        <p>Design and deploy AI-enhanced LMS covering welders, cobot operators, and distributor sales staff. Must support video SOP capture for senior welder knowledge preservation and remote access for ESAB's distributor network.</p>
+        <div class="cap-required">Required</div>
+      </div>
+      <div class="cap-card">
+        <div class="cap-card-title"><span class="cap-icon">🔗</span> CRM & ERP Integration</div>
+        <p>Connect cross-sell scoring engine outputs to ESAB's Salesforce CRM and integrate scheduling AI with SAP S/4HANA. Data pipeline engineering across private on-prem and cloud environments with role-based access controls.</p>
+        <div class="cap-required">Required</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<div class="page-divider"></div>
+
+<!-- ══ PAGE 4: ARCHITECTURE ══ -->
+<div class="page" id="page4">
+  <nav class="page-nav">
+    <a href="#page1">01 · Overview</a>
+    <a href="#page2">02 · Solution</a>
+    <a href="#page3">03 · Cost & ROI</a>
+    <a href="#page4" class="active">04 · Architecture</a>
+  </nav>
+
+  <div class="section-header">
+    <span class="section-tag arch">Architecture</span>
+    <span class="section-title">Hybrid AI Architecture — ESAB Deployment</span>
+    <span class="page-num">Page 04 / 04</span>
+  </div>
+
+  <div class="arch-intro">
+    <p>ESAB uses a <strong>hybrid two-domain architecture</strong>: a <strong>Private Manufacturing Domain</strong> for all production floor data, InduSuite telemetry, and scheduling intelligence (IP-sensitive, operationally critical), and a <strong>Public Cloud Domain</strong> for the cobot programming assistant and training platform (customer-facing tools with no sensitive production data). A secure API gateway manages the boundary — telemetry and production data never cross into the cloud domain.</p>
+  </div>
+
+  <div class="arch-diagram">
+    <svg class="arch" viewBox="0 0 1000 560" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="arrowO" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#5C3D10"/>
+        </marker>
+        <marker id="arrowPR" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#E05C00"/>
+        </marker>
+        <marker id="arrowBL" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#0057B8"/>
+        </marker>
+        <marker id="arrowGD" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#D4A017"/>
+        </marker>
+      </defs>
+
+      <!-- Private Manufacturing Domain -->
+      <rect x="10" y="10" width="455" height="540" rx="6" fill="#FFF4EE" stroke="#E05C00" stroke-width="1.5" stroke-dasharray="6,3"/>
+      <text x="22" y="30" font-size="9" font-weight="700" fill="#E05C00" letter-spacing="1" font-family="DM Sans, sans-serif">🔒 PRIVATE MANUFACTURING DOMAIN (ON-PREMISES)</text>
+
+      <!-- Public Cloud Domain -->
+      <rect x="535" y="10" width="455" height="540" rx="6" fill="#EFF5FF" stroke="#0057B8" stroke-width="1.5" stroke-dasharray="6,3"/>
+      <text x="547" y="30" font-size="9" font-weight="700" fill="#0057B8" letter-spacing="1" font-family="DM Sans, sans-serif">☁️ PUBLIC CLOUD DOMAIN</text>
+
+      <!-- Gateway -->
+      <rect x="467" y="10" width="64" height="540" fill="#1A1208"/>
+      <text x="499" y="300" font-size="8" font-weight="700" fill="rgba(255,255,255,0.5)" letter-spacing="1" font-family="DM Sans, sans-serif" transform="rotate(-90,499,300)">SECURE API GATEWAY · PRODUCTION DATA STAYS PRIVATE</text>
+
+      <!-- DATA SOURCES (bottom) -->
+      <!-- Private Sources -->
+      <rect x="28" y="460" width="118" height="76" rx="4" fill="#1A1208" stroke="#5C3D10" stroke-width="1"/>
+      <text x="87" y="486" font-size="9" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">🏭 Production</text>
+      <text x="87" y="500" font-size="9" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">Line Sensors</text>
+      <text x="87" y="516" font-size="8" fill="#FF7A1A" text-anchor="middle" font-family="DM Mono, sans-serif">OPC-UA / SCADA</text>
+
+      <rect x="158" y="460" width="118" height="76" rx="4" fill="#1A1208" stroke="#5C3D10" stroke-width="1"/>
+      <text x="217" y="486" font-size="9" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">📡 InduSuite</text>
+      <text x="217" y="500" font-size="9" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">Field Telemetry</text>
+      <text x="217" y="516" font-size="8" fill="#FF7A1A" text-anchor="middle" font-family="DM Mono, sans-serif">Azure IoT Hub</text>
+
+      <rect x="288" y="460" width="118" height="76" rx="4" fill="#1A1208" stroke="#5C3D10" stroke-width="1"/>
+      <text x="347" y="486" font-size="9" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">📋 MES / ERP</text>
+      <text x="347" y="500" font-size="9" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">Production Orders</text>
+      <text x="347" y="516" font-size="8" fill="#FF7A1A" text-anchor="middle" font-family="DM Mono, sans-serif">SAP S/4HANA</text>
+
+      <!-- Public Sources -->
+      <rect x="553" y="460" width="118" height="76" rx="4" fill="#0A1628" stroke="#1A4D8F" stroke-width="1"/>
+      <text x="612" y="486" font-size="9" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">📐 Customer</text>
+      <text x="612" y="500" font-size="9" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">CAD Drawings</text>
+      <text x="612" y="516" font-size="8" fill="#6B9FE8" text-anchor="middle" font-family="DM Mono, sans-serif">DXF / DWG Upload</text>
+
+      <rect x="683" y="460" width="118" height="76" rx="4" fill="#0A1628" stroke="#1A4D8F" stroke-width="1"/>
+      <text x="742" y="486" font-size="9" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">👥 HR &</text>
+      <text x="742" y="500" font-size="9" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">Trainee Records</text>
+      <text x="742" y="516" font-size="8" fill="#6B9FE8" text-anchor="middle" font-family="DM Mono, sans-serif">HRIS API</text>
+
+      <rect x="813" y="460" width="118" height="76" rx="4" fill="#0A1628" stroke="#1A4D8F" stroke-width="1"/>
+      <text x="872" y="486" font-size="9" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">🛒 Salesforce</text>
+      <text x="872" y="500" font-size="9" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">CRM / Accounts</text>
+      <text x="872" y="516" font-size="8" fill="#6B9FE8" text-anchor="middle" font-family="DM Mono, sans-serif">CRM API</text>
+
+      <!-- AI MODELS (middle) -->
+      <!-- Private Models -->
+      <rect x="28" y="300" width="118" height="130" rx="4" fill="#5C3D10" stroke="#E05C00" stroke-width="1"/>
+      <text x="87" y="322" font-size="8" font-weight="700" fill="rgba(255,255,255,0.5)" text-anchor="middle" font-family="DM Sans, sans-serif">PRIVATE AI</text>
+      <text x="87" y="338" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Vision QC</text>
+      <text x="87" y="352" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Inspection</text>
+      <text x="87" y="370" font-size="8" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">YOLOv8 Edge</text>
+      <text x="87" y="383" font-size="8" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">Real-time defects</text>
+      <text x="87" y="420" font-size="8" fill="rgba(255,255,255,0.35)" text-anchor="middle" font-family="DM Mono, sans-serif">→ Floor Alerts</text>
+
+      <rect x="158" y="300" width="118" height="130" rx="4" fill="#5C3D10" stroke="#E05C00" stroke-width="1"/>
+      <text x="217" y="322" font-size="8" font-weight="700" fill="rgba(255,255,255,0.5)" text-anchor="middle" font-family="DM Sans, sans-serif">PRIVATE AI</text>
+      <text x="217" y="338" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Predictive</text>
+      <text x="217" y="352" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Service ML</text>
+      <text x="217" y="370" font-size="8" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">LSTM / Anomaly</text>
+      <text x="217" y="383" font-size="8" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">Failure prediction</text>
+      <text x="217" y="420" font-size="8" fill="rgba(255,255,255,0.35)" text-anchor="middle" font-family="DM Mono, sans-serif">→ Field Dispatch</text>
+
+      <rect x="288" y="300" width="118" height="130" rx="4" fill="#5C3D10" stroke="#E05C00" stroke-width="1"/>
+      <text x="347" y="322" font-size="8" font-weight="700" fill="rgba(255,255,255,0.5)" text-anchor="middle" font-family="DM Sans, sans-serif">PRIVATE AI</text>
+      <text x="347" y="338" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Scheduling</text>
+      <text x="347" y="352" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">& Cross-Sell</text>
+      <text x="347" y="370" font-size="8" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">OR-Tools + XGBoost</text>
+      <text x="347" y="383" font-size="8" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">Usage scoring</text>
+      <text x="347" y="420" font-size="8" fill="rgba(255,255,255,0.35)" text-anchor="middle" font-family="DM Mono, sans-serif">→ CRM Queue</text>
+
+      <!-- Public Models -->
+      <rect x="553" y="300" width="118" height="130" rx="4" fill="#0A2952" stroke="#1A4D8F" stroke-width="1"/>
+      <text x="612" y="322" font-size="8" font-weight="700" fill="rgba(255,255,255,0.5)" text-anchor="middle" font-family="DM Sans, sans-serif">PUBLIC AI</text>
+      <text x="612" y="338" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Cobot Path</text>
+      <text x="612" y="352" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Generator</text>
+      <text x="612" y="370" font-size="8" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">GPT-4o + CAD Parser</text>
+      <text x="612" y="383" font-size="8" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">DXF → weld path</text>
+      <text x="612" y="420" font-size="8" fill="rgba(255,255,255,0.35)" text-anchor="middle" font-family="DM Mono, sans-serif">→ Robot Program</text>
+
+      <rect x="683" y="300" width="118" height="130" rx="4" fill="#0A2952" stroke="#1A4D8F" stroke-width="1"/>
+      <text x="742" y="322" font-size="8" font-weight="700" fill="rgba(255,255,255,0.5)" text-anchor="middle" font-family="DM Sans, sans-serif">PUBLIC AI</text>
+      <text x="742" y="338" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Training LMS</text>
+      <text x="742" y="352" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Platform</text>
+      <text x="742" y="370" font-size="8" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">AI-LMS + Video SOP</text>
+      <text x="742" y="383" font-size="8" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">Competency AI</text>
+      <text x="742" y="420" font-size="8" fill="rgba(255,255,255,0.35)" text-anchor="middle" font-family="DM Mono, sans-serif">→ Certifications</text>
+
+      <rect x="813" y="300" width="118" height="130" rx="4" fill="#0A2952" stroke="#1A4D8F" stroke-width="1"/>
+      <text x="872" y="322" font-size="8" font-weight="700" fill="rgba(255,255,255,0.5)" text-anchor="middle" font-family="DM Sans, sans-serif">PUBLIC AI</text>
+      <text x="872" y="338" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Sales Intelligence</text>
+      <text x="872" y="352" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Dashboard</text>
+      <text x="872" y="370" font-size="8" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">CRM + scoring</text>
+      <text x="872" y="383" font-size="8" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">Account alerts</text>
+      <text x="872" y="420" font-size="8" fill="rgba(255,255,255,0.35)" text-anchor="middle" font-family="DM Mono, sans-serif">→ Sales Queue</text>
+
+      <!-- OUTPUTS (top) -->
+      <rect x="28" y="148" width="408" height="120" rx="4" fill="#1A1208" stroke="#E05C00" stroke-width="1.5"/>
+      <text x="232" y="168" font-size="9" font-weight="700" fill="#FF7A1A" text-anchor="middle" letter-spacing="0.1em" font-family="DM Sans, sans-serif">DENTON OPERATIONS CENTER (On-Premises)</text>
+      <rect x="42" y="176" width="118" height="76" rx="3" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+      <text x="101" y="198" font-size="9" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">⚠️ Real-Time</text>
+      <text x="101" y="212" font-size="9" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Quality Alerts</text>
+      <text x="101" y="234" font-size="8" fill="rgba(255,255,255,0.4)" text-anchor="middle" font-family="DM Sans, sans-serif">Production floor</text>
+
+      <rect x="172" y="176" width="118" height="76" rx="3" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+      <text x="231" y="198" font-size="9" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">🔧 Maintenance</text>
+      <text x="231" y="212" font-size="9" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Work Orders</text>
+      <text x="231" y="234" font-size="8" fill="rgba(255,255,255,0.4)" text-anchor="middle" font-family="DM Sans, sans-serif">Field service team</text>
+
+      <rect x="302" y="176" width="120" height="76" rx="3" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+      <text x="362" y="198" font-size="9" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">📅 Schedule</text>
+      <text x="362" y="212" font-size="9" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Dashboard</text>
+      <text x="362" y="234" font-size="8" fill="rgba(255,255,255,0.4)" text-anchor="middle" font-family="DM Sans, sans-serif">Ops managers</text>
+
+      <rect x="553" y="148" width="420" height="120" rx="4" fill="#071428" stroke="#0057B8" stroke-width="1.5"/>
+      <text x="763" y="168" font-size="9" font-weight="700" fill="#6B9FE8" text-anchor="middle" letter-spacing="0.1em" font-family="DM Sans, sans-serif">CUSTOMER & SALES PLATFORM (Cloud)</text>
+      <rect x="567" y="176" width="118" height="76" rx="3" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+      <text x="626" y="198" font-size="9" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">🤖 Cobot Weld</text>
+      <text x="626" y="212" font-size="9" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Path Output</text>
+      <text x="626" y="234" font-size="8" fill="rgba(255,255,255,0.4)" text-anchor="middle" font-family="DM Sans, sans-serif">Customer portal</text>
+
+      <rect x="697" y="176" width="118" height="76" rx="3" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+      <text x="756" y="198" font-size="9" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">🎓 Training</text>
+      <text x="756" y="212" font-size="9" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Certifications</text>
+      <text x="756" y="234" font-size="8" fill="rgba(255,255,255,0.4)" text-anchor="middle" font-family="DM Sans, sans-serif">Welders, distributors</text>
+
+      <rect x="827" y="176" width="130" height="76" rx="3" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+      <text x="892" y="198" font-size="9" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">💰 Sales</text>
+      <text x="892" y="212" font-size="9" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Priority Queue</text>
+      <text x="892" y="234" font-size="8" fill="rgba(255,255,255,0.4)" text-anchor="middle" font-family="DM Sans, sans-serif">Account managers</text>
+
+      <!-- Arrows Sources → Models -->
+      <line x1="87" y1="460" x2="87" y2="432" stroke="#E05C00" stroke-width="1.5" marker-end="url(#arrowPR)"/>
+      <line x1="217" y1="460" x2="217" y2="432" stroke="#E05C00" stroke-width="1.5" marker-end="url(#arrowPR)"/>
+      <line x1="347" y1="460" x2="347" y2="432" stroke="#E05C00" stroke-width="1.5" marker-end="url(#arrowPR)"/>
+      <line x1="612" y1="460" x2="612" y2="432" stroke="#0057B8" stroke-width="1.5" marker-end="url(#arrowBL)"/>
+      <line x1="742" y1="460" x2="742" y2="432" stroke="#0057B8" stroke-width="1.5" marker-end="url(#arrowBL)"/>
+      <line x1="872" y1="460" x2="872" y2="432" stroke="#0057B8" stroke-width="1.5" marker-end="url(#arrowBL)"/>
+
+      <!-- Arrows Models → Outputs -->
+      <line x1="87" y1="300" x2="101" y2="270" stroke="#E05C00" stroke-width="1.5" marker-end="url(#arrowPR)"/>
+      <line x1="217" y1="300" x2="231" y2="270" stroke="#E05C00" stroke-width="1.5" marker-end="url(#arrowPR)"/>
+      <line x1="347" y1="300" x2="362" y2="270" stroke="#E05C00" stroke-width="1.5" marker-end="url(#arrowPR)"/>
+      <line x1="612" y1="300" x2="626" y2="270" stroke="#0057B8" stroke-width="1.5" marker-end="url(#arrowBL)"/>
+      <line x1="742" y1="300" x2="756" y2="270" stroke="#0057B8" stroke-width="1.5" marker-end="url(#arrowBL)"/>
+      <line x1="872" y1="300" x2="892" y2="270" stroke="#0057B8" stroke-width="1.5" marker-end="url(#arrowBL)"/>
+
+      <!-- Gateway arrows -->
+      <line x1="450" y1="250" x2="467" y2="250" stroke="#D4A017" stroke-width="2" marker-end="url(#arrowGD)"/>
+      <line x1="535" y1="250" x2="519" y2="250" stroke="#D4A017" stroke-width="2" marker-end="url(#arrowGD)"/>
+      <text x="499" y="246" font-size="7" fill="rgba(255,255,255,0.45)" text-anchor="middle" font-family="DM Mono, sans-serif">TLS/HTTPS</text>
+      <text x="499" y="258" font-size="7" fill="rgba(255,255,255,0.3)" text-anchor="middle" font-family="DM Mono, sans-serif">No telemetry crosses</text>
+
+      <!-- Layer labels -->
+      <text x="6" y="520" font-size="8" fill="#6B5830" font-family="DM Mono, sans-serif" transform="rotate(-90,6,520)">DATA SOURCES</text>
+      <text x="6" y="390" font-size="8" fill="#6B5830" font-family="DM Mono, sans-serif" transform="rotate(-90,6,390)">AI MODELS</text>
+      <text x="6" y="230" font-size="8" fill="#6B5830" font-family="DM Mono, sans-serif" transform="rotate(-90,6,230)">OUTPUTS</text>
+    </svg>
+  </div>
+
+  <div class="arch-legend">
+    <div class="legend-item"><div class="legend-dot" style="background:#5C3D10;"></div>Private AI (On-Premises)</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#0A2952;"></div>Public Cloud AI</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#D4A017;"></div>API Gateway (No Telemetry Crosses)</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#E05C00;"></div>Private Data Flow</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#0057B8;"></div>Cloud Data Flow</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#1A1208;"></div>Data Sources</div>
+  </div>
+
+  <div style="padding: 20px 48px; border-top: 1px solid var(--silver);">
+    <div class="col-title">AI Routing Decision Summary</div>
+    <table class="routing-table">
+      <thead>
+        <tr>
+          <th>Workload</th>
+          <th>AI Routing</th>
+          <th>Rationale</th>
+          <th>Primary Output</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Vision QC — Weld Defect Detection</td>
+          <td><span class="ai-badge private">Private AI</span></td>
+          <td>Production data is IP-sensitive; edge inference required for line speed</td>
+          <td>Real-time defect alerts to production floor operators</td>
+        </tr>
+        <tr>
+          <td>InduSuite Predictive Service Alerts</td>
+          <td><span class="ai-badge private">Private AI</span></td>
+          <td>Customer machine telemetry reflects production capacity — strict data residency</td>
+          <td>Proactive service dispatch, pre-staged parts alerts</td>
+        </tr>
+        <tr>
+          <td>Production Scheduling Engine</td>
+          <td><span class="ai-badge private">Private AI</span></td>
+          <td>Scheduling data tied to proprietary production recipes and order details</td>
+          <td>Optimized daily schedule, deviation alerts to supervisors</td>
+        </tr>
+        <tr>
+          <td>Machine-Usage Cross-Sell Engine</td>
+          <td><span class="ai-badge private">Private AI</span></td>
+          <td>InduSuite telemetry = customer competitive data; must stay in private VPC</td>
+          <td>Prioritized sales queue pushed to Salesforce CRM</td>
+        </tr>
+        <tr>
+          <td>Cobot Weld Path Programming Assistant</td>
+          <td><span class="ai-badge public">Public AI</span></td>
+          <td>Only geometry metadata from customer drawings — no ESAB process IP involved</td>
+          <td>Robot-ready weld path program for customer cobot setup</td>
+        </tr>
+        <tr>
+          <td>Welder Training LMS Platform</td>
+          <td><span class="ai-badge public">Public AI</span></td>
+          <td>No sensitive production data; scalable across welders and distributor network</td>
+          <td>Training completions, certifications, SOP video library</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<script>
+  document.querySelectorAll('.page-nav a').forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.querySelector(link.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      document.querySelectorAll('.page-nav a').forEach(a => a.classList.remove('active'));
+      link.classList.add('active');
+    });
+  });
+</script>
+</body>
+</html>

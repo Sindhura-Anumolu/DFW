@@ -1,0 +1,1146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BNB Cosmetics — AI Case Study | DFW Technologies</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #9B4F8E;
+    --primary-light: #C278B8;
+    --primary-pale: #FDF0FB;
+    --navy: #1A0A22;
+    --navy-mid: #2D1040;
+    --steel: #5C3470;
+    --silver: #EDE5F0;
+    --silver-light: #F8F3FA;
+    --white: #FFFFFF;
+    --text: #1E0E28;
+    --text-muted: #6B5278;
+    --accent: #E8A020;
+    --green: #00875A;
+    --warn: #C8102E;
+    --teal: #008080;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--silver-light);
+    color: var(--text);
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  .page {
+    width: 1100px;
+    margin: 0 auto 60px;
+    background: white;
+    box-shadow: 0 4px 40px rgba(0,0,0,0.10);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .page-nav {
+    display: flex;
+    background: var(--navy);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .page-nav a {
+    flex: 1;
+    text-align: center;
+    padding: 14px 8px;
+    color: rgba(255,255,255,0.5);
+    text-decoration: none;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s;
+  }
+  .page-nav a:hover { color: white; border-bottom-color: var(--primary-light); }
+  .page-nav a.active { color: white; border-bottom-color: var(--primary-light); }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 32px 48px 24px;
+    border-bottom: 1px solid var(--silver);
+  }
+  .section-tag {
+    background: var(--primary);
+    color: white;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 2px;
+  }
+  .section-tag.solution { background: var(--navy); }
+  .section-tag.roi { background: var(--green); }
+  .section-tag.arch { background: var(--steel); }
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    color: var(--navy);
+  }
+  .page-num {
+    margin-left: auto;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(135deg, var(--navy) 0%, #2D1040 55%, #3D1858 100%);
+    padding: 48px 48px 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 340px; height: 340px;
+    background: var(--primary);
+    border-radius: 50%;
+    opacity: 0.1;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -50px; left: 180px;
+    width: 250px; height: 250px;
+    background: var(--accent);
+    border-radius: 50%;
+    opacity: 0.05;
+  }
+  .hero-eyebrow {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--primary-light);
+    margin-bottom: 12px;
+  }
+  .hero h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 36px;
+    color: white;
+    line-height: 1.15;
+    margin-bottom: 6px;
+  }
+  .hero h1 span { color: var(--primary-light); font-style: italic; }
+  .hero-sub {
+    color: rgba(255,255,255,0.5);
+    font-size: 13px;
+    margin-bottom: 32px;
+  }
+  .hero-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+  }
+  .stat-card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 16px 18px;
+  }
+  .stat-card:first-child { border-radius: 4px 0 0 4px; }
+  .stat-card:last-child { border-radius: 0 4px 4px 0; }
+  .stat-val {
+    font-family: 'DM Serif Display', serif;
+    font-size: 28px;
+    color: white;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .stat-val span { font-size: 16px; color: var(--primary-light); }
+  .stat-lbl {
+    font-size: 10px;
+    color: rgba(255,255,255,0.4);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .content-grid { display: grid; grid-template-columns: 1fr 1fr; }
+  .content-col { padding: 36px 48px; }
+  .content-col + .content-col { border-left: 1px solid var(--silver); }
+
+  .col-title {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--primary);
+    display: inline-block;
+  }
+  .body-text { color: var(--text-muted); font-size: 13px; line-height: 1.75; margin-bottom: 16px; }
+
+  .problem-list { display: flex; flex-direction: column; gap: 12px; }
+  .problem-card {
+    border: 1px solid var(--silver);
+    border-left: 3px solid var(--primary);
+    padding: 14px 16px;
+    border-radius: 0 4px 4px 0;
+    background: var(--silver-light);
+  }
+  .problem-card-title {
+    font-weight: 600;
+    font-size: 12px;
+    color: var(--navy);
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .problem-num {
+    background: var(--primary);
+    color: white;
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 9px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .problem-card p { color: var(--text-muted); font-size: 12px; line-height: 1.6; }
+
+  .impact-bar {
+    background: var(--navy);
+    color: white;
+    padding: 18px 48px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  .impact-bar-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.4); white-space: nowrap; }
+  .impact-tags { display: flex; gap: 8px; flex-wrap: wrap; }
+  .impact-tag {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.14);
+    padding: 5px 12px; border-radius: 2px; font-size: 11px; color: rgba(255,255,255,0.75);
+  }
+  .impact-tag.hot { border-color: var(--primary-light); color: var(--primary-light); }
+
+  /* SOLUTION */
+  .solution-intro {
+    padding: 28px 48px;
+    background: var(--silver-light);
+    border-bottom: 1px solid var(--silver);
+  }
+  .solution-intro p { color: var(--text-muted); max-width: 820px; font-size: 13px; line-height: 1.75; }
+  .solution-intro strong { color: var(--navy); }
+
+  .solution-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-bottom: 1px solid var(--silver);
+  }
+  .solution-item {
+    padding: 28px 36px;
+    border-right: 1px solid var(--silver);
+    border-bottom: 1px solid var(--silver);
+  }
+  .solution-item:nth-child(2n) { border-right: none; }
+  .solution-item:nth-last-child(-n+2) { border-bottom: none; }
+  .solution-item-header { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 12px; }
+  .solution-icon {
+    width: 36px; height: 36px;
+    background: var(--navy);
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; flex-shrink: 0;
+  }
+  .solution-item-title { font-weight: 600; font-size: 13px; color: var(--navy); margin-bottom: 3px; }
+  .solution-item-problem { font-size: 11px; color: var(--primary); font-weight: 500; }
+  .solution-item p { font-size: 12px; color: var(--text-muted); line-height: 1.7; margin-bottom: 12px; }
+  .tech-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+  .tech-tag {
+    background: var(--silver);
+    color: var(--steel);
+    font-size: 10px; font-weight: 600;
+    padding: 3px 8px; border-radius: 2px;
+    font-family: 'DM Mono', monospace;
+  }
+  .ai-badge {
+    font-size: 9px; font-weight: 700;
+    padding: 2px 7px; border-radius: 2px;
+    letter-spacing: 0.06em; text-transform: uppercase;
+  }
+  .ai-badge.private { background: #f0e6ff; color: #6B2FA0; }
+  .ai-badge.public { background: #e6f9f0; color: #00875A; }
+  .ai-badge.hybrid { background: #fff4e6; color: #b85c00; }
+
+  .benchmark-callout {
+    margin: 24px 48px;
+    background: var(--navy);
+    border-left: 4px solid var(--accent);
+    padding: 20px 24px;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  .benchmark-callout-icon { font-size: 24px; flex-shrink: 0; }
+  .benchmark-callout-title {
+    font-weight: 700; font-size: 11px;
+    text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--accent); margin-bottom: 6px;
+  }
+  .benchmark-callout p { font-size: 12px; color: rgba(255,255,255,0.7); line-height: 1.65; }
+
+  .policy-section { padding: 28px 48px; border-top: 1px solid var(--silver); }
+  .policy-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-top: 16px; }
+  .policy-card { border: 1px solid var(--silver); padding: 14px 16px; border-radius: 4px; }
+  .policy-card-title {
+    font-size: 11px; font-weight: 600; color: var(--navy);
+    margin-bottom: 6px; display: flex; align-items: center; gap: 6px;
+  }
+  .policy-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--primary); flex-shrink: 0; }
+  .policy-card p { font-size: 11px; color: var(--text-muted); line-height: 1.6; }
+
+  /* ROI */
+  .roi-hero {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%);
+    padding: 36px 48px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 2px;
+  }
+  .roi-big {
+    padding: 24px; background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1); text-align: center;
+  }
+  .roi-big:first-child { border-radius: 4px 0 0 4px; }
+  .roi-big:last-child { border-radius: 0 4px 4px 0; }
+  .roi-big-val { font-family: 'DM Serif Display', serif; font-size: 38px; color: white; line-height: 1; margin-bottom: 6px; }
+  .roi-big-val.green { color: #4ade80; }
+  .roi-big-val.gold { color: var(--accent); }
+  .roi-big-lbl { font-size: 11px; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.08em; }
+
+  .savings-grid { display: grid; grid-template-columns: 1fr 1fr; padding: 36px 48px; gap: 32px; border-bottom: 1px solid var(--silver); }
+  .savings-section-title {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--text-muted);
+    margin-bottom: 16px; padding-bottom: 10px;
+    border-bottom: 2px solid var(--green); display: inline-block;
+  }
+  .savings-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 10px 0; border-bottom: 1px solid var(--silver);
+  }
+  .savings-row:last-child { border-bottom: none; }
+  .savings-label { font-size: 12px; color: var(--text-muted); }
+  .savings-value { font-weight: 600; font-size: 13px; color: var(--green); font-family: 'DM Mono', monospace; }
+  .savings-value.cost { color: var(--warn); }
+
+  .timeline-section { padding: 28px 48px; border-bottom: 1px solid var(--silver); }
+  .timeline-title {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--text-muted);
+    margin-bottom: 20px; padding-bottom: 10px;
+    border-bottom: 2px solid var(--navy); display: inline-block;
+  }
+  .timeline-bars { display: flex; flex-direction: column; gap: 10px; }
+  .timeline-row { display: flex; align-items: center; gap: 12px; }
+  .timeline-label { font-size: 11px; color: var(--text-muted); width: 200px; flex-shrink: 0; text-align: right; }
+  .timeline-bar-wrap { flex: 1; height: 28px; background: var(--silver); border-radius: 2px; overflow: hidden; }
+  .timeline-bar {
+    height: 100%; display: flex; align-items: center; padding-left: 10px;
+    font-size: 10px; font-weight: 600; color: white; border-radius: 2px; white-space: nowrap;
+  }
+  .timeline-month { font-size: 10px; color: var(--text-muted); width: 60px; font-family: 'DM Mono', monospace; }
+
+  .capabilities-section { padding: 28px 48px; }
+  .cap-title {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--text-muted);
+    margin-bottom: 16px; padding-bottom: 10px;
+    border-bottom: 2px solid var(--accent); display: inline-block;
+  }
+  .cap-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; }
+  .cap-card { background: var(--silver-light); border: 1px solid var(--silver); padding: 16px; border-radius: 4px; }
+  .cap-card-title { font-weight: 600; font-size: 12px; color: var(--navy); margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+  .cap-icon { font-size: 14px; }
+  .cap-card p { font-size: 11px; color: var(--text-muted); line-height: 1.6; }
+  .cap-required { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--primary); margin-top: 8px; }
+
+  /* ARCH */
+  .arch-intro { padding: 24px 48px; background: var(--silver-light); border-bottom: 1px solid var(--silver); }
+  .arch-intro p { font-size: 12px; color: var(--text-muted); max-width: 720px; }
+  .arch-diagram { padding: 36px 48px; }
+  svg.arch { width: 100%; height: 600px; font-family: 'DM Sans', sans-serif; }
+
+  .arch-legend {
+    display: flex; gap: 24px; padding: 16px 48px;
+    background: var(--silver-light); border-top: 1px solid var(--silver); flex-wrap: wrap;
+  }
+  .legend-item { display: flex; align-items: center; gap: 8px; font-size: 11px; color: var(--text-muted); }
+  .legend-dot { width: 12px; height: 12px; border-radius: 2px; flex-shrink: 0; }
+
+  .page-divider { height: 8px; background: var(--primary); margin-bottom: 60px; }
+
+  .routing-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 16px; }
+  .routing-table th {
+    background: var(--navy); color: rgba(255,255,255,0.7);
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em;
+    font-weight: 600; padding: 10px 14px; text-align: left;
+  }
+  .routing-table td { padding: 10px 14px; border-bottom: 1px solid var(--silver); color: var(--text-muted); }
+  .routing-table tr:last-child td { border-bottom: none; }
+  .routing-table tr:nth-child(even) td { background: var(--silver-light); }
+  .routing-table td:first-child { color: var(--navy); font-weight: 500; }
+</style>
+</head>
+<body>
+
+<!-- ══ PAGE 1: COMPANY OVERVIEW ══ -->
+<div class="page" id="page1">
+  <nav class="page-nav">
+    <a href="#page1" class="active">01 · Overview</a>
+    <a href="#page2">02 · Solution</a>
+    <a href="#page3">03 · Cost & ROI</a>
+    <a href="#page4">04 · Architecture</a>
+  </nav>
+
+  <div class="hero">
+    <div class="hero-eyebrow">DFW Technologies · AI Case Study · White-Label Manufacturing</div>
+    <h1>BNB<br><span>Cosmetics</span></h1>
+    <div class="hero-sub">White-Label Contract Cosmetics Manufacturing · Multi-Market Global Distribution · High SKU Complexity</div>
+    <div class="hero-stats">
+      <div class="stat-card">
+        <div class="stat-val">200<span>K+</span></div>
+        <div class="stat-lbl">Active SKUs</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val">10.2<span>%</span></div>
+        <div class="stat-lbl">Industry Unsold Rate</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val">24<span>mo</span></div>
+        <div class="stat-lbl">Max Trend Lifespan</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val">5<span>+</span></div>
+        <div class="stat-lbl">Regulatory Markets</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-header">
+    <span class="section-tag">Overview</span>
+    <span class="section-title">Company Profile & Operational Scale</span>
+    <span class="page-num">Page 01 / 04</span>
+  </div>
+
+  <div class="content-grid">
+    <div class="content-col">
+      <div class="col-title">About BNB Cosmetics</div>
+      <p class="body-text">BNB Cosmetics is a white-label contract cosmetics manufacturer producing a wide range of beauty and personal care products across skincare, color cosmetics, and haircare categories. As a contract manufacturer, BNB produces on behalf of multiple brand clients simultaneously — each with distinct formulations, packaging specifications, regulatory requirements, and distribution timelines.</p>
+      <p class="body-text">This white-label model creates inherent complexity: BNB must manage hundreds of active formulations, coordinate across a global ingredient supplier base, maintain regulatory compliance for multiple markets (U.S. FDA, EU Cosmetics Regulation, and others), and respond rapidly to trend-driven demand shifts that can render inventory obsolete within months.</p>
+      <p class="body-text">The beauty industry's unsold product rate sits at 10.2% — the highest of any consumer goods sector — driven by the speed at which trends rise and fall. A white-label manufacturer like BNB absorbs this risk directly through excess inventory, reformulation costs, and compliance documentation overhead across every market their clients serve.</p>
+
+      <div class="col-title" style="margin-top:24px;">Business Model Pressure Points</div>
+      <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:0;">
+        <span style="background:var(--primary-pale); border:1px solid var(--primary); color:var(--primary); font-size:10px; padding:4px 10px; border-radius:2px; font-weight:600;">High SKU count</span>
+        <span style="background:var(--primary-pale); border:1px solid var(--primary); color:var(--primary); font-size:10px; padding:4px 10px; border-radius:2px; font-weight:600;">Trend volatility</span>
+        <span style="background:var(--primary-pale); border:1px solid var(--primary); color:var(--primary); font-size:10px; padding:4px 10px; border-radius:2px; font-weight:600;">Multi-market compliance</span>
+        <span style="background:var(--primary-pale); border:1px solid var(--primary); color:var(--primary); font-size:10px; padding:4px 10px; border-radius:2px; font-weight:600;">Cold-chain sensitivity</span>
+        <span style="background:var(--primary-pale); border:1px solid var(--primary); color:var(--primary); font-size:10px; padding:4px 10px; border-radius:2px; font-weight:600;">Global ingredient sourcing</span>
+        <span style="background:var(--primary-pale); border:1px solid var(--primary); color:var(--primary); font-size:10px; padding:4px 10px; border-radius:2px; font-weight:600;">Batch traceability & recalls</span>
+      </div>
+    </div>
+
+    <div class="content-col">
+      <div class="col-title">Key Problems Identified</div>
+      <div class="problem-list">
+        <div class="problem-card">
+          <div class="problem-card-title">
+            <div class="problem-num">1</div>
+            Trend-Driven Demand Volatility & Forecasting Failure
+          </div>
+          <p>Beauty trends now last an average of 24 months — down from 5–10 years a decade ago. Viral social media moments can trigger demand spikes or collapses overnight. BNB's current forecasting is reactive, leading to excess inventory of slow-moving SKUs and stockouts on trending formulations — the 10.2% unsold rate reflects this directly.</p>
+        </div>
+        <div class="problem-card">
+          <div class="problem-card-title">
+            <div class="problem-num">2</div>
+            Raw Material Shortages & Supplier Risk
+          </div>
+          <p>Cosmetic ingredients — botanical extracts, pigments, fragrances, specialty chemicals — are sourced globally from regions with political and climate instability. Shortages force costly mid-production reformulations that disrupt retailer launch calendars and erode client relationships. There is no systematic early-warning system for supply risk.</p>
+        </div>
+        <div class="problem-card">
+          <div class="problem-card-title">
+            <div class="problem-num">3</div>
+            Cold-Chain & Logistics Sensitivity
+          </div>
+          <p>Cosmetics are sensitive to temperature, humidity, light, and physical shock throughout transit. Products pass through multiple logistics partners across road, air, and sea — with minimal real-time visibility. A single cold-chain breach can render an entire shipment non-sellable, with no documented evidence for insurance claims.</p>
+        </div>
+        <div class="problem-card">
+          <div class="problem-card-title">
+            <div class="problem-num">4</div>
+            Multi-Market Regulatory Compliance & Batch Traceability
+          </div>
+          <p>Every product shipped to a new market requires ingredient compliance verification, labeling review, and batch documentation — a manual, error-prone process. The EU Cosmetics Regulation, U.S. FDA requirements, and other market rules differ significantly. Compliance failures risk product recalls, fines, and market access loss.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="impact-bar">
+    <div class="impact-bar-label">Industry Risk</div>
+    <div class="impact-tags">
+      <span class="impact-tag hot">10.2% unsold product rate — highest in consumer goods</span>
+      <span class="impact-tag">Beauty supply chain valued at $86B in untapped efficiency</span>
+      <span class="impact-tag">64% of consumers want faster brand response to trends</span>
+      <span class="impact-tag">Counterfeiting adds $15B+ in annual losses to beauty sector</span>
+    </div>
+  </div>
+
+</div>
+<div class="page-divider"></div>
+
+<!-- ══ PAGE 2: SOLUTION ══ -->
+<div class="page" id="page2">
+  <nav class="page-nav">
+    <a href="#page1">01 · Overview</a>
+    <a href="#page2" class="active">02 · Solution</a>
+    <a href="#page3">03 · Cost & ROI</a>
+    <a href="#page4">04 · Architecture</a>
+  </nav>
+
+  <div class="section-header">
+    <span class="section-tag solution">Solution</span>
+    <span class="section-title">AI Solution Stack & Problem Mapping</span>
+    <span class="page-num">Page 02 / 04</span>
+  </div>
+
+  <div class="solution-intro">
+    <p>DFW Technologies proposes a <strong>hybrid AI deployment</strong> for BNB Cosmetics — public cloud AI for demand forecasting and supplier intelligence (where external data signals are essential to model accuracy), and private on-premises AI for batch records, formulation data, compliance documentation, and cold-chain monitoring (where formulation IP and regulatory records must stay controlled). The routing decision is driven by data sensitivity and the need for external signal integration in trend-driven planning.</p>
+  </div>
+
+  <div class="solution-grid">
+    <div class="solution-item">
+      <div class="solution-item-header">
+        <div class="solution-icon">📈</div>
+        <div>
+          <div class="solution-item-title">Trend-Linked Demand Forecasting</div>
+          <div class="solution-item-problem">↳ Solves: Problem #1 — Demand Volatility</div>
+        </div>
+        <span class="ai-badge public">Public AI</span>
+      </div>
+      <p>Cloud-based forecasting model connects BNB's historical order data with real-time social signals — TikTok beauty trends, Google Trends, influencer activity, and retailer sell-through data — to generate 90-day rolling demand forecasts per SKU category. Alerts production planning when a trend SKU is accelerating before stockout occurs, and flags slow-moving inventory before it becomes deadstock.</p>
+      <div class="tech-tags">
+        <span class="tech-tag">Social Trend APIs</span>
+        <span class="tech-tag">Time-Series ML</span>
+        <span class="tech-tag">Demand Planning</span>
+        <span class="tech-tag">Retailer Data Feeds</span>
+      </div>
+    </div>
+
+    <div class="solution-item">
+      <div class="solution-item-header">
+        <div class="solution-icon">🌐</div>
+        <div>
+          <div class="solution-item-title">Supplier Risk Intelligence Dashboard</div>
+          <div class="solution-item-problem">↳ Solves: Problem #2 — Raw Material Shortages</div>
+        </div>
+        <span class="ai-badge public">Public AI</span>
+      </div>
+      <p>AI continuously monitors public signals — commodity prices, geopolitical news, climate events, shipping disruptions — for BNB's key ingredient categories. Flags supply risk 4–8 weeks before shortages materialize, giving procurement teams time to diversify suppliers or pre-purchase critical ingredients. Supplier performance scores updated in real time from delivery and quality data.</p>
+      <div class="tech-tags">
+        <span class="tech-tag">News & Commodity APIs</span>
+        <span class="tech-tag">Supplier Scoring ML</span>
+        <span class="tech-tag">Risk Alerting</span>
+        <span class="tech-tag">Procurement Integration</span>
+      </div>
+    </div>
+
+    <div class="solution-item">
+      <div class="solution-item-header">
+        <div class="solution-icon">🌡️</div>
+        <div>
+          <div class="solution-item-title">Cold-Chain IoT Monitoring</div>
+          <div class="solution-item-problem">↳ Solves: Problem #3 — Logistics Sensitivity</div>
+        </div>
+        <span class="ai-badge private">Private AI</span>
+      </div>
+      <p>IoT temperature, humidity, and shock sensors deployed on shipments generate continuous environmental logs throughout the supply chain. Private AI processes sensor streams and triggers real-time alerts when parameters exceed safe thresholds — enabling rapid intervention before product is compromised. All logs are audit-ready for insurance claims and client SLA documentation.</p>
+      <div class="tech-tags">
+        <span class="tech-tag">IoT Condition Sensors</span>
+        <span class="tech-tag">Edge Alerting</span>
+        <span class="tech-tag">Audit Log Generation</span>
+        <span class="tech-tag">Cold-Chain Analytics</span>
+      </div>
+    </div>
+
+    <div class="solution-item">
+      <div class="solution-item-header">
+        <div class="solution-icon">📋</div>
+        <div>
+          <div class="solution-item-title">Batch Traceability & Recall Readiness</div>
+          <div class="solution-item-problem">↳ Solves: Problem #4 — Traceability Gaps</div>
+        </div>
+        <span class="ai-badge private">Private AI</span>
+      </div>
+      <p>Private AI digitizes and structures batch records across all formulations — linking ingredients, suppliers, production dates, QC results, and shipping destinations into a unified traceability layer. In a recall scenario, AI identifies all affected batches and downstream destinations within minutes rather than days. Expiration date tracking and batch lifecycle management reduce expired inventory waste.</p>
+      <div class="tech-tags">
+        <span class="tech-tag">Batch Record AI</span>
+        <span class="tech-tag">Recall Simulation</span>
+        <span class="tech-tag">Expiry Tracking</span>
+        <span class="tech-tag">Ingredient Linking</span>
+      </div>
+    </div>
+
+    <div class="solution-item">
+      <div class="solution-item-header">
+        <div class="solution-icon">⚖️</div>
+        <div>
+          <div class="solution-item-title">Multi-Market Compliance Documentation AI</div>
+          <div class="solution-item-problem">↳ Solves: Problem #4 — Regulatory Compliance</div>
+        </div>
+        <span class="ai-badge private">Private AI</span>
+      </div>
+      <p>Private AI automatically generates market-specific compliance documentation for each batch — checking ingredient lists against EU restricted substances, U.S. FDA labeling rules, and other applicable regulations. Flags non-conformances before production runs begin rather than after. As regulations change, the AI updates its rule library and re-screens existing formulations for emerging compliance gaps.</p>
+      <div class="tech-tags">
+        <span class="tech-tag">Regulatory Rule Engine</span>
+        <span class="tech-tag">Ingredient Screening</span>
+        <span class="tech-tag">Auto-Documentation</span>
+        <span class="tech-tag">Compliance Audit Trail</span>
+      </div>
+    </div>
+
+    <div class="solution-item">
+      <div class="solution-item-header">
+        <div class="solution-icon">🎓</div>
+        <div>
+          <div class="solution-item-title">QC & Compliance Training Platform</div>
+          <div class="solution-item-problem">↳ Solves: Workforce Knowledge Gaps</div>
+        </div>
+        <span class="ai-badge public">Public AI</span>
+      </div>
+      <p>Cloud-based AI training platform for QC technicians and production staff — delivering role-specific modules on GMP standards, ingredient handling, compliance requirements per market, and batch documentation procedures. Modules auto-update when regulations change. AI-assessed competency checks before technicians are cleared on new product lines or markets. Video-based SOPs for critical manufacturing steps.</p>
+      <div class="tech-tags">
+        <span class="tech-tag">AI-LMS</span>
+        <span class="tech-tag">GMP Training Modules</span>
+        <span class="tech-tag">Regulatory Updates</span>
+        <span class="tech-tag">Competency Assessment</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="benchmark-callout" style="margin: 24px 48px;">
+    <div class="benchmark-callout-icon">🔬</div>
+    <div>
+      <div class="benchmark-callout-title">Industry Benchmark: Atelier x Accenture — Beauty Industry AI Supply Chain Report (2025)</div>
+      <p>A joint report by product innovation platform Atelier and Accenture quantified that the global beauty industry is missing $86 billion in potential profit due to supply chain inefficiency — driven by "process inefficiencies and excess headcount from hyper-fragmented global supply chains." The report cites a real-world case where Prada Beauty's Astral Pink Lip Balm sold out across all retailers within 72 hours of going viral — and remained out of stock at Sephora for over a month, revealing critical supply chain failure. The root cause: 64% of consumers demand faster brand response, yet 59% of companies take over a year to adapt. AI-driven demand forecasting and supplier intelligence are the primary recommended interventions. DFW Technologies applies these findings directly to BNB Cosmetics' white-label manufacturing operations.</p>
+    </div>
+  </div>
+
+  <div class="policy-section">
+    <div class="col-title">Policies, Compliance & Restrictions to Address</div>
+    <div class="policy-grid">
+      <div class="policy-card">
+        <div class="policy-card-title"><div class="policy-dot"></div>EU Cosmetics Regulation (EC 1223/2009)</div>
+        <p>Every cosmetic product placed on the EU market must be notified and compliant with the EU Cosmetics Regulation. AI compliance engine must maintain an up-to-date library of EU restricted and banned substances, and generate CPNP-ready documentation per batch.</p>
+      </div>
+      <div class="policy-card">
+        <div class="policy-card-title"><div class="policy-dot"></div>U.S. FDA Modernization of Cosmetics Act (MoCRA)</div>
+        <p>Under MoCRA (2023), cosmetic manufacturers must register facilities, list products, and maintain safety substantiation records. AI documentation system must generate FDA-compliant records and support facility registration reporting requirements.</p>
+      </div>
+      <div class="policy-card">
+        <div class="policy-card-title"><div class="policy-dot"></div>GMP — ISO 22716 Cosmetics Standard</div>
+        <p>ISO 22716 governs Good Manufacturing Practice for cosmetics. AI quality monitoring and batch documentation systems must support ISO 22716 audit requirements — including equipment logs, personnel training records, and production documentation trails.</p>
+      </div>
+      <div class="policy-card">
+        <div class="policy-card-title"><div class="policy-dot"></div>Formulation IP Protection</div>
+        <p>BNB's client formulations are proprietary IP. All formulation data, ingredient ratios, and process parameters must be handled through private AI systems only — never transmitted to public cloud AI services. Client data segregation must be enforced at the data layer.</p>
+      </div>
+      <div class="policy-card">
+        <div class="policy-card-title"><div class="policy-dot"></div>Cold-Chain Regulatory Requirements</div>
+        <p>Products shipped internationally may be subject to customs temperature documentation requirements. IoT cold-chain logs must be retained and exportable for customs compliance, insurance claims, and client SLA verification across all markets served.</p>
+      </div>
+      <div class="policy-card">
+        <div class="policy-card-title"><div class="policy-dot"></div>Demand Data Privacy</div>
+        <p>Demand forecasting models that ingest client sales data must comply with applicable data privacy regulations (GDPR for EU clients, CCPA for California-based brands). Data use agreements with brand clients must cover AI-assisted forecasting use of their sales data.</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+<div class="page-divider"></div>
+
+<!-- ══ PAGE 3: COST & ROI ══ -->
+<div class="page" id="page3">
+  <nav class="page-nav">
+    <a href="#page1">01 · Overview</a>
+    <a href="#page2">02 · Solution</a>
+    <a href="#page3" class="active">03 · Cost & ROI</a>
+    <a href="#page4">04 · Architecture</a>
+  </nav>
+
+  <div class="section-header">
+    <span class="section-tag roi">Cost & ROI</span>
+    <span class="section-title">Financial Impact & DFW Tech Capabilities Required</span>
+    <span class="page-num">Page 03 / 04</span>
+  </div>
+
+  <div class="roi-hero">
+    <div class="roi-big">
+      <div class="roi-big-val gold">$250K–$450K</div>
+      <div class="roi-big-lbl">Total Investment · 12 Months</div>
+    </div>
+    <div class="roi-big">
+      <div class="roi-big-val green">$1.8M–$3.2M</div>
+      <div class="roi-big-lbl">Estimated Annual Savings</div>
+    </div>
+    <div class="roi-big">
+      <div class="roi-big-val">12–18 mo</div>
+      <div class="roi-big-lbl">Payback Period</div>
+    </div>
+  </div>
+
+  <div class="savings-grid">
+    <div>
+      <div class="savings-section-title">Projected Annual Cost Savings</div>
+      <div class="savings-row">
+        <span class="savings-label">Demand Forecasting — Reduction in Excess / Expired Inventory (25–35%)</span>
+        <span class="savings-value">$600K–$1.1M</span>
+      </div>
+      <div class="savings-row">
+        <span class="savings-label">Supplier Risk — Avoided Reformulation Costs (Early Warning)</span>
+        <span class="savings-value">$400K–$700K</span>
+      </div>
+      <div class="savings-row">
+        <span class="savings-label">Cold-Chain Monitoring — Reduced In-Transit Product Loss</span>
+        <span class="savings-value">$300K–$500K</span>
+      </div>
+      <div class="savings-row">
+        <span class="savings-label">Compliance Documentation — Time Reduction (40–50%)</span>
+        <span class="savings-value">$250K–$500K</span>
+      </div>
+      <div class="savings-row">
+        <span class="savings-label">Recall Readiness — Avoided Recall Cost & Brand Damage</span>
+        <span class="savings-value">$200K–$400K</span>
+      </div>
+      <div class="savings-row" style="border-top: 2px solid var(--green); padding-top:14px; margin-top:4px;">
+        <span class="savings-label" style="font-weight:600; color:var(--navy);">Total Estimated Annual Savings</span>
+        <span class="savings-value" style="font-size:16px;">$1.8M–$3.2M</span>
+      </div>
+    </div>
+
+    <div>
+      <div class="savings-section-title">Investment Breakdown</div>
+      <div class="savings-row">
+        <span class="savings-label">Phase 1: Discovery & Process Mapping (5 weeks)</span>
+        <span class="savings-value cost">$25K–$40K</span>
+      </div>
+      <div class="savings-row">
+        <span class="savings-label">Phase 2A: Demand Forecasting Pilot — Public AI (Months 2–5)</span>
+        <span class="savings-value cost">$60K–$100K</span>
+      </div>
+      <div class="savings-row">
+        <span class="savings-label">Phase 2B: Batch Traceability Pilot — Private AI (Months 2–5)</span>
+        <span class="savings-value cost">$70K–$110K</span>
+      </div>
+      <div class="savings-row">
+        <span class="savings-label">Phase 3: Full Scale — All Modules (Months 6–12)</span>
+        <span class="savings-value cost">$95K–$200K</span>
+      </div>
+      <div class="savings-row">
+        <span class="savings-label">IoT Cold-Chain Hardware (Sensors per Shipment)</span>
+        <span class="savings-value cost">Included in phases</span>
+      </div>
+      <div class="savings-row">
+        <span class="savings-label">Annual Maintenance & Regulatory Rule Updates (Year 2+)</span>
+        <span class="savings-value cost">$35K–$60K/yr</span>
+      </div>
+      <div class="savings-row" style="border-top: 2px solid var(--warn); padding-top:14px; margin-top:4px;">
+        <span class="savings-label" style="font-weight:600; color:var(--navy);">Total 12-Month Investment</span>
+        <span class="savings-value cost" style="font-size:16px;">$250K–$450K</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="timeline-section">
+    <div class="timeline-title">Implementation Timeline</div>
+    <div style="display:flex; gap:8px; margin-bottom:12px; font-size:10px; color:var(--text-muted); padding-left:212px;">
+      <span style="flex:1; text-align:left;">Month 0</span>
+      <span style="flex:1; text-align:center;">Month 6</span>
+      <span style="flex:1; text-align:right;">Month 12</span>
+    </div>
+    <div class="timeline-bars">
+      <div class="timeline-row">
+        <div class="timeline-label">Discovery & Process Mapping</div>
+        <div class="timeline-bar-wrap">
+          <div class="timeline-bar" style="width:20%; background:var(--steel);">Weeks 1–5</div>
+        </div>
+        <div class="timeline-month">5 wks</div>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-label">Demand Forecasting Pilot</div>
+        <div class="timeline-bar-wrap">
+          <div class="timeline-bar" style="width:65%; margin-left:20%; background:var(--primary);">Months 2–5 → Scale Month 6–12</div>
+        </div>
+        <div class="timeline-month">10 mo</div>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-label">Batch Traceability Pilot</div>
+        <div class="timeline-bar-wrap">
+          <div class="timeline-bar" style="width:65%; margin-left:20%; background:var(--navy);">Months 2–5 → Scale Month 6–12</div>
+        </div>
+        <div class="timeline-month">10 mo</div>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-label">Cold-Chain IoT Deployment</div>
+        <div class="timeline-bar-wrap">
+          <div class="timeline-bar" style="width:60%; margin-left:40%; background:var(--teal);">Months 5–12</div>
+        </div>
+        <div class="timeline-month">8 mo</div>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-label">Compliance Documentation AI</div>
+        <div class="timeline-bar-wrap">
+          <div class="timeline-bar" style="width:55%; margin-left:45%; background:var(--accent); color:var(--navy);">Months 6–12</div>
+        </div>
+        <div class="timeline-month">7 mo</div>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-label">QC Training Platform</div>
+        <div class="timeline-bar-wrap">
+          <div class="timeline-bar" style="width:50%; margin-left:50%; background:var(--green);">Months 7–12</div>
+        </div>
+        <div class="timeline-month">6 mo</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="capabilities-section">
+    <div class="cap-title">DFW Technologies Capabilities Required</div>
+    <div class="cap-grid">
+      <div class="cap-card">
+        <div class="cap-card-title"><span class="cap-icon">📡</span> External Data Integration</div>
+        <p>Ability to connect demand forecasting models to social trend APIs (TikTok, Google Trends), commodity price feeds, and geopolitical news sources — and build pipelines that keep signal data fresh for rolling forecasts.</p>
+        <div class="cap-required">⚠ Core Requirement</div>
+      </div>
+      <div class="cap-card">
+        <div class="cap-card-title"><span class="cap-icon">⚖️</span> Regulatory Rule Engine Development</div>
+        <p>Build and maintain a live regulatory rule library covering EU Cosmetics Regulation, U.S. MoCRA, and other target markets. Must auto-update as regulations change and screen existing formulations for emerging compliance gaps.</p>
+        <div class="cap-required">⚠ Core Requirement</div>
+      </div>
+      <div class="cap-card">
+        <div class="cap-card-title"><span class="cap-icon">🌡️</span> IoT Cold-Chain Deployment</div>
+        <p>Source, configure, and deploy IoT condition sensors across BNB's shipping operations. Build data pipelines from sensors to private AI monitoring layer and generate audit-ready environmental logs per shipment.</p>
+        <div class="cap-required">⚠ Core Requirement</div>
+      </div>
+      <div class="cap-card">
+        <div class="cap-card-title"><span class="cap-icon">🔒</span> Private AI for IP-Sensitive Data</div>
+        <p>On-premises deployment of batch traceability and compliance documentation AI. Must enforce client data segregation — formulation data from different brand clients must be isolated at the database and model level.</p>
+        <div class="cap-required">Required</div>
+      </div>
+      <div class="cap-card">
+        <div class="cap-card-title"><span class="cap-icon">🏭</span> Manufacturing Process Knowledge</div>
+        <p>Understanding of GMP standards, cosmetic manufacturing workflows, and batch documentation requirements sufficient to design AI systems that align with ISO 22716 and support compliance audits without disrupting production.</p>
+        <div class="cap-required">Required</div>
+      </div>
+      <div class="cap-card">
+        <div class="cap-card-title"><span class="cap-icon">📚</span> AI Training Platform Build</div>
+        <p>Design and deploy AI-enhanced LMS for QC and production staff — including auto-updating regulatory modules, video SOP authoring, and competency assessment workflows that gate certification on new product lines.</p>
+        <div class="cap-required">Required</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<div class="page-divider"></div>
+
+<!-- ══ PAGE 4: ARCHITECTURE ══ -->
+<div class="page" id="page4">
+  <nav class="page-nav">
+    <a href="#page1">01 · Overview</a>
+    <a href="#page2">02 · Solution</a>
+    <a href="#page3">03 · Cost & ROI</a>
+    <a href="#page4" class="active">04 · Architecture</a>
+  </nav>
+
+  <div class="section-header">
+    <span class="section-tag arch">Architecture</span>
+    <span class="section-title">Hybrid AI Architecture — BNB Cosmetics Deployment</span>
+    <span class="page-num">Page 04 / 04</span>
+  </div>
+
+  <div class="arch-intro">
+    <p>BNB Cosmetics uses a <strong>hybrid two-lane architecture</strong>: a <strong>Public Cloud Lane</strong> for demand forecasting and supplier intelligence (requires external trend data and news feeds) and a <strong>Private On-Premises Lane</strong> for formulation data, batch records, compliance documentation, and cold-chain monitoring (IP-sensitive and regulatory-controlled). A secure API gateway brokers any necessary data exchange between lanes — non-formulation data only.</p>
+  </div>
+
+  <div class="arch-diagram">
+    <svg class="arch" viewBox="0 0 1000 580" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="arrowG" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#5C3470"/>
+        </marker>
+        <marker id="arrowPR" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#9B4F8E"/>
+        </marker>
+        <marker id="arrowGR" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#00875A"/>
+        </marker>
+        <marker id="arrowGD" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#E8A020"/>
+        </marker>
+      </defs>
+
+      <!-- Private Lane -->
+      <rect x="10" y="10" width="455" height="560" rx="6" fill="#FDF0FB" stroke="#9B4F8E" stroke-width="1.5" stroke-dasharray="6,3"/>
+      <text x="22" y="30" font-size="9" font-weight="700" fill="#9B4F8E" letter-spacing="1" font-family="DM Sans, sans-serif">🔒 PRIVATE AI ZONE (ON-PREMISES)</text>
+
+      <!-- Public Lane -->
+      <rect x="535" y="10" width="455" height="560" rx="6" fill="#F0FFF8" stroke="#00875A" stroke-width="1.5" stroke-dasharray="6,3"/>
+      <text x="547" y="30" font-size="9" font-weight="700" fill="#00875A" letter-spacing="1" font-family="DM Sans, sans-serif">☁️ PUBLIC CLOUD ZONE</text>
+
+      <!-- Gateway -->
+      <rect x="467" y="10" width="64" height="560" fill="#1A0A22"/>
+      <text x="499" y="300" font-size="8" font-weight="700" fill="rgba(255,255,255,0.5)" letter-spacing="1" font-family="DM Sans, sans-serif" transform="rotate(-90,499,300)">SECURE API GATEWAY · NON-FORMULATION DATA ONLY</text>
+
+      <!-- ── DATA SOURCES (bottom) ── -->
+      <!-- Private Sources -->
+      <rect x="28" y="472" width="128" height="76" rx="4" fill="#1A0A22" stroke="#5C3470" stroke-width="1"/>
+      <text x="92" y="498" font-size="9" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">🧪 Formulation</text>
+      <text x="92" y="512" font-size="9" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">& Batch Records</text>
+      <text x="92" y="528" font-size="8" fill="#C278B8" text-anchor="middle" font-family="DM Mono, sans-serif">Internal DB</text>
+
+      <rect x="168" y="472" width="128" height="76" rx="4" fill="#1A0A22" stroke="#5C3470" stroke-width="1"/>
+      <text x="232" y="498" font-size="9" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">🌡️ IoT Cold-Chain</text>
+      <text x="232" y="512" font-size="9" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">Sensors (Shipments)</text>
+      <text x="232" y="528" font-size="8" fill="#C278B8" text-anchor="middle" font-family="DM Mono, sans-serif">MQTT / Edge</text>
+
+      <rect x="308" y="472" width="128" height="76" rx="4" fill="#1A0A22" stroke="#5C3470" stroke-width="1"/>
+      <text x="372" y="498" font-size="9" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">👥 HR &amp;</text>
+      <text x="372" y="512" font-size="9" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">Training Records</text>
+      <text x="372" y="528" font-size="8" fill="#C278B8" text-anchor="middle" font-family="DM Mono, sans-serif">HRIS Internal</text>
+
+      <!-- Public Sources -->
+      <rect x="553" y="472" width="128" height="76" rx="4" fill="#002D1F" stroke="#007A4D" stroke-width="1"/>
+      <text x="617" y="498" font-size="9" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">📱 Social &amp;</text>
+      <text x="617" y="512" font-size="9" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">Trend Signals</text>
+      <text x="617" y="528" font-size="8" fill="#7BCCA8" text-anchor="middle" font-family="DM Mono, sans-serif">TikTok · Google APIs</text>
+
+      <rect x="693" y="472" width="128" height="76" rx="4" fill="#002D1F" stroke="#007A4D" stroke-width="1"/>
+      <text x="757" y="498" font-size="9" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">🌐 Commodity</text>
+      <text x="757" y="512" font-size="9" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">&amp; News Feeds</text>
+      <text x="757" y="528" font-size="8" fill="#7BCCA8" text-anchor="middle" font-family="DM Mono, sans-serif">Public APIs</text>
+
+      <rect x="833" y="472" width="128" height="76" rx="4" fill="#002D1F" stroke="#007A4D" stroke-width="1"/>
+      <text x="897" y="498" font-size="9" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">📊 Order &amp;</text>
+      <text x="897" y="512" font-size="9" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">Sales History</text>
+      <text x="897" y="528" font-size="8" fill="#7BCCA8" text-anchor="middle" font-family="DM Mono, sans-serif">ERP Cloud Export</text>
+
+      <!-- ── AI MODELS (middle) ── -->
+      <!-- Private Models -->
+      <rect x="28" y="310" width="128" height="130" rx="4" fill="#5C3470" stroke="#9B4F8E" stroke-width="1"/>
+      <text x="92" y="333" font-size="8" font-weight="700" fill="rgba(255,255,255,0.5)" text-anchor="middle" letter-spacing="0.08em" font-family="DM Sans, sans-serif">PRIVATE AI</text>
+      <text x="92" y="350" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Batch Traceability</text>
+      <text x="92" y="365" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">&amp; Recall AI</text>
+      <text x="92" y="385" font-size="8" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">Ingredient linking</text>
+      <text x="92" y="399" font-size="8" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">Expiry tracking</text>
+      <text x="92" y="413" font-size="8" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">Recall simulation</text>
+      <text x="92" y="430" font-size="8" fill="rgba(255,255,255,0.35)" text-anchor="middle" font-family="DM Mono, sans-serif">→ Trace Reports</text>
+
+      <rect x="168" y="310" width="128" height="130" rx="4" fill="#5C3470" stroke="#9B4F8E" stroke-width="1"/>
+      <text x="232" y="333" font-size="8" font-weight="700" fill="rgba(255,255,255,0.5)" text-anchor="middle" letter-spacing="0.08em" font-family="DM Sans, sans-serif">PRIVATE AI</text>
+      <text x="232" y="350" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Cold-Chain</text>
+      <text x="232" y="365" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Monitor AI</text>
+      <text x="232" y="385" font-size="8" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">Temp / humidity AI</text>
+      <text x="232" y="399" font-size="8" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">Breach detection</text>
+      <text x="232" y="413" font-size="8" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">Audit log gen.</text>
+      <text x="232" y="430" font-size="8" fill="rgba(255,255,255,0.35)" text-anchor="middle" font-family="DM Mono, sans-serif">→ Alerts / Logs</text>
+
+      <rect x="308" y="310" width="128" height="130" rx="4" fill="#5C3470" stroke="#9B4F8E" stroke-width="1"/>
+      <text x="372" y="333" font-size="8" font-weight="700" fill="rgba(255,255,255,0.5)" text-anchor="middle" letter-spacing="0.08em" font-family="DM Sans, sans-serif">PRIVATE AI</text>
+      <text x="372" y="350" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Compliance</text>
+      <text x="372" y="365" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Rule Engine</text>
+      <text x="372" y="385" font-size="8" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">EU / FDA screening</text>
+      <text x="372" y="399" font-size="8" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">Auto-documentation</text>
+      <text x="372" y="413" font-size="8" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">Market gap alerts</text>
+      <text x="372" y="430" font-size="8" fill="rgba(255,255,255,0.35)" text-anchor="middle" font-family="DM Mono, sans-serif">→ Compliance Docs</text>
+
+      <!-- Public Models -->
+      <rect x="553" y="310" width="128" height="130" rx="4" fill="#004D30" stroke="#007A4D" stroke-width="1"/>
+      <text x="617" y="333" font-size="8" font-weight="700" fill="rgba(255,255,255,0.5)" text-anchor="middle" letter-spacing="0.08em" font-family="DM Sans, sans-serif">CLOUD AI</text>
+      <text x="617" y="350" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Demand</text>
+      <text x="617" y="365" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Forecasting</text>
+      <text x="617" y="385" font-size="8" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">Trend signal ML</text>
+      <text x="617" y="399" font-size="8" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">90-day SKU forecasts</text>
+      <text x="617" y="413" font-size="8" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">Deadstock alerts</text>
+      <text x="617" y="430" font-size="8" fill="rgba(255,255,255,0.35)" text-anchor="middle" font-family="DM Mono, sans-serif">→ Prod. Planning</text>
+
+      <rect x="693" y="310" width="128" height="130" rx="4" fill="#004D30" stroke="#007A4D" stroke-width="1"/>
+      <text x="757" y="333" font-size="8" font-weight="700" fill="rgba(255,255,255,0.5)" text-anchor="middle" letter-spacing="0.08em" font-family="DM Sans, sans-serif">CLOUD AI</text>
+      <text x="757" y="350" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Supplier Risk</text>
+      <text x="757" y="365" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Intelligence</text>
+      <text x="757" y="385" font-size="8" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">News monitoring AI</text>
+      <text x="757" y="399" font-size="8" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">Supplier scoring</text>
+      <text x="757" y="413" font-size="8" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">Early warnings</text>
+      <text x="757" y="430" font-size="8" fill="rgba(255,255,255,0.35)" text-anchor="middle" font-family="DM Mono, sans-serif">→ Procurement</text>
+
+      <rect x="833" y="310" width="128" height="130" rx="4" fill="#004D30" stroke="#007A4D" stroke-width="1"/>
+      <text x="897" y="333" font-size="8" font-weight="700" fill="rgba(255,255,255,0.5)" text-anchor="middle" letter-spacing="0.08em" font-family="DM Sans, sans-serif">CLOUD AI</text>
+      <text x="897" y="350" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">QC Training</text>
+      <text x="897" y="365" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">LMS Platform</text>
+      <text x="897" y="385" font-size="8" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">GMP modules</text>
+      <text x="897" y="399" font-size="8" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">Regulatory updates</text>
+      <text x="897" y="413" font-size="8" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">Competency gates</text>
+      <text x="897" y="430" font-size="8" fill="rgba(255,255,255,0.35)" text-anchor="middle" font-family="DM Mono, sans-serif">→ Certifications</text>
+
+      <!-- ── OUTPUTS (top) ── -->
+      <!-- Private Outputs -->
+      <rect x="28" y="148" width="408" height="128" rx="4" fill="#1A0A22" stroke="#9B4F8E" stroke-width="1.5"/>
+      <text x="232" y="169" font-size="9" font-weight="700" fill="#C278B8" text-anchor="middle" letter-spacing="0.1em" font-family="DM Sans, sans-serif">OPERATIONS CENTER (On-Premises)</text>
+      <rect x="42" y="178" width="120" height="82" rx="3" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+      <text x="102" y="200" font-size="9" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">📋 Batch &amp;</text>
+      <text x="102" y="214" font-size="9" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Recall Reports</text>
+      <text x="102" y="238" font-size="8" fill="rgba(255,255,255,0.4)" text-anchor="middle" font-family="DM Sans, sans-serif">QC · Compliance</text>
+
+      <rect x="175" y="178" width="120" height="82" rx="3" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+      <text x="235" y="200" font-size="9" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">🌡️ Cold-Chain</text>
+      <text x="235" y="214" font-size="9" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Alert Dashboard</text>
+      <text x="235" y="238" font-size="8" fill="rgba(255,255,255,0.4)" text-anchor="middle" font-family="DM Sans, sans-serif">Logistics · Insurance</text>
+
+      <rect x="308" y="178" width="120" height="82" rx="3" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+      <text x="368" y="200" font-size="9" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">⚖️ Compliance</text>
+      <text x="368" y="214" font-size="9" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Docs per Market</text>
+      <text x="368" y="238" font-size="8" fill="rgba(255,255,255,0.4)" text-anchor="middle" font-family="DM Sans, sans-serif">Regulatory · Legal</text>
+
+      <!-- Public Outputs -->
+      <rect x="553" y="148" width="420" height="128" rx="4" fill="#002D1F" stroke="#00875A" stroke-width="1.5"/>
+      <text x="763" y="169" font-size="9" font-weight="700" fill="#7BCCA8" text-anchor="middle" letter-spacing="0.1em" font-family="DM Sans, sans-serif">PLANNING & INTELLIGENCE CENTER (Cloud)</text>
+      <rect x="567" y="178" width="120" height="82" rx="3" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+      <text x="627" y="200" font-size="9" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">📈 90-Day</text>
+      <text x="627" y="214" font-size="9" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Demand Forecasts</text>
+      <text x="627" y="238" font-size="8" fill="rgba(255,255,255,0.4)" text-anchor="middle" font-family="DM Sans, sans-serif">Prod. Planning</text>
+
+      <rect x="702" y="178" width="120" height="82" rx="3" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+      <text x="762" y="200" font-size="9" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">🚨 Supplier</text>
+      <text x="762" y="214" font-size="9" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Risk Alerts</text>
+      <text x="762" y="238" font-size="8" fill="rgba(255,255,255,0.4)" text-anchor="middle" font-family="DM Sans, sans-serif">Procurement</text>
+
+      <rect x="836" y="178" width="122" height="82" rx="3" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+      <text x="897" y="200" font-size="9" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">🎓 Training</text>
+      <text x="897" y="214" font-size="9" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Certifications</text>
+      <text x="897" y="238" font-size="8" fill="rgba(255,255,255,0.4)" text-anchor="middle" font-family="DM Sans, sans-serif">QC · Production</text>
+
+      <!-- Arrows Sources → Models -->
+      <line x1="92" y1="472" x2="92" y2="442" stroke="#9B4F8E" stroke-width="1.5" marker-end="url(#arrowPR)"/>
+      <line x1="232" y1="472" x2="232" y2="442" stroke="#9B4F8E" stroke-width="1.5" marker-end="url(#arrowPR)"/>
+      <line x1="372" y1="472" x2="372" y2="442" stroke="#9B4F8E" stroke-width="1.5" marker-end="url(#arrowPR)"/>
+      <line x1="617" y1="472" x2="617" y2="442" stroke="#00875A" stroke-width="1.5" marker-end="url(#arrowGR)"/>
+      <line x1="757" y1="472" x2="757" y2="442" stroke="#00875A" stroke-width="1.5" marker-end="url(#arrowGR)"/>
+      <line x1="897" y1="472" x2="897" y2="442" stroke="#00875A" stroke-width="1.5" marker-end="url(#arrowGR)"/>
+
+      <!-- Arrows Models → Outputs -->
+      <line x1="92" y1="310" x2="102" y2="278" stroke="#9B4F8E" stroke-width="1.5" marker-end="url(#arrowPR)"/>
+      <line x1="232" y1="310" x2="235" y2="278" stroke="#9B4F8E" stroke-width="1.5" marker-end="url(#arrowPR)"/>
+      <line x1="372" y1="310" x2="368" y2="278" stroke="#9B4F8E" stroke-width="1.5" marker-end="url(#arrowPR)"/>
+      <line x1="617" y1="310" x2="627" y2="278" stroke="#00875A" stroke-width="1.5" marker-end="url(#arrowGR)"/>
+      <line x1="757" y1="310" x2="762" y2="278" stroke="#00875A" stroke-width="1.5" marker-end="url(#arrowGR)"/>
+      <line x1="897" y1="310" x2="897" y2="278" stroke="#00875A" stroke-width="1.5" marker-end="url(#arrowGR)"/>
+
+      <!-- Gateway arrows -->
+      <line x1="450" y1="260" x2="467" y2="260" stroke="#E8A020" stroke-width="2" marker-end="url(#arrowGD)"/>
+      <line x1="535" y1="260" x2="519" y2="260" stroke="#E8A020" stroke-width="2" marker-end="url(#arrowGD)"/>
+      <text x="499" y="255" font-size="7" fill="rgba(255,255,255,0.45)" text-anchor="middle" font-family="DM Mono, sans-serif">TLS/HTTPS</text>
+      <text x="499" y="267" font-size="7" fill="rgba(255,255,255,0.3)" text-anchor="middle" font-family="DM Mono, sans-serif">Non-formula only</text>
+
+      <!-- Layer labels -->
+      <text x="6" y="530" font-size="8" fill="#6B5278" font-family="DM Mono, sans-serif" transform="rotate(-90,6,530)">DATA SOURCES</text>
+      <text x="6" y="400" font-size="8" fill="#6B5278" font-family="DM Mono, sans-serif" transform="rotate(-90,6,400)">AI MODELS</text>
+      <text x="6" y="230" font-size="8" fill="#6B5278" font-family="DM Mono, sans-serif" transform="rotate(-90,6,230)">OUTPUTS</text>
+    </svg>
+  </div>
+
+  <div class="arch-legend">
+    <div class="legend-item"><div class="legend-dot" style="background:#5C3470;"></div>Private AI (On-Premises)</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#004D30;"></div>Public Cloud AI</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#E8A020;"></div>API Gateway (Non-Formulation Data Only)</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#9B4F8E;"></div>Private Data Flow</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#00875A;"></div>Cloud Data Flow</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#1A0A22;"></div>Data Sources</div>
+  </div>
+
+  <div style="padding: 20px 48px; border-top: 1px solid var(--silver);">
+    <div class="col-title">AI Routing Decision Summary</div>
+    <table class="routing-table">
+      <thead>
+        <tr>
+          <th>Workload</th>
+          <th>AI Routing</th>
+          <th>Rationale</th>
+          <th>Primary Output</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Demand Forecasting</td>
+          <td><span class="ai-badge public">Public Cloud</span></td>
+          <td>Requires external trend signals; sales volume data has no IP sensitivity</td>
+          <td>90-day SKU demand forecasts for production planning</td>
+        </tr>
+        <tr>
+          <td>Supplier Risk Intelligence</td>
+          <td><span class="ai-badge public">Public Cloud</span></td>
+          <td>Ingests public news and commodity feeds; no sensitive data involved</td>
+          <td>Supplier risk scores, early shortage warnings</td>
+        </tr>
+        <tr>
+          <td>QC & Compliance Training LMS</td>
+          <td><span class="ai-badge public">Public Cloud</span></td>
+          <td>No formulation data involved; scalable across production staff</td>
+          <td>Training completions, GMP certifications</td>
+        </tr>
+        <tr>
+          <td>Batch Traceability & Recall AI</td>
+          <td><span class="ai-badge private">Private AI</span></td>
+          <td>Formulation and batch data is client IP — must stay on-premises</td>
+          <td>Trace reports, recall batch lists, expiry alerts</td>
+        </tr>
+        <tr>
+          <td>Cold-Chain IoT Monitoring</td>
+          <td><span class="ai-badge private">Private AI</span></td>
+          <td>Shipment data tied to client orders; insurance/legal audit sensitivity</td>
+          <td>Real-time alerts, audit-ready cold-chain logs</td>
+        </tr>
+        <tr>
+          <td>Compliance Documentation AI</td>
+          <td><span class="ai-badge private">Private AI</span></td>
+          <td>Ingredient ratios and market compliance records are client IP</td>
+          <td>Market-specific compliance docs per batch</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<script>
+  document.querySelectorAll('.page-nav a').forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.querySelector(link.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      document.querySelectorAll('.page-nav a').forEach(a => a.classList.remove('active'));
+      link.classList.add('active');
+    });
+  });
+</script>
+</body>
+</html>

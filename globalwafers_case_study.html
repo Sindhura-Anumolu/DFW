@@ -1,0 +1,1194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GlobalWafers — AI Case Study | DFW Technologies</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #0057B8;
+    --primary-light: #1A7AE8;
+    --primary-pale: #EFF5FF;
+    --navy: #07152A;
+    --navy-mid: #122240;
+    --steel: #1E3A5F;
+    --silver: #E4EAF2;
+    --silver-light: #F2F5FA;
+    --white: #FFFFFF;
+    --text: #111D2E;
+    --text-muted: #4E6282;
+    --accent: #00C2A8;
+    --green: #00875A;
+    --gold: #E8A020;
+    --warn: #D44000;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--silver-light);
+    color: var(--text);
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  .page {
+    width: 1100px;
+    margin: 0 auto 60px;
+    background: white;
+    box-shadow: 0 4px 40px rgba(0,0,0,0.10);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .page-nav {
+    display: flex;
+    background: var(--navy);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .page-nav a {
+    flex: 1;
+    text-align: center;
+    padding: 14px 8px;
+    color: rgba(255,255,255,0.5);
+    text-decoration: none;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s;
+  }
+  .page-nav a:hover { color: white; border-bottom-color: var(--primary); }
+  .page-nav a.active { color: white; border-bottom-color: var(--primary); }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 32px 48px 24px;
+    border-bottom: 1px solid var(--silver);
+  }
+  .section-tag {
+    background: var(--primary);
+    color: white;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 2px;
+  }
+  .section-tag.solution { background: var(--navy); }
+  .section-tag.roi { background: var(--green); }
+  .section-tag.arch { background: var(--steel); }
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    color: var(--navy);
+  }
+  .page-num {
+    margin-left: auto;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(135deg, var(--navy) 0%, #0A2545 60%, #0F3060 100%);
+    padding: 48px 48px 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -80px; right: -80px;
+    width: 360px; height: 360px;
+    background: var(--primary);
+    border-radius: 50%;
+    opacity: 0.07;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -30px; left: 160px;
+    width: 220px; height: 220px;
+    background: var(--accent);
+    border-radius: 50%;
+    opacity: 0.04;
+  }
+  .chips-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(0,194,168,0.15);
+    border: 1px solid rgba(0,194,168,0.35);
+    padding: 5px 12px;
+    border-radius: 2px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 14px;
+  }
+  .hero h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 36px;
+    color: white;
+    line-height: 1.15;
+    margin-bottom: 6px;
+  }
+  .hero h1 span { color: var(--primary-light); font-style: italic; }
+  .hero-sub {
+    color: rgba(255,255,255,0.5);
+    font-size: 13px;
+    margin-bottom: 32px;
+  }
+  .hero-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+  }
+  .stat-card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 16px 18px;
+  }
+  .stat-card:first-child { border-radius: 4px 0 0 4px; }
+  .stat-card:last-child { border-radius: 0 4px 4px 0; }
+  .stat-val {
+    font-family: 'DM Serif Display', serif;
+    font-size: 28px;
+    color: white;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .stat-val span { font-size: 16px; color: var(--primary-light); }
+  .stat-lbl {
+    font-size: 10px;
+    color: rgba(255,255,255,0.4);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .content-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  .content-col { padding: 36px 48px; }
+  .content-col + .content-col { border-left: 1px solid var(--silver); }
+
+  .col-title {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--primary);
+    display: inline-block;
+  }
+  .body-text { color: var(--text-muted); font-size: 13px; line-height: 1.75; margin-bottom: 16px; }
+
+  .problem-list { display: flex; flex-direction: column; gap: 12px; }
+  .problem-card {
+    border: 1px solid var(--silver);
+    border-left: 3px solid var(--warn);
+    padding: 14px 16px;
+    border-radius: 0 4px 4px 0;
+    background: var(--silver-light);
+  }
+  .problem-card.critical { border-left-color: var(--primary); background: var(--primary-pale); }
+  .problem-card-title {
+    font-weight: 600;
+    font-size: 12px;
+    color: var(--navy);
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .problem-num {
+    background: var(--warn);
+    color: white;
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 9px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .problem-num.critical { background: var(--primary); }
+  .problem-card p { color: var(--text-muted); font-size: 12px; line-height: 1.6; }
+
+  .alert-bar {
+    background: var(--primary);
+    color: white;
+    padding: 16px 48px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-size: 12px;
+  }
+  .alert-bar-icon { font-size: 18px; }
+  .alert-bar strong { color: var(--accent); }
+
+  /* SOLUTION */
+  .solution-intro {
+    padding: 28px 48px;
+    background: var(--silver-light);
+    border-bottom: 1px solid var(--silver);
+  }
+  .solution-intro p { color: var(--text-muted); max-width: 800px; font-size: 13px; line-height: 1.75; }
+  .solution-intro strong { color: var(--navy); }
+
+  .private-only-banner {
+    background: var(--primary);
+    padding: 14px 48px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid var(--silver);
+  }
+  .private-only-banner span {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: white;
+  }
+  .private-only-banner p { font-size: 12px; color: rgba(255,255,255,0.7); }
+
+  .solution-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-bottom: 1px solid var(--silver);
+  }
+  .solution-item {
+    padding: 28px 36px;
+    border-right: 1px solid var(--silver);
+    border-bottom: 1px solid var(--silver);
+  }
+  .solution-item:nth-child(2n) { border-right: none; }
+  .solution-item:nth-last-child(-n+2) { border-bottom: none; }
+  .solution-item-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 12px;
+  }
+  .solution-icon {
+    width: 36px; height: 36px;
+    background: var(--navy);
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+  .solution-item-title { font-weight: 600; font-size: 13px; color: var(--navy); margin-bottom: 3px; }
+  .solution-item-problem { font-size: 11px; color: var(--primary); font-weight: 500; }
+  .solution-item p { font-size: 12px; color: var(--text-muted); line-height: 1.7; margin-bottom: 12px; }
+  .tech-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+  .tech-tag {
+    background: var(--silver);
+    color: var(--steel);
+    font-size: 10px;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 2px;
+    font-family: 'DM Mono', monospace;
+  }
+  .ai-badge {
+    font-size: 9px;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 2px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .ai-badge.private { background: #ddeeff; color: #0057B8; }
+  .ai-badge.public { background: #e6f9f0; color: #00875A; }
+  .ai-badge.hybrid { background: #fff4e6; color: #b85c00; }
+
+  .benchmark-callout {
+    margin: 24px 48px;
+    background: var(--navy);
+    border-left: 4px solid var(--accent);
+    padding: 20px 24px;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  .benchmark-callout-icon { font-size: 24px; flex-shrink: 0; }
+  .benchmark-callout-title {
+    font-weight: 700;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+  .benchmark-callout p { font-size: 12px; color: rgba(255,255,255,0.7); line-height: 1.65; }
+
+  .policy-section { padding: 28px 48px; border-top: 1px solid var(--silver); }
+  .policy-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-top: 16px; }
+  .policy-card { border: 1px solid var(--silver); padding: 14px 16px; border-radius: 4px; }
+  .policy-card.critical { border-color: var(--primary); background: var(--primary-pale); }
+  .policy-card-title {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .policy-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--warn); flex-shrink: 0; }
+  .policy-dot.critical { background: var(--primary); }
+  .policy-card p { font-size: 11px; color: var(--text-muted); line-height: 1.6; }
+
+  /* ROI */
+  .roi-hero {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%);
+    padding: 36px 48px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 2px;
+  }
+  .roi-big {
+    padding: 24px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    text-align: center;
+  }
+  .roi-big:first-child { border-radius: 4px 0 0 4px; }
+  .roi-big:last-child { border-radius: 0 4px 4px 0; }
+  .roi-big-val {
+    font-family: 'DM Serif Display', serif;
+    font-size: 38px;
+    color: white;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .roi-big-val.green { color: #4ade80; }
+  .roi-big-val.gold { color: var(--gold); }
+  .roi-big-lbl { font-size: 11px; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.08em; }
+
+  .savings-grid { display: grid; grid-template-columns: 1fr 1fr; padding: 36px 48px; gap: 32px; border-bottom: 1px solid var(--silver); }
+  .savings-section-title {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--text-muted);
+    margin-bottom: 16px; padding-bottom: 10px;
+    border-bottom: 2px solid var(--green); display: inline-block;
+  }
+  .savings-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 10px 0; border-bottom: 1px solid var(--silver);
+  }
+  .savings-row:last-child { border-bottom: none; }
+  .savings-label { font-size: 12px; color: var(--text-muted); }
+  .savings-value { font-weight: 600; font-size: 13px; color: var(--green); font-family: 'DM Mono', monospace; }
+  .savings-value.cost { color: var(--warn); }
+
+  .timeline-section { padding: 28px 48px; border-bottom: 1px solid var(--silver); }
+  .timeline-title {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--text-muted);
+    margin-bottom: 20px; padding-bottom: 10px;
+    border-bottom: 2px solid var(--navy); display: inline-block;
+  }
+  .timeline-bars { display: flex; flex-direction: column; gap: 10px; }
+  .timeline-row { display: flex; align-items: center; gap: 12px; }
+  .timeline-label { font-size: 11px; color: var(--text-muted); width: 180px; flex-shrink: 0; text-align: right; }
+  .timeline-bar-wrap { flex: 1; height: 28px; background: var(--silver); border-radius: 2px; position: relative; overflow: hidden; }
+  .timeline-bar {
+    height: 100%; display: flex; align-items: center; padding-left: 10px;
+    font-size: 10px; font-weight: 600; color: white; border-radius: 2px; white-space: nowrap;
+  }
+  .timeline-month { font-size: 10px; color: var(--text-muted); width: 60px; font-family: 'DM Mono', monospace; }
+
+  .capabilities-section { padding: 28px 48px; }
+  .cap-title {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--text-muted);
+    margin-bottom: 16px; padding-bottom: 10px;
+    border-bottom: 2px solid var(--accent); display: inline-block;
+  }
+  .cap-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; }
+  .cap-card { background: var(--silver-light); border: 1px solid var(--silver); padding: 16px; border-radius: 4px; }
+  .cap-card-title { font-weight: 600; font-size: 12px; color: var(--navy); margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+  .cap-icon { font-size: 14px; }
+  .cap-card p { font-size: 11px; color: var(--text-muted); line-height: 1.6; }
+  .cap-required { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--primary); margin-top: 8px; }
+
+  /* ARCH */
+  .arch-intro { padding: 24px 48px; background: var(--silver-light); border-bottom: 1px solid var(--silver); }
+  .arch-intro p { font-size: 12px; color: var(--text-muted); max-width: 720px; }
+
+  .arch-diagram { padding: 36px 48px; }
+  svg.arch { width: 100%; height: 580px; font-family: 'DM Sans', sans-serif; }
+
+  .arch-legend {
+    display: flex; gap: 24px; padding: 16px 48px;
+    background: var(--silver-light); border-top: 1px solid var(--silver); flex-wrap: wrap;
+  }
+  .legend-item { display: flex; align-items: center; gap: 8px; font-size: 11px; color: var(--text-muted); }
+  .legend-dot { width: 12px; height: 12px; border-radius: 2px; flex-shrink: 0; }
+
+  .page-divider { height: 8px; background: var(--primary); margin-bottom: 60px; }
+
+  .routing-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 16px; }
+  .routing-table th {
+    background: var(--navy); color: rgba(255,255,255,0.7);
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em;
+    font-weight: 600; padding: 10px 14px; text-align: left;
+  }
+  .routing-table td { padding: 10px 14px; border-bottom: 1px solid var(--silver); color: var(--text-muted); }
+  .routing-table tr:last-child td { border-bottom: none; }
+  .routing-table tr:nth-child(even) td { background: var(--silver-light); }
+  .routing-table td:first-child { color: var(--navy); font-weight: 500; }
+
+  .impact-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+  .impact-tag {
+    background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
+    padding: 5px 12px; border-radius: 2px; font-size: 11px; color: rgba(255,255,255,0.75);
+  }
+  .impact-tag.hot { border-color: var(--accent); color: var(--accent); }
+</style>
+</head>
+<body>
+
+<!-- ══ PAGE 1: COMPANY OVERVIEW ══ -->
+<div class="page" id="page1">
+  <nav class="page-nav">
+    <a href="#page1" class="active">01 · Overview</a>
+    <a href="#page2">02 · Solution</a>
+    <a href="#page3">03 · Cost & ROI</a>
+    <a href="#page4">04 · Architecture</a>
+  </nav>
+
+  <div class="hero">
+    <div class="chips-badge">⚡ CHIPS & Science Act Recipient · $406M Federal Funding</div>
+    <h1>GlobalWafers<br><span>America</span></h1>
+    <div class="hero-sub">Semiconductor Silicon Wafer Manufacturing · Sherman, Texas · Taiwan-Based Parent (GlobalWafers Co., Ltd.)</div>
+    <div class="hero-stats">
+      <div class="stat-card">
+        <div class="stat-val">$5<span>B+</span></div>
+        <div class="stat-lbl">Total US Investment</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val">142<span>ac</span></div>
+        <div class="stat-lbl">Sherman Campus</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val">600<span>K</span></div>
+        <div class="stat-lbl">Wafers/Month (Phase 1)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val">650<span>+</span></div>
+        <div class="stat-lbl">New Hires by 2028</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-header">
+    <span class="section-tag">Overview</span>
+    <span class="section-title">Company Profile & Operational Scale</span>
+    <span class="page-num">Page 01 / 04</span>
+  </div>
+
+  <div class="content-grid">
+    <div class="content-col">
+      <div class="col-title">About GlobalWafers America</div>
+      <p class="body-text">GlobalWafers Co., Ltd. — headquartered in Hsinchu, Taiwan — is one of the world's top three semiconductor silicon wafer manufacturers. In 2022, it selected Sherman, Texas for a $5B+ greenfield investment, constructing the first 300mm silicon wafer fab to be built in the United States in over 20 years. The Sherman campus spans 142 acres and is designed for up to six production phases.</p>
+      <p class="body-text">Phase 1 is now operational, producing 600,000 wafers per month. Silicon wafers are the foundational substrate for every advanced semiconductor — chips for electric vehicles, AI accelerators, consumer electronics, and defense systems all begin here. The facility is the only advanced 300mm silicon wafer fab currently operating in the U.S., making it strategically critical to domestic chip supply chain resilience.</p>
+      <p class="body-text">GlobalWafers received $406M in direct CHIPS and Science Act funding, with additional funding tied to workforce development requirements. Phase 2 construction is imminent, with plans to hire up to 650 engineering, technical, and operational employees by 2028 — largely from a Texas workforce with no pre-existing semiconductor manufacturing experience.</p>
+
+      <div class="col-title" style="margin-top:24px;">Strategic Context</div>
+      <div class="impact-tags">
+        <span class="impact-tag hot">Only 300mm fab in the US</span>
+        <span class="impact-tag">6-phase campus expansion underway</span>
+        <span class="impact-tag">CHIPS Act compliance requirements</span>
+        <span class="impact-tag">Taiwan → Texas knowledge transfer challenge</span>
+        <span class="impact-tag">No local semiconductor workforce pipeline</span>
+      </div>
+    </div>
+
+    <div class="content-col">
+      <div class="col-title">Key Problems Identified</div>
+      <div class="problem-list">
+        <div class="problem-card critical">
+          <div class="problem-card-title">
+            <div class="problem-num critical">1</div>
+            Workforce Ramp-Up Crisis — No Local Talent Pipeline
+          </div>
+          <p>Sherman has no semiconductor manufacturing history. GlobalWafers must hire and train 650+ technicians and engineers by 2028 for roles that require specialized cleanroom skills not available through traditional hiring. The U.S. semiconductor industry is projected to face a shortage of 70,000–90,000 fab workers when new fabs come online — GlobalWafers is at the center of this crisis.</p>
+        </div>
+        <div class="problem-card critical">
+          <div class="problem-card-title">
+            <div class="problem-num critical">2</div>
+            Knowledge Transfer from Taiwan Operations
+          </div>
+          <p>Decades of process expertise, equipment troubleshooting procedures, and yield optimization knowledge exist in the heads of GlobalWafers' Taiwan engineering team. That knowledge must be systematically captured and transferred to a new U.S. workforce — before Taiwan engineers rotate out of Sherman.</p>
+        </div>
+        <div class="problem-card">
+          <div class="problem-card-title">
+            <div class="problem-num">3</div>
+            Cleanroom Sensor Monitoring & Yield Protection
+          </div>
+          <p>Silicon wafer manufacturing tolerates defects at parts-per-million levels. Temperature, humidity, vibration, and airborne particle counts inside cleanrooms must be monitored continuously. Any deviation — even micro-vibrations — causes yield loss worth tens of thousands of dollars per affected batch.</p>
+        </div>
+        <div class="problem-card">
+          <div class="problem-card-title">
+            <div class="problem-num">4</div>
+            Equipment Maintenance at Multi-Million Dollar Scale
+          </div>
+          <p>Each cleanroom tool (deposition systems, polishers, inspection equipment) is worth $2M–$20M. Reactive maintenance is not an option. Without predictive analytics on equipment sensor data, unplanned failures cost production time and risk contaminating entire cleanroom batches.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="alert-bar">
+    <div class="alert-bar-icon">⚠️</div>
+    <div><strong>Critical Note:</strong> All AI for GlobalWafers must be deployed <strong>private / on-premises only.</strong> No process data, yield data, equipment parameters, or SOP content may touch a public cloud service — this is both IP policy and CHIPS Act compliance. Public cloud is not an option for any workload at this facility.</div>
+  </div>
+
+</div>
+<div class="page-divider"></div>
+
+<!-- ══ PAGE 2: SOLUTION ══ -->
+<div class="page" id="page2">
+  <nav class="page-nav">
+    <a href="#page1">01 · Overview</a>
+    <a href="#page2" class="active">02 · Solution</a>
+    <a href="#page3">03 · Cost & ROI</a>
+    <a href="#page4">04 · Architecture</a>
+  </nav>
+
+  <div class="section-header">
+    <span class="section-tag solution">Solution</span>
+    <span class="section-title">AI Solution Stack & Problem Mapping</span>
+    <span class="page-num">Page 02 / 04</span>
+  </div>
+
+  <div class="solution-intro">
+    <p>DFW Technologies proposes a <strong>100% private AI deployment</strong> for GlobalWafers. Every workload — cleanroom monitoring, knowledge capture, digital twin training, yield prediction, workforce tracking — runs on-premises within GlobalWafers' secure network perimeter. This is non-negotiable given the IP sensitivity of process recipes and yield data, and the CHIPS Act compliance obligations tied to GlobalWafers' federal funding agreement.</p>
+  </div>
+
+  <div class="private-only-banner">
+    <span>🔒 Private AI Only</span>
+    <p>No data leaves the facility. All AI models, inference, and storage are on-premises. No exceptions across any workload.</p>
+  </div>
+
+  <div class="solution-grid">
+    <div class="solution-item">
+      <div class="solution-item-header">
+        <div class="solution-icon">🧠</div>
+        <div>
+          <div class="solution-item-title">AI Knowledge Capture & Transfer System</div>
+          <div class="solution-item-problem">↳ Solves: Problem #2 — Taiwan → Texas Knowledge Transfer</div>
+        </div>
+        <span class="ai-badge private">Private AI</span>
+      </div>
+      <p>Structured sessions with Taiwan engineering leads to systematically capture process knowledge into a private AI knowledge base. Covers equipment-specific troubleshooting trees, process recipe rationale, cleanroom SOPs, and failure mode libraries. New technicians query the system in natural language — "What do I do when the polisher shows vibration signature X?" — and receive answers grounded in verified expert knowledge, not guesswork.</p>
+      <div class="tech-tags">
+        <span class="tech-tag">Private LLM (On-Prem)</span>
+        <span class="tech-tag">Knowledge Graph</span>
+        <span class="tech-tag">RAG Architecture</span>
+        <span class="tech-tag">Expert Interview Pipeline</span>
+      </div>
+    </div>
+
+    <div class="solution-item">
+      <div class="solution-item-header">
+        <div class="solution-icon">🏗️</div>
+        <div>
+          <div class="solution-item-title">Digital Twin Training — Cleanroom Equipment</div>
+          <div class="solution-item-problem">↳ Solves: Problem #1 — Workforce Ramp-Up</div>
+        </div>
+        <span class="ai-badge private">Private AI</span>
+      </div>
+      <p>Virtual replicas of cleanroom tools allow new operators to train on simulated equipment before touching real tools worth millions. Trainees practice alarm response, maintenance sequences, and process adjustments in a zero-risk environment — the same approach used in flight simulators and nuclear plant training. AI assesses competency and gates access to live equipment until proficiency thresholds are met.</p>
+      <div class="tech-tags">
+        <span class="tech-tag">Digital Twin Simulation</span>
+        <span class="tech-tag">AI Competency Assessment</span>
+        <span class="tech-tag">3D Equipment Models</span>
+        <span class="tech-tag">Access Gating</span>
+      </div>
+    </div>
+
+    <div class="solution-item">
+      <div class="solution-item-header">
+        <div class="solution-icon">📡</div>
+        <div>
+          <div class="solution-item-title">Cleanroom Environment Monitoring AI</div>
+          <div class="solution-item-problem">↳ Solves: Problem #3 — Yield Protection</div>
+        </div>
+        <span class="ai-badge private">Private AI</span>
+      </div>
+      <p>Continuous monitoring of cleanroom environmental parameters — temperature, humidity, airborne particle count, vibration, and pressure differentials — through a private AI anomaly detection layer. AI learns normal variance patterns per production phase and flags deviations dynamically, triggering alerts before they cause yield loss. Automated incident logging links environment events to batch records and maintenance history.</p>
+      <div class="tech-tags">
+        <span class="tech-tag">IIoT Sensor Network</span>
+        <span class="tech-tag">Anomaly Detection ML</span>
+        <span class="tech-tag">Dynamic Thresholds</span>
+        <span class="tech-tag">Batch Correlation</span>
+      </div>
+    </div>
+
+    <div class="solution-item">
+      <div class="solution-item-header">
+        <div class="solution-icon">🔧</div>
+        <div>
+          <div class="solution-item-title">Equipment Predictive Maintenance</div>
+          <div class="solution-item-problem">↳ Solves: Problem #4 — Equipment Failure Prevention</div>
+        </div>
+        <span class="ai-badge private">Private AI</span>
+      </div>
+      <p>Sensor-driven predictive maintenance on cleanroom tools — monitoring vibration signatures, temperature trends, motor current draw, and cycle time deviations. Private AI models detect early failure patterns and schedule maintenance proactively, before a $10M deposition tool fails mid-batch. Integrates with GlobalWafers' maintenance scheduling system for work order generation.</p>
+      <div class="tech-tags">
+        <span class="tech-tag">Predictive Maintenance ML</span>
+        <span class="tech-tag">Vibration Analysis</span>
+        <span class="tech-tag">Time-Series Modeling</span>
+        <span class="tech-tag">CMMS Integration</span>
+      </div>
+    </div>
+
+    <div class="solution-item">
+      <div class="solution-item-header">
+        <div class="solution-icon">📊</div>
+        <div>
+          <div class="solution-item-title">Yield Prediction & Process Intelligence</div>
+          <div class="solution-item-problem">↳ Solves: Problem #3 — Proactive Yield Management</div>
+        </div>
+        <span class="ai-badge private">Private AI</span>
+      </div>
+      <p>AI correlates real-time environment sensor data with historical yield outcomes to proactively flag conditions likely to cause defects — before wafers are processed. Over time, the model identifies which combinations of parameters (temperature drift + particle spike + tool cycle count) predict yield excursions, enabling process engineers to intervene hours earlier than current manual monitoring allows.</p>
+      <div class="tech-tags">
+        <span class="tech-tag">Yield Prediction Models</span>
+        <span class="tech-tag">Multivariate Correlation</span>
+        <span class="tech-tag">Process Control AI</span>
+        <span class="tech-tag">Engineer Alerts</span>
+      </div>
+    </div>
+
+    <div class="solution-item">
+      <div class="solution-item-header">
+        <div class="solution-icon">👥</div>
+        <div>
+          <div class="solution-item-title">AI Workforce Skill Tracking Platform</div>
+          <div class="solution-item-problem">↳ Solves: Problem #1 — Scalable Workforce Development</div>
+        </div>
+        <span class="ai-badge private">Private AI</span>
+      </div>
+      <p>AI-driven skill assessment matched to fab role requirements — mapping each employee's training completion, competency scores, and assessed performance to their assigned role. Automatically flags skill gaps before they become production risks. As Phase 2 equipment is installed, training tracks are extended to cover new tools with minimal manual curriculum development, leveraging the existing knowledge base.</p>
+      <div class="tech-tags">
+        <span class="tech-tag">Skills Intelligence AI</span>
+        <span class="tech-tag">Role-Based Tracking</span>
+        <span class="tech-tag">Gap Detection</span>
+        <span class="tech-tag">HRIS Integration</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="benchmark-callout" style="margin: 24px 48px;">
+    <div class="benchmark-callout-icon">🔬</div>
+    <div>
+      <div class="benchmark-callout-title">Industry Benchmark: Seertech + Analog Devices — Semiconductor Knowledge Capture & Onboarding</div>
+      <p>At the SEMI Fab Owners Alliance Summit, Analog Devices and Seertech presented their joint approach to structured knowledge capture and digital learning in semiconductor manufacturing — demonstrating how structured knowledge bases, digital onboarding, and AI-assessed training programs can significantly reduce time-to-proficiency in precision fab environments. Separately, SEMI's Smart Manufacturing Initiative highlights digital twins as the dominant emerging tool for fab workforce training: "Digital twins offer immersive training, real-time skills assessment, objective evaluation, and improved decision-making — like a flight simulator before putting a pilot in an actual plane." DFW Technologies applies this validated semiconductor-specific methodology to GlobalWafers' Sherman ramp-up challenge.</p>
+    </div>
+  </div>
+
+  <div class="policy-section">
+    <div class="col-title">Policies, Compliance & Restrictions to Address</div>
+    <div class="policy-grid">
+      <div class="policy-card critical">
+        <div class="policy-card-title"><div class="policy-dot critical"></div>CHIPS & Science Act — Data Governance</div>
+        <p>GlobalWafers' $406M federal award includes data security obligations. Process data, yield records, and equipment parameters must remain within approved data perimeters. Any AI system touching this data must be on-premises and auditable per Commerce Department requirements.</p>
+      </div>
+      <div class="policy-card critical">
+        <div class="policy-card-title"><div class="policy-dot critical"></div>Trade Secret & IP Protection</div>
+        <p>Silicon wafer process recipes and yield optimization parameters are among the most closely guarded IP in manufacturing. No process data may be transmitted to public cloud AI services. All models must be trained and run on GlobalWafers-controlled infrastructure.</p>
+      </div>
+      <div class="policy-card critical">
+        <div class="policy-card-title"><div class="policy-dot critical"></div>Export Control (EAR / ITAR Adjacency)</div>
+        <p>Semiconductor manufacturing equipment and processes may be subject to Export Administration Regulations. AI systems that capture and store process knowledge must be access-controlled to prevent unauthorized disclosure to foreign nationals, consistent with EAR requirements.</p>
+      </div>
+      <div class="policy-card">
+        <div class="policy-card-title"><div class="policy-dot"></div>CHIPS Workforce Development Obligations</div>
+        <p>Federal funding includes a $6M CHIPS workforce development allocation with specific reporting requirements. AI training platform must generate audit-ready records of training completion, competency assessments, and workforce development outcomes to satisfy federal reporting.</p>
+      </div>
+      <div class="policy-card">
+        <div class="policy-card-title"><div class="policy-dot"></div>ISO 14644 Cleanroom Standards</div>
+        <p>Cleanroom monitoring AI must align with ISO 14644 classifications for particle counts, temperature, and humidity. Alert thresholds and monitoring intervals must meet or exceed the cleanroom class requirements for 300mm wafer fabrication environments.</p>
+      </div>
+      <div class="policy-card">
+        <div class="policy-card-title"><div class="policy-dot"></div>Texas Labor & Employment Law</div>
+        <p>AI-based skill tracking and competency gating systems that affect employment decisions must comply with Texas employment law and any applicable federal anti-discrimination regulations. Transparent documentation of how AI assessments are used in employment decisions is required.</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+<div class="page-divider"></div>
+
+<!-- ══ PAGE 3: COST & ROI ══ -->
+<div class="page" id="page3">
+  <nav class="page-nav">
+    <a href="#page1">01 · Overview</a>
+    <a href="#page2">02 · Solution</a>
+    <a href="#page3" class="active">03 · Cost & ROI</a>
+    <a href="#page4">04 · Architecture</a>
+  </nav>
+
+  <div class="section-header">
+    <span class="section-tag roi">Cost & ROI</span>
+    <span class="section-title">Financial Impact & DFW Tech Capabilities Required</span>
+    <span class="page-num">Page 03 / 04</span>
+  </div>
+
+  <div class="roi-hero">
+    <div class="roi-big">
+      <div class="roi-big-val gold">$600K–$1M</div>
+      <div class="roi-big-lbl">Total Investment · 18 Months</div>
+    </div>
+    <div class="roi-big">
+      <div class="roi-big-val green">$4M–$8M</div>
+      <div class="roi-big-lbl">Estimated Annual Value Protected</div>
+    </div>
+    <div class="roi-big">
+      <div class="roi-big-val">18–24 mo</div>
+      <div class="roi-big-lbl">Payback Period</div>
+    </div>
+  </div>
+
+  <div class="savings-grid">
+    <div>
+      <div class="savings-section-title">Projected Annual Value Protected / Saved</div>
+      <div class="savings-row">
+        <span class="savings-label">Yield Loss Prevention — Earlier Deviation Detection (2–4 hrs earlier)</span>
+        <span class="savings-value">$1.5M–$3M</span>
+      </div>
+      <div class="savings-row">
+        <span class="savings-label">Equipment Failure Prevention — Predictive vs. Reactive Maintenance</span>
+        <span class="savings-value">$800K–$1.5M</span>
+      </div>
+      <div class="savings-row">
+        <span class="savings-label">Workforce Ramp-Up — 30–40% Reduction in Time-to-Proficiency</span>
+        <span class="savings-value">$600K–$1.2M</span>
+      </div>
+      <div class="savings-row">
+        <span class="savings-label">Knowledge Retention — Prevents Loss When Taiwan Team Rotates Out</span>
+        <span class="savings-value">$500K–$1M</span>
+      </div>
+      <div class="savings-row">
+        <span class="savings-label">CHIPS Workforce Reporting — Avoids Federal Compliance Penalties</span>
+        <span class="savings-value">$200K–$500K</span>
+      </div>
+      <div class="savings-row" style="border-top: 2px solid var(--green); padding-top:14px; margin-top:4px;">
+        <span class="savings-label" style="font-weight:600; color:var(--navy);">Total Estimated Annual Value</span>
+        <span class="savings-value" style="font-size:16px;">$4M–$8M</span>
+      </div>
+    </div>
+
+    <div>
+      <div class="savings-section-title">Investment Breakdown</div>
+      <div class="savings-row">
+        <span class="savings-label">Phase 1: Discovery & Architecture Blueprint (4 weeks)</span>
+        <span class="savings-value cost">$40K–$60K</span>
+      </div>
+      <div class="savings-row">
+        <span class="savings-label">Phase 2: Knowledge Capture + Pilot Monitoring (Months 2–6)</span>
+        <span class="savings-value cost">$180K–$300K</span>
+      </div>
+      <div class="savings-row">
+        <span class="savings-label">Phase 3: Digital Twin + Full Platform Scale (Months 7–18)</span>
+        <span class="savings-value cost">$380K–$640K</span>
+      </div>
+      <div class="savings-row">
+        <span class="savings-label">On-Premises Hardware (Edge Nodes, Sensors, Servers)</span>
+        <span class="savings-value cost">Included in phases</span>
+      </div>
+      <div class="savings-row">
+        <span class="savings-label">Annual Maintenance & Model Retraining (Year 2+)</span>
+        <span class="savings-value cost">$60K–$100K/yr</span>
+      </div>
+      <div class="savings-row" style="border-top: 2px solid var(--warn); padding-top:14px; margin-top:4px;">
+        <span class="savings-label" style="font-weight:600; color:var(--navy);">Total 18-Month Investment</span>
+        <span class="savings-value cost" style="font-size:16px;">$600K–$1M</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="timeline-section">
+    <div class="timeline-title">Implementation Timeline</div>
+    <div style="display:flex; gap:8px; margin-bottom:12px; font-size:10px; color:var(--text-muted); padding-left:192px;">
+      <span style="flex:1; text-align:left;">Month 0</span>
+      <span style="flex:1; text-align:center;">Month 9</span>
+      <span style="flex:1; text-align:right;">Month 18</span>
+    </div>
+    <div class="timeline-bars">
+      <div class="timeline-row">
+        <div class="timeline-label">Discovery & Architecture</div>
+        <div class="timeline-bar-wrap">
+          <div class="timeline-bar" style="width:18%; background:var(--steel);">Weeks 1–4</div>
+        </div>
+        <div class="timeline-month">4 wks</div>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-label">Knowledge Capture (Taiwan)</div>
+        <div class="timeline-bar-wrap">
+          <div class="timeline-bar" style="width:44%; margin-left:18%; background:var(--primary);">Months 2–6 — URGENT</div>
+        </div>
+        <div class="timeline-month">5 mo</div>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-label">Cleanroom Sensor Monitoring</div>
+        <div class="timeline-bar-wrap">
+          <div class="timeline-bar" style="width:82%; margin-left:18%; background:var(--navy);">Months 2–18 (continuous)</div>
+        </div>
+        <div class="timeline-month">16 mo</div>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-label">Digital Twin Training</div>
+        <div class="timeline-bar-wrap">
+          <div class="timeline-bar" style="width:55%; margin-left:44%; background:var(--accent); color:var(--navy);">Months 7–18</div>
+        </div>
+        <div class="timeline-month">12 mo</div>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-label">Yield Prediction Models</div>
+        <div class="timeline-bar-wrap">
+          <div class="timeline-bar" style="width:44%; margin-left:55%; background:var(--green);">Months 10–18</div>
+        </div>
+        <div class="timeline-month">9 mo</div>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-label">Workforce Skill Tracking</div>
+        <div class="timeline-bar-wrap">
+          <div class="timeline-bar" style="width:55%; margin-left:44%; background:var(--gold); color:var(--navy);">Months 7–18</div>
+        </div>
+        <div class="timeline-month">12 mo</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="capabilities-section">
+    <div class="cap-title">DFW Technologies Capabilities Required</div>
+    <div class="cap-grid">
+      <div class="cap-card">
+        <div class="cap-card-title"><span class="cap-icon">🔒</span> Private AI / On-Prem Deployment</div>
+        <p>Ability to deploy, configure, and maintain LLMs and ML models entirely on client-controlled infrastructure — no cloud dependency. Includes air-gapped network support and on-site hardware provisioning.</p>
+        <div class="cap-required">⚠ Core Requirement</div>
+      </div>
+      <div class="cap-card">
+        <div class="cap-card-title"><span class="cap-icon">📚</span> Knowledge Engineering</div>
+        <p>Structured knowledge capture methodology — facilitated expert interviews, SOP documentation, and knowledge graph construction. Must translate tacit engineering expertise into queryable AI knowledge bases.</p>
+        <div class="cap-required">⚠ Core Requirement</div>
+      </div>
+      <div class="cap-card">
+        <div class="cap-card-title"><span class="cap-icon">🏗️</span> Digital Twin Development</div>
+        <p>3D simulation of manufacturing equipment and cleanroom environments for training purposes. Requires collaboration with GlobalWafers' equipment vendors for accurate tool models and process parameter ranges.</p>
+        <div class="cap-required">⚠ Core Requirement</div>
+      </div>
+      <div class="cap-card">
+        <div class="cap-card-title"><span class="cap-icon">📡</span> IIoT Sensor Integration</div>
+        <p>Experience deploying and integrating environmental sensors (particle counters, temperature, humidity, vibration) into existing cleanroom infrastructure without disrupting ISO 14644 compliance.</p>
+        <div class="cap-required">Required</div>
+      </div>
+      <div class="cap-card">
+        <div class="cap-card-title"><span class="cap-icon">🔐</span> Security & Compliance Architecture</div>
+        <p>Ability to design and document AI system architecture that satisfies CHIPS Act data governance requirements, EAR access controls, and federal reporting obligations — and withstand Commerce Department audits.</p>
+        <div class="cap-required">Required</div>
+      </div>
+      <div class="cap-card">
+        <div class="cap-card-title"><span class="cap-icon">📊</span> Semiconductor Domain Expertise</div>
+        <p>Understanding of wafer fabrication processes, cleanroom protocols, and semiconductor equipment operations sufficient to structure knowledge capture sessions and validate AI outputs for technical accuracy.</p>
+        <div class="cap-required">Required</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<div class="page-divider"></div>
+
+<!-- ══ PAGE 4: ARCHITECTURE ══ -->
+<div class="page" id="page4">
+  <nav class="page-nav">
+    <a href="#page1">01 · Overview</a>
+    <a href="#page2">02 · Solution</a>
+    <a href="#page3">03 · Cost & ROI</a>
+    <a href="#page4" class="active">04 · Architecture</a>
+  </nav>
+
+  <div class="section-header">
+    <span class="section-tag arch">Architecture</span>
+    <span class="section-title">Private-Only AI Architecture — GlobalWafers Deployment</span>
+    <span class="page-num">Page 04 / 04</span>
+  </div>
+
+  <div class="arch-intro">
+    <p>GlobalWafers uses a <strong>fully private, air-gapped AI architecture</strong>. All data — sensor streams, process records, knowledge base, training content, yield data — stays within GlobalWafers' on-premises network perimeter. No external APIs, no cloud inference, no public services. Three internal zones: <strong>Production Floor</strong> (sensors & equipment), <strong>AI Processing Layer</strong> (models & analytics), and <strong>User Interface Layer</strong> (dashboards & training) — all interconnected via secured internal network only.</p>
+  </div>
+
+  <div class="arch-diagram">
+    <svg class="arch" viewBox="0 0 1000 560" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="arrowB" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#1E3A5F"/>
+        </marker>
+        <marker id="arrowP" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#0057B8"/>
+        </marker>
+        <marker id="arrowA" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#00C2A8"/>
+        </marker>
+      </defs>
+
+      <!-- Full private zone background -->
+      <rect x="10" y="10" width="980" height="540" rx="6" fill="#EFF5FF" stroke="#0057B8" stroke-width="2" stroke-dasharray="8,4"/>
+      <text x="26" y="32" font-size="10" font-weight="700" fill="#0057B8" letter-spacing="1.2" font-family="DM Sans, sans-serif">🔒  PRIVATE AI ZONE — ON-PREMISES ONLY · NO EXTERNAL CONNECTIONS</text>
+
+      <!-- Zone 1: Production Floor -->
+      <rect x="28" y="45" width="944" height="140" rx="4" fill="rgba(7,21,42,0.85)" stroke="#1E3A5F" stroke-width="1"/>
+      <text x="42" y="65" font-size="9" font-weight="700" fill="rgba(255,255,255,0.45)" letter-spacing="1" font-family="DM Sans, sans-serif">ZONE 1 · PRODUCTION FLOOR — DATA SOURCES</text>
+
+      <!-- Source boxes in Zone 1 -->
+      <rect x="42" y="74" width="140" height="96" rx="3" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+      <text x="112" y="99" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">🌡️ Cleanroom</text>
+      <text x="112" y="113" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Env. Sensors</text>
+      <text x="112" y="131" font-size="8" fill="rgba(255,255,255,0.4)" text-anchor="middle" font-family="DM Mono, sans-serif">Temp · Humidity</text>
+      <text x="112" y="143" font-size="8" fill="rgba(255,255,255,0.4)" text-anchor="middle" font-family="DM Mono, sans-serif">Particles · Vibration</text>
+      <text x="112" y="158" font-size="8" fill="#00C2A8" text-anchor="middle" font-family="DM Mono, sans-serif">ISO 14644</text>
+
+      <rect x="202" y="74" width="140" height="96" rx="3" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+      <text x="272" y="99" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">⚙️ Equipment</text>
+      <text x="272" y="113" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Tool Sensors</text>
+      <text x="272" y="131" font-size="8" fill="rgba(255,255,255,0.4)" text-anchor="middle" font-family="DM Mono, sans-serif">Vibration · Current</text>
+      <text x="272" y="143" font-size="8" fill="rgba(255,255,255,0.4)" text-anchor="middle" font-family="DM Mono, sans-serif">Temp · Cycle Time</text>
+      <text x="272" y="158" font-size="8" fill="#00C2A8" text-anchor="middle" font-family="DM Mono, sans-serif">OPC-UA / Modbus</text>
+
+      <rect x="362" y="74" width="140" height="96" rx="3" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+      <text x="432" y="99" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">📋 Process</text>
+      <text x="432" y="113" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">MES / ERP Data</text>
+      <text x="432" y="131" font-size="8" fill="rgba(255,255,255,0.4)" text-anchor="middle" font-family="DM Mono, sans-serif">Batch Records</text>
+      <text x="432" y="143" font-size="8" fill="rgba(255,255,255,0.4)" text-anchor="middle" font-family="DM Mono, sans-serif">Yield Data</text>
+      <text x="432" y="158" font-size="8" fill="#00C2A8" text-anchor="middle" font-family="DM Mono, sans-serif">SQL / REST (Internal)</text>
+
+      <rect x="522" y="74" width="140" height="96" rx="3" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+      <text x="592" y="99" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">🧬 Expert</text>
+      <text x="592" y="113" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Knowledge Input</text>
+      <text x="592" y="131" font-size="8" fill="rgba(255,255,255,0.4)" text-anchor="middle" font-family="DM Mono, sans-serif">Taiwan Engineer SOPs</text>
+      <text x="592" y="143" font-size="8" fill="rgba(255,255,255,0.4)" text-anchor="middle" font-family="DM Mono, sans-serif">Troubleshoot Guides</text>
+      <text x="592" y="158" font-size="8" fill="#00C2A8" text-anchor="middle" font-family="DM Mono, sans-serif">Structured Interviews</text>
+
+      <rect x="682" y="74" width="140" height="96" rx="3" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+      <text x="752" y="99" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">👤 HR &amp;</text>
+      <text x="752" y="113" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Workforce Data</text>
+      <text x="752" y="131" font-size="8" fill="rgba(255,255,255,0.4)" text-anchor="middle" font-family="DM Mono, sans-serif">Training Records</text>
+      <text x="752" y="143" font-size="8" fill="rgba(255,255,255,0.4)" text-anchor="middle" font-family="DM Mono, sans-serif">Competency Scores</text>
+      <text x="752" y="158" font-size="8" fill="#00C2A8" text-anchor="middle" font-family="DM Mono, sans-serif">HRIS (Internal)</text>
+
+      <rect x="842" y="74" width="118" height="96" rx="3" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+      <text x="901" y="99" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">📐 Digital</text>
+      <text x="901" y="113" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Twin Models</text>
+      <text x="901" y="131" font-size="8" fill="rgba(255,255,255,0.4)" text-anchor="middle" font-family="DM Mono, sans-serif">Equipment Specs</text>
+      <text x="901" y="143" font-size="8" fill="rgba(255,255,255,0.4)" text-anchor="middle" font-family="DM Mono, sans-serif">Process Parameters</text>
+      <text x="901" y="158" font-size="8" fill="#00C2A8" text-anchor="middle" font-family="DM Mono, sans-serif">3D Simulation</text>
+
+      <!-- Zone 2: AI Processing Layer -->
+      <rect x="28" y="210" width="944" height="155" rx="4" fill="rgba(0,87,184,0.08)" stroke="#0057B8" stroke-width="1.5"/>
+      <text x="42" y="228" font-size="9" font-weight="700" fill="#0057B8" letter-spacing="1" font-family="DM Sans, sans-serif">ZONE 2 · PRIVATE AI PROCESSING LAYER (ON-PREM SERVERS)</text>
+
+      <rect x="42" y="236" width="148" height="112" rx="3" fill="#0057B8" stroke="#1A7AE8" stroke-width="1"/>
+      <text x="116" y="258" font-size="9" font-weight="700" fill="rgba(255,255,255,0.6)" text-anchor="middle" font-family="DM Sans, sans-serif">PRIVATE AI</text>
+      <text x="116" y="272" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Cleanroom</text>
+      <text x="116" y="286" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Monitor AI</text>
+      <text x="116" y="304" font-size="8" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">Anomaly Detection</text>
+      <text x="116" y="317" font-size="8" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">Dynamic Thresholds</text>
+      <text x="116" y="336" font-size="8" fill="rgba(255,255,255,0.4)" text-anchor="middle" font-family="DM Mono, sans-serif">→ Env Alerts</text>
+
+      <rect x="205" y="236" width="148" height="112" rx="3" fill="#0057B8" stroke="#1A7AE8" stroke-width="1"/>
+      <text x="279" y="258" font-size="9" font-weight="700" fill="rgba(255,255,255,0.6)" text-anchor="middle" font-family="DM Sans, sans-serif">PRIVATE AI</text>
+      <text x="279" y="272" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Predictive</text>
+      <text x="279" y="286" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Maintenance</text>
+      <text x="279" y="304" font-size="8" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">Equipment Health ML</text>
+      <text x="279" y="317" font-size="8" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">Failure Prediction</text>
+      <text x="279" y="336" font-size="8" fill="rgba(255,255,255,0.4)" text-anchor="middle" font-family="DM Mono, sans-serif">→ Work Orders</text>
+
+      <rect x="368" y="236" width="148" height="112" rx="3" fill="#0057B8" stroke="#1A7AE8" stroke-width="1"/>
+      <text x="442" y="258" font-size="9" font-weight="700" fill="rgba(255,255,255,0.6)" text-anchor="middle" font-family="DM Sans, sans-serif">PRIVATE AI</text>
+      <text x="442" y="272" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Yield Prediction</text>
+      <text x="442" y="286" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">& Process Intel</text>
+      <text x="442" y="304" font-size="8" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">Multivariate Correlation</text>
+      <text x="442" y="317" font-size="8" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">Excursion Prediction</text>
+      <text x="442" y="336" font-size="8" fill="rgba(255,255,255,0.4)" text-anchor="middle" font-family="DM Mono, sans-serif">→ Engineer Alerts</text>
+
+      <rect x="531" y="236" width="148" height="112" rx="3" fill="#0057B8" stroke="#1A7AE8" stroke-width="1"/>
+      <text x="605" y="258" font-size="9" font-weight="700" fill="rgba(255,255,255,0.6)" text-anchor="middle" font-family="DM Sans, sans-serif">PRIVATE LLM</text>
+      <text x="605" y="272" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Knowledge Base</text>
+      <text x="605" y="286" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">AI Assistant</text>
+      <text x="605" y="304" font-size="8" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">RAG Architecture</text>
+      <text x="605" y="317" font-size="8" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">Expert Q&amp;A Engine</text>
+      <text x="605" y="336" font-size="8" fill="rgba(255,255,255,0.4)" text-anchor="middle" font-family="DM Mono, sans-serif">→ Tech Queries</text>
+
+      <rect x="694" y="236" width="148" height="112" rx="3" fill="#0057B8" stroke="#1A7AE8" stroke-width="1"/>
+      <text x="768" y="258" font-size="9" font-weight="700" fill="rgba(255,255,255,0.6)" text-anchor="middle" font-family="DM Sans, sans-serif">PRIVATE AI</text>
+      <text x="768" y="272" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Digital Twin</text>
+      <text x="768" y="286" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Training Engine</text>
+      <text x="768" y="304" font-size="8" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">Sim + Competency AI</text>
+      <text x="768" y="317" font-size="8" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">Access Gating</text>
+      <text x="768" y="336" font-size="8" fill="rgba(255,255,255,0.4)" text-anchor="middle" font-family="DM Mono, sans-serif">→ Certifications</text>
+
+      <rect x="857" y="236" width="103" height="112" rx="3" fill="#0057B8" stroke="#1A7AE8" stroke-width="1"/>
+      <text x="908" y="258" font-size="9" font-weight="700" fill="rgba(255,255,255,0.6)" text-anchor="middle" font-family="DM Sans, sans-serif">PRIVATE AI</text>
+      <text x="908" y="272" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Workforce</text>
+      <text x="908" y="286" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Skill Tracker</text>
+      <text x="908" y="304" font-size="8" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">Gap Detection</text>
+      <text x="908" y="317" font-size="8" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">Role Mapping</text>
+      <text x="908" y="336" font-size="8" fill="rgba(255,255,255,0.4)" text-anchor="middle" font-family="DM Mono, sans-serif">→ HR Reports</text>
+
+      <!-- Zone 3: User Outputs -->
+      <rect x="28" y="390" width="944" height="148" rx="4" fill="rgba(0,194,168,0.06)" stroke="#00C2A8" stroke-width="1.5"/>
+      <text x="42" y="408" font-size="9" font-weight="700" fill="#00C2A8" letter-spacing="1" font-family="DM Sans, sans-serif">ZONE 3 · USER INTERFACE LAYER — INTERNAL ACCESS ONLY</text>
+
+      <rect x="42" y="416" width="180" height="106" rx="3" fill="rgba(255,255,255,0.6)" stroke="var(--silver)" stroke-width="1"/>
+      <text x="132" y="440" font-size="10" font-weight="600" fill="#07152A" text-anchor="middle" font-family="DM Sans, sans-serif">⚠️ Operations</text>
+      <text x="132" y="454" font-size="10" font-weight="600" fill="#07152A" text-anchor="middle" font-family="DM Sans, sans-serif">Alert Dashboard</text>
+      <text x="132" y="472" font-size="8" fill="#4E6282" text-anchor="middle" font-family="DM Sans, sans-serif">Env deviations · Equipment</text>
+      <text x="132" y="485" font-size="8" fill="#4E6282" text-anchor="middle" font-family="DM Sans, sans-serif">health · Yield risk flags</text>
+      <text x="132" y="502" font-size="8" fill="#0057B8" text-anchor="middle" font-family="DM Mono, sans-serif">Plant Managers · Engineers</text>
+
+      <rect x="240" y="416" width="180" height="106" rx="3" fill="rgba(255,255,255,0.6)" stroke="var(--silver)" stroke-width="1"/>
+      <text x="330" y="440" font-size="10" font-weight="600" fill="#07152A" text-anchor="middle" font-family="DM Sans, sans-serif">🔧 Maintenance</text>
+      <text x="330" y="454" font-size="10" font-weight="600" fill="#07152A" text-anchor="middle" font-family="DM Sans, sans-serif">Work Orders</text>
+      <text x="330" y="472" font-size="8" fill="#4E6282" text-anchor="middle" font-family="DM Sans, sans-serif">Predicted failures · Priority</text>
+      <text x="330" y="485" font-size="8" fill="#4E6282" text-anchor="middle" font-family="DM Sans, sans-serif">scheduling · Part forecasts</text>
+      <text x="330" y="502" font-size="8" fill="#0057B8" text-anchor="middle" font-family="DM Mono, sans-serif">Maintenance Technicians</text>
+
+      <rect x="438" y="416" width="180" height="106" rx="3" fill="rgba(255,255,255,0.6)" stroke="var(--silver)" stroke-width="1"/>
+      <text x="528" y="440" font-size="10" font-weight="600" fill="#07152A" text-anchor="middle" font-family="DM Sans, sans-serif">🧬 Knowledge</text>
+      <text x="528" y="454" font-size="10" font-weight="600" fill="#07152A" text-anchor="middle" font-family="DM Sans, sans-serif">Query Interface</text>
+      <text x="528" y="472" font-size="8" fill="#4E6282" text-anchor="middle" font-family="DM Sans, sans-serif">Natural language SOP lookup</text>
+      <text x="528" y="485" font-size="8" fill="#4E6282" text-anchor="middle" font-family="DM Sans, sans-serif">Troubleshooting guide access</text>
+      <text x="528" y="502" font-size="8" fill="#0057B8" text-anchor="middle" font-family="DM Mono, sans-serif">All Technicians · Engineers</text>
+
+      <rect x="636" y="416" width="180" height="106" rx="3" fill="rgba(255,255,255,0.6)" stroke="var(--silver)" stroke-width="1"/>
+      <text x="726" y="440" font-size="10" font-weight="600" fill="#07152A" text-anchor="middle" font-family="DM Sans, sans-serif">📐 Digital Twin</text>
+      <text x="726" y="454" font-size="10" font-weight="600" fill="#07152A" text-anchor="middle" font-family="DM Sans, sans-serif">Training Portal</text>
+      <text x="726" y="472" font-size="8" fill="#4E6282" text-anchor="middle" font-family="DM Sans, sans-serif">Simulation · Assessment</text>
+      <text x="726" y="485" font-size="8" fill="#4E6282" text-anchor="middle" font-family="DM Sans, sans-serif">Certification tracking</text>
+      <text x="726" y="502" font-size="8" fill="#0057B8" text-anchor="middle" font-family="DM Mono, sans-serif">New Hires · Trainees</text>
+
+      <rect x="834" y="416" width="126" height="106" rx="3" fill="rgba(255,255,255,0.6)" stroke="var(--silver)" stroke-width="1"/>
+      <text x="897" y="440" font-size="10" font-weight="600" fill="#07152A" text-anchor="middle" font-family="DM Sans, sans-serif">📊 CHIPS</text>
+      <text x="897" y="454" font-size="10" font-weight="600" fill="#07152A" text-anchor="middle" font-family="DM Sans, sans-serif">Fed. Reports</text>
+      <text x="897" y="472" font-size="8" fill="#4E6282" text-anchor="middle" font-family="DM Sans, sans-serif">Workforce dev.</text>
+      <text x="897" y="485" font-size="8" fill="#4E6282" text-anchor="middle" font-family="DM Sans, sans-serif">audit-ready export</text>
+      <text x="897" y="502" font-size="8" fill="#0057B8" text-anchor="middle" font-family="DM Mono, sans-serif">HR · Compliance</text>
+
+      <!-- Arrows Zone 1 → Zone 2 -->
+      <line x1="112" y1="170" x2="116" y2="234" stroke="#0057B8" stroke-width="1.5" marker-end="url(#arrowP)"/>
+      <line x1="272" y1="170" x2="279" y2="234" stroke="#0057B8" stroke-width="1.5" marker-end="url(#arrowP)"/>
+      <line x1="432" y1="170" x2="442" y2="234" stroke="#0057B8" stroke-width="1.5" marker-end="url(#arrowP)"/>
+      <line x1="592" y1="170" x2="605" y2="234" stroke="#0057B8" stroke-width="1.5" marker-end="url(#arrowP)"/>
+      <line x1="752" y1="170" x2="768" y2="234" stroke="#0057B8" stroke-width="1.5" marker-end="url(#arrowP)"/>
+      <line x1="901" y1="170" x2="908" y2="234" stroke="#0057B8" stroke-width="1.5" marker-end="url(#arrowP)"/>
+
+      <!-- Arrows Zone 2 → Zone 3 -->
+      <line x1="116" y1="348" x2="132" y2="414" stroke="#00C2A8" stroke-width="1.5" marker-end="url(#arrowA)"/>
+      <line x1="279" y1="348" x2="330" y2="414" stroke="#00C2A8" stroke-width="1.5" marker-end="url(#arrowA)"/>
+      <line x1="442" y1="348" x2="528" y2="414" stroke="#00C2A8" stroke-width="1.5" marker-end="url(#arrowA)"/>
+      <line x1="605" y1="348" x2="528" y2="414" stroke="#00C2A8" stroke-width="1.5" marker-end="url(#arrowA)"/>
+      <line x1="768" y1="348" x2="726" y2="414" stroke="#00C2A8" stroke-width="1.5" marker-end="url(#arrowA)"/>
+      <line x1="908" y1="348" x2="897" y2="414" stroke="#00C2A8" stroke-width="1.5" marker-end="url(#arrowA)"/>
+
+      <!-- Blocked external indicator -->
+      <rect x="860" y="10" width="126" height="30" rx="3" fill="#D44000"/>
+      <text x="923" y="30" font-size="9" font-weight="700" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">🚫 NO CLOUD ACCESS</text>
+    </svg>
+  </div>
+
+  <div class="arch-legend">
+    <div class="legend-item"><div class="legend-dot" style="background:#0057B8;"></div>Private AI Models (On-Prem)</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#07152A;"></div>Data Sources (Internal Only)</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#00C2A8;"></div>User Interface Layer</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#0057B8; opacity:0.3;"></div>AI Processing Zone</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#D44000;"></div>No External / Cloud Access</div>
+  </div>
+
+  <div style="padding: 20px 48px; border-top: 1px solid var(--silver);">
+    <div class="col-title">AI Routing Decision Summary</div>
+    <table class="routing-table">
+      <thead>
+        <tr>
+          <th>Workload</th>
+          <th>AI Routing</th>
+          <th>Rationale</th>
+          <th>Primary Output</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Cleanroom Environment Monitoring</td>
+          <td><span class="ai-badge private">Private Only</span></td>
+          <td>Real-time cleanroom data is core process IP; ISO 14644 compliance</td>
+          <td>Deviation alerts to process engineers</td>
+        </tr>
+        <tr>
+          <td>Equipment Predictive Maintenance</td>
+          <td><span class="ai-badge private">Private Only</span></td>
+          <td>Equipment sensor data tied to process recipes — highest IP sensitivity</td>
+          <td>Maintenance work orders, failure predictions</td>
+        </tr>
+        <tr>
+          <td>Yield Prediction Models</td>
+          <td><span class="ai-badge private">Private Only</span></td>
+          <td>Yield data is most competitively sensitive asset; CHIPS Act obligation</td>
+          <td>Excursion risk flags to process engineers</td>
+        </tr>
+        <tr>
+          <td>Knowledge Base & AI Assistant</td>
+          <td><span class="ai-badge private">Private Only</span></td>
+          <td>Process knowledge = IP; EAR access control requirements</td>
+          <td>Expert Q&A for technicians and engineers</td>
+        </tr>
+        <tr>
+          <td>Digital Twin Training</td>
+          <td><span class="ai-badge private">Private Only</span></td>
+          <td>Equipment specs and process parameters are proprietary</td>
+          <td>Training certifications, competency records</td>
+        </tr>
+        <tr>
+          <td>Workforce Skill Tracking</td>
+          <td><span class="ai-badge private">Private Only</span></td>
+          <td>HR + compliance data; CHIPS federal reporting requires auditability</td>
+          <td>Skill gap reports, federal workforce compliance exports</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<script>
+  document.querySelectorAll('.page-nav a').forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.querySelector(link.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      document.querySelectorAll('.page-nav a').forEach(a => a.classList.remove('active'));
+      link.classList.add('active');
+    });
+  });
+</script>
+</body>
+</html>
