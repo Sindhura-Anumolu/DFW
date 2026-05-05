@@ -1,0 +1,1237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rebel Athletic — AI Case Study | DFW Technologies</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #1A3A6B;
+    --primary-light: #2D5FAA;
+    --primary-pale: #EEF2FF;
+    --navy: #07102A;
+    --navy-mid: #0F1E4A;
+    --steel: #1E3470;
+    --silver: #DDE4F0;
+    --silver-light: #F4F6FB;
+    --white: #FFFFFF;
+    --text: #0A1228;
+    --text-muted: #3D5080;
+    --accent: #E05C00;
+    --green: #00875A;
+    --warn: #C8102E;
+    --gold: #D4A017;
+    --pe: #7C3AED;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--silver-light);
+    color: var(--text);
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  .page {
+    width: 1100px;
+    margin: 0 auto 60px;
+    background: white;
+    box-shadow: 0 4px 40px rgba(0,0,0,0.10);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .page-nav {
+    display: flex;
+    background: var(--navy);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .page-nav a {
+    flex: 1;
+    text-align: center;
+    padding: 14px 8px;
+    color: rgba(255,255,255,0.5);
+    text-decoration: none;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s;
+  }
+  .page-nav a:hover { color: white; border-bottom-color: var(--primary-light); }
+  .page-nav a.active { color: white; border-bottom-color: var(--primary-light); }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 32px 48px 24px;
+    border-bottom: 1px solid var(--silver);
+  }
+  .section-tag {
+    background: var(--primary);
+    color: white;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 2px;
+  }
+  .section-tag.solution { background: var(--navy); }
+  .section-tag.roi { background: var(--green); }
+  .section-tag.arch { background: var(--steel); }
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    color: var(--navy);
+  }
+  .page-num {
+    margin-left: auto;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(135deg, #07102A 0%, #0F1E4A 55%, #152860 100%);
+    padding: 48px 48px 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -70px; right: -70px;
+    width: 360px; height: 360px;
+    background: var(--primary-light);
+    border-radius: 50%;
+    opacity: 0.1;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -40px; left: 200px;
+    width: 220px; height: 220px;
+    background: var(--pe);
+    border-radius: 50%;
+    opacity: 0.07;
+  }
+  .hero-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 14px; }
+  .hero-eyebrow {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--primary-light);
+  }
+  .pe-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(124,58,237,0.2);
+    border: 1px solid rgba(124,58,237,0.4);
+    padding: 6px 14px;
+    border-radius: 2px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #C4B5FD;
+  }
+  .hero h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 36px;
+    color: white;
+    line-height: 1.15;
+    margin-bottom: 6px;
+  }
+  .hero h1 span { color: #6B9FE8; font-style: italic; }
+  .hero-sub {
+    color: rgba(255,255,255,0.5);
+    font-size: 13px;
+    margin-bottom: 32px;
+  }
+  .hero-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+  }
+  .stat-card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 16px 18px;
+  }
+  .stat-card:first-child { border-radius: 4px 0 0 4px; }
+  .stat-card:last-child { border-radius: 0 4px 4px 0; }
+  .stat-val {
+    font-family: 'DM Serif Display', serif;
+    font-size: 28px;
+    color: white;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .stat-val span { font-size: 16px; color: #6B9FE8; }
+  .stat-lbl {
+    font-size: 10px;
+    color: rgba(255,255,255,0.4);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .content-grid { display: grid; grid-template-columns: 1fr 1fr; }
+  .content-col { padding: 36px 48px; }
+  .content-col + .content-col { border-left: 1px solid var(--silver); }
+
+  .col-title {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--primary);
+    display: inline-block;
+  }
+  .body-text { color: var(--text-muted); font-size: 13px; line-height: 1.75; margin-bottom: 16px; }
+
+  .problem-list { display: flex; flex-direction: column; gap: 12px; }
+  .problem-card {
+    border: 1px solid var(--silver);
+    border-left: 3px solid var(--primary);
+    padding: 14px 16px;
+    border-radius: 0 4px 4px 0;
+    background: var(--silver-light);
+  }
+  .problem-card-title {
+    font-weight: 600;
+    font-size: 12px;
+    color: var(--navy);
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .problem-num {
+    background: var(--primary);
+    color: white;
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 9px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .problem-card p { color: var(--text-muted); font-size: 12px; line-height: 1.6; }
+
+  /* JOURNEY MAP */
+  .journey-section { padding: 32px 48px; border-bottom: 1px solid var(--silver); }
+  .journey-title {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--text-muted);
+    margin-bottom: 20px; padding-bottom: 10px;
+    border-bottom: 2px solid var(--primary); display: inline-block;
+  }
+  .journey-table { width: 100%; border-collapse: collapse; font-size: 11px; }
+  .journey-table th {
+    background: var(--navy); color: rgba(255,255,255,0.8);
+    padding: 10px 12px; text-align: left;
+    font-size: 10px; font-weight: 700; letter-spacing: 0.06em;
+  }
+  .journey-table th:first-child { border-radius: 4px 0 0 0; }
+  .journey-table th:last-child { border-radius: 0 4px 0 0; }
+  .journey-table td { padding: 10px 12px; border-bottom: 1px solid var(--silver); vertical-align: top; }
+  .journey-table tr:nth-child(even) td { background: var(--silver-light); }
+  .journey-table tr:last-child td { border-bottom: none; }
+  .journey-stage { font-weight: 700; color: var(--navy); font-size: 11px; }
+  .journey-pain { color: var(--warn); font-size: 11px; margin-top: 4px; }
+  .journey-ai { color: var(--green); font-size: 11px; margin-top: 4px; font-weight: 500; }
+
+  .impact-bar {
+    background: var(--navy);
+    color: white;
+    padding: 18px 48px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  .impact-bar-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.4); white-space: nowrap; }
+  .impact-tags { display: flex; gap: 8px; flex-wrap: wrap; }
+  .impact-tag {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.14);
+    padding: 5px 12px; border-radius: 2px;
+    font-size: 11px; color: rgba(255,255,255,0.75);
+  }
+  .impact-tag.hot { border-color: #C4B5FD; color: #C4B5FD; }
+
+  /* SOLUTION */
+  .solution-intro {
+    padding: 28px 48px;
+    background: var(--silver-light);
+    border-bottom: 1px solid var(--silver);
+  }
+  .solution-intro p { color: var(--text-muted); max-width: 820px; font-size: 13px; line-height: 1.75; }
+  .solution-intro strong { color: var(--navy); }
+
+  .solution-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-bottom: 1px solid var(--silver);
+  }
+  .solution-item {
+    padding: 28px 36px;
+    border-right: 1px solid var(--silver);
+    border-bottom: 1px solid var(--silver);
+  }
+  .solution-item:nth-child(2n) { border-right: none; }
+  .solution-item:nth-last-child(-n+2) { border-bottom: none; }
+  .solution-item-header { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 12px; }
+  .solution-icon {
+    width: 36px; height: 36px; background: var(--navy);
+    border-radius: 6px; display: flex; align-items: center;
+    justify-content: center; font-size: 16px; flex-shrink: 0;
+  }
+  .solution-item-title { font-weight: 600; font-size: 13px; color: var(--navy); margin-bottom: 3px; }
+  .solution-item-problem { font-size: 11px; color: var(--primary); font-weight: 500; }
+  .solution-item p { font-size: 12px; color: var(--text-muted); line-height: 1.7; margin-bottom: 12px; }
+  .tech-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+  .tech-tag {
+    background: var(--silver); color: var(--steel);
+    font-size: 10px; font-weight: 600;
+    padding: 3px 8px; border-radius: 2px;
+    font-family: 'DM Mono', monospace;
+  }
+  .ai-badge {
+    font-size: 9px; font-weight: 700;
+    padding: 2px 7px; border-radius: 2px;
+    letter-spacing: 0.06em; text-transform: uppercase;
+  }
+  .ai-badge.private { background: #e8eeff; color: #1A3A6B; }
+  .ai-badge.public { background: #e6f9f0; color: #00875A; }
+  .ai-badge.hybrid { background: #fff4e6; color: #b85c00; }
+
+  .benchmark-callout {
+    margin: 24px 48px;
+    background: var(--navy);
+    border-left: 4px solid var(--pe);
+    padding: 20px 24px;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  .benchmark-callout-icon { font-size: 24px; flex-shrink: 0; }
+  .benchmark-callout-title {
+    font-weight: 700; font-size: 11px;
+    text-transform: uppercase; letter-spacing: 0.1em;
+    color: #C4B5FD; margin-bottom: 6px;
+  }
+  .benchmark-callout p { font-size: 12px; color: rgba(255,255,255,0.7); line-height: 1.65; }
+
+  .policy-section { padding: 28px 48px; border-top: 1px solid var(--silver); }
+  .policy-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-top: 16px; }
+  .policy-card { border: 1px solid var(--silver); padding: 14px 16px; border-radius: 4px; }
+  .policy-card-title {
+    font-size: 11px; font-weight: 600; color: var(--navy);
+    margin-bottom: 6px; display: flex; align-items: center; gap: 6px;
+  }
+  .policy-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--primary); flex-shrink: 0; }
+  .policy-card p { font-size: 11px; color: var(--text-muted); line-height: 1.6; }
+
+  /* ROI */
+  .roi-hero {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%);
+    padding: 36px 48px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 2px;
+  }
+  .roi-big {
+    padding: 24px; background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1); text-align: center;
+  }
+  .roi-big:first-child { border-radius: 4px 0 0 4px; }
+  .roi-big:last-child { border-radius: 0 4px 4px 0; }
+  .roi-big-val { font-family: 'DM Serif Display', serif; font-size: 38px; color: white; line-height: 1; margin-bottom: 6px; }
+  .roi-big-val.green { color: #4ade80; }
+  .roi-big-val.gold { color: var(--gold); }
+  .roi-big-val.fast { color: #C4B5FD; }
+
+  .roi-big-lbl { font-size: 11px; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.08em; }
+
+  .savings-grid { display: grid; grid-template-columns: 1fr 1fr; padding: 36px 48px; gap: 32px; border-bottom: 1px solid var(--silver); }
+  .savings-section-title {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--text-muted);
+    margin-bottom: 16px; padding-bottom: 10px;
+    border-bottom: 2px solid var(--green); display: inline-block;
+  }
+  .savings-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 10px 0; border-bottom: 1px solid var(--silver);
+  }
+  .savings-row:last-child { border-bottom: none; }
+  .savings-label { font-size: 12px; color: var(--text-muted); }
+  .savings-value { font-weight: 600; font-size: 13px; color: var(--green); font-family: 'DM Mono', monospace; }
+  .savings-value.cost { color: var(--warn); }
+
+  .timeline-section { padding: 28px 48px; border-bottom: 1px solid var(--silver); }
+  .timeline-title {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--text-muted);
+    margin-bottom: 20px; padding-bottom: 10px;
+    border-bottom: 2px solid var(--navy); display: inline-block;
+  }
+  .timeline-bars { display: flex; flex-direction: column; gap: 10px; }
+  .timeline-row { display: flex; align-items: center; gap: 12px; }
+  .timeline-label { font-size: 11px; color: var(--text-muted); width: 200px; flex-shrink: 0; text-align: right; }
+  .timeline-bar-wrap { flex: 1; height: 28px; background: var(--silver); border-radius: 2px; overflow: hidden; }
+  .timeline-bar {
+    height: 100%; display: flex; align-items: center; padding-left: 10px;
+    font-size: 10px; font-weight: 600; color: white; border-radius: 2px; white-space: nowrap;
+  }
+  .timeline-month { font-size: 10px; color: var(--text-muted); width: 60px; font-family: 'DM Mono', monospace; }
+
+  .capabilities-section { padding: 28px 48px; }
+  .cap-title {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--text-muted);
+    margin-bottom: 16px; padding-bottom: 10px;
+    border-bottom: 2px solid var(--accent); display: inline-block;
+  }
+  .cap-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; }
+  .cap-card { background: var(--silver-light); border: 1px solid var(--silver); padding: 16px; border-radius: 4px; }
+  .cap-card-title { font-weight: 600; font-size: 12px; color: var(--navy); margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+  .cap-icon { font-size: 14px; }
+  .cap-card p { font-size: 11px; color: var(--text-muted); line-height: 1.6; }
+  .cap-required { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--primary); margin-top: 8px; }
+
+  /* ARCH */
+  .arch-intro { padding: 24px 48px; background: var(--silver-light); border-bottom: 1px solid var(--silver); }
+  .arch-intro p { font-size: 12px; color: var(--text-muted); max-width: 720px; }
+  .arch-diagram { padding: 36px 48px; }
+  svg.arch { width: 100%; height: 590px; font-family: 'DM Sans', sans-serif; }
+
+  .arch-legend {
+    display: flex; gap: 24px; padding: 16px 48px;
+    background: var(--silver-light); border-top: 1px solid var(--silver); flex-wrap: wrap;
+  }
+  .legend-item { display: flex; align-items: center; gap: 8px; font-size: 11px; color: var(--text-muted); }
+  .legend-dot { width: 12px; height: 12px; border-radius: 2px; flex-shrink: 0; }
+
+  .page-divider { height: 8px; background: var(--primary); margin-bottom: 60px; }
+
+  .routing-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 16px; }
+  .routing-table th {
+    background: var(--navy); color: rgba(255,255,255,0.7);
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em;
+    font-weight: 600; padding: 10px 14px; text-align: left;
+  }
+  .routing-table td { padding: 10px 14px; border-bottom: 1px solid var(--silver); color: var(--text-muted); }
+  .routing-table tr:last-child td { border-bottom: none; }
+  .routing-table tr:nth-child(even) td { background: var(--silver-light); }
+  .routing-table td:first-child { color: var(--navy); font-weight: 500; }
+
+  @media print {
+    @page { margin: 8mm 10mm; size: A3 landscape; }
+    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+    html, body { width: 100% !important; margin: 0 !important; padding: 0 !important; background: white !important; font-size: 11px !important; }
+    .page-nav { display: none !important; }
+    .page {
+      width: 100% !important;
+      max-width: 100% !important;
+      margin: 0 !important;
+      box-shadow: none !important;
+      page-break-after: always;
+      page-break-inside: avoid;
+      overflow: visible !important;
+    }
+    .impact-tags, .tech-tags { display: flex !important; flex-wrap: wrap !important; gap: 6px !important; }
+    .capabilities-section { page-break-inside: avoid; }
+    .arch-diagram { page-break-inside: avoid; }
+    .arch-intro, .arch-diagram, .arch-legend, .routing-table { page-break-before: avoid; }
+    svg.arch { width: 100% !important; height: auto !important; max-height: 520px !important; }
+    .hero { padding: 28px 40px 24px !important; }
+    .hero h1 { font-size: 28px !important; }
+    .content-col { padding: 24px 36px !important; }
+    .section-header { padding: 20px 36px 16px !important; }
+    .solution-item { padding: 18px 24px !important; }
+    .journey-section, .policy-section, .savings-grid,
+    .timeline-section, .capabilities-section, .arch-diagram { padding: 20px 36px !important; }
+    .roi-hero { padding: 24px 36px !important; }
+    .roi-big-val { font-size: 28px !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══ PAGE 1: OVERVIEW ══ -->
+<div class="page" id="page1">
+  <nav class="page-nav">
+    <a href="#page1" class="active">01 · Overview</a>
+    <a href="#page2">02 · Solution</a>
+    <a href="#page3">03 · Cost & ROI</a>
+    <a href="#page4">04 · Architecture</a>
+  </nav>
+
+  <div class="hero">
+    <div class="hero-top">
+      <div class="hero-eyebrow">DFW Technologies · AI Case Study · Custom Athletic Apparel</div>
+      <div class="pe-badge">💰 PE-Backed · Main Post Partners · March 2025</div>
+    </div>
+    <h1>Rebel<br><span>Athletic</span></h1>
+    <div class="hero-sub">Custom Cheerleading & Athletic Apparel · Dallas/Carrollton, TX · Founded 2012 · Mid-ERP Transition</div>
+    <div class="hero-stats">
+      <div class="stat-card">
+        <div class="stat-val">22<span>%</span></div>
+        <div class="stat-lbl">Custom Order Error Rate</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val">34<span>%</span></div>
+        <div class="stat-lbl">Late Team Deliveries</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val">45<span>%</span></div>
+        <div class="stat-lbl">Production Rework Rate</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val">6–8<span>mo</span></div>
+        <div class="stat-lbl">Fastest Payback Period</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-header">
+    <span class="section-tag">Overview</span>
+    <span class="section-title">Company Profile & Operational Scale</span>
+    <span class="page-num">Page 01 / 04</span>
+  </div>
+
+  <div class="content-grid">
+    <div class="content-col">
+      <div class="col-title">About Rebel Athletic</div>
+      <p class="body-text">Founded in 2012 and headquartered in the Dallas/Carrollton area, Rebel Athletic is a premium custom cheerleading and athletic apparel manufacturer serving competitive cheer programs, All-Star gyms, school teams, and dance organizations across the United States. In March 2025, Main Post Partners — a San Francisco-based private equity firm — made a minority investment, placing Rebel in active growth mode with expectations of technology-driven operational scaling.</p>
+      <p class="body-text">Every Rebel order is essentially a unique SKU — custom color combinations, embellishments, athlete names, numbers, and sizing across an entire team roster. This extreme customization creates significant operational complexity at every stage: design approval, specification handoff to offshore manufacturers, production tracking, quality control, and final delivery ahead of competition deadlines that are fixed and unforgiving.</p>
+      <p class="body-text">The company is currently mid-ERP transition, presenting a rare window to embed AI capabilities into new systems from the start rather than retrofitting legacy infrastructure. The PE firm expects quarterly AI milestone reporting, making this engagement both urgent and well-funded.</p>
+
+      <div class="col-title" style="margin-top:24px;">Strategic Context</div>
+      <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:0;">
+        <span style="background:var(--primary-pale); border:1px solid var(--primary); color:var(--primary); font-size:10px; padding:4px 10px; border-radius:2px; font-weight:600;">PE-backed · buying mode</span>
+        <span style="background:var(--primary-pale); border:1px solid var(--primary); color:var(--primary); font-size:10px; padding:4px 10px; border-radius:2px; font-weight:600;">Mid-ERP transition</span>
+        <span style="background:var(--primary-pale); border:1px solid var(--primary); color:var(--primary); font-size:10px; padding:4px 10px; border-radius:2px; font-weight:600;">Fixed competition deadlines</span>
+        <span style="background:var(--primary-pale); border:1px solid var(--primary); color:var(--primary); font-size:10px; padding:4px 10px; border-radius:2px; font-weight:600;">Offshore supply chain</span>
+        <span style="background:var(--primary-pale); border:1px solid var(--primary); color:var(--primary); font-size:10px; padding:4px 10px; border-radius:2px; font-weight:600;">Extreme SKU complexity</span>
+      </div>
+    </div>
+
+    <div class="content-col">
+      <div class="col-title">Key Problems Identified</div>
+      <div class="problem-list">
+        <div class="problem-card">
+          <div class="problem-card-title"><div class="problem-num">1</div>Custom Order Specification Errors</div>
+          <p>22% of custom orders contain specification errors — wrong color codes, incorrect size runs, missing embellishment details — that aren't caught until the offshore factory produces the wrong item. Each remake costs $400–$800 per order and creates a cascading delivery delay. With thousands of orders per season, this single problem drives the majority of the company's rework costs.</p>
+        </div>
+        <div class="problem-card">
+          <div class="problem-card-title"><div class="problem-num">2</div>Late Deliveries Before Competition Deadlines</div>
+          <p>34% of team orders arrive late relative to competition schedules. Unlike retail, cheer competitions are fixed-date events — a uniform arriving two days late means the team competes without it. Late deliveries trigger customer service escalations, refund demands, and lost renewals for the following season.</p>
+        </div>
+        <div class="problem-card">
+          <div class="problem-card-title"><div class="problem-num">3</div>Offshore Supply Chain Visibility Gap</div>
+          <p>Once an order is handed off to offshore manufacturers, Rebel has limited real-time visibility into production status until the shipment arrives. This blind spot prevents proactive intervention when production falls behind and creates the surprise late deliveries that damage customer relationships.</p>
+        </div>
+        <div class="problem-card">
+          <div class="problem-card-title"><div class="problem-num">4</div>Demand Planning Disconnected from Competition Calendar</div>
+          <p>Cheer competition seasons follow a highly predictable calendar — regional competitions in fall, nationals in winter/spring. Despite this predictability, production planning is reactive rather than proactive. Rush orders spike before major competitions, driving premium freight costs and factory overtime that compress margins.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JOURNEY MAP -->
+  <div class="journey-section">
+    <div class="journey-title">Coach / Team Director Journey Map — Custom Uniform Order Lifecycle</div>
+    <table class="journey-table">
+      <thead>
+        <tr>
+          <th>Stage</th>
+          <th>Actions</th>
+          <th>Pain Point</th>
+          <th>AI Intervention</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><div class="journey-stage">01 · Design & Spec</div></td>
+          <td>Coach works with Rebel designer to configure colors, embellishments, athlete names/numbers, sizing</td>
+          <td class="journey-pain">⚠ Manual spec entry error rate 22% — wrong color codes, size run mistakes not caught until production</td>
+          <td class="journey-ai">🤖 AI validates every spec field before submission — flags mismatches, missing fields, and color code errors in real time</td>
+        </tr>
+        <tr>
+          <td><div class="journey-stage">02 · Artwork Approval</div></td>
+          <td>Design mockup sent to coach for approval via email; revisions via back-and-forth</td>
+          <td class="journey-pain">⚠ Average 3.2 revision cycles per order — each cycle adds 2–3 days to timeline</td>
+          <td class="journey-ai">🤖 AI customer service assistant handles approval workflow, revision tracking, and deadline alerts automatically</td>
+        </tr>
+        <tr>
+          <td><div class="journey-stage">03 · Production Handoff</div></td>
+          <td>Approved spec transmitted to offshore factory; order enters production queue</td>
+          <td class="journey-pain">⚠ No visibility into factory queue position or production start date once order leaves Rebel's systems</td>
+          <td class="journey-ai">🤖 ERP + IoT integration tracks order status in real time from factory floor through shipping — visible to Rebel ops team</td>
+        </tr>
+        <tr>
+          <td><div class="journey-stage">04 · Production & QC</div></td>
+          <td>Factory produces items; QC check at factory; shipment to Rebel domestic warehouse</td>
+          <td class="journey-pain">⚠ Production delays discovered only when shipment arrives late — no early warning for intervention</td>
+          <td class="journey-ai">🤖 AI flags orders falling behind production milestones 2–3 weeks out — time to expedite shipping or notify coach</td>
+        </tr>
+        <tr>
+          <td><div class="journey-stage">05 · Delivery & Post-Sale</div></td>
+          <td>Order delivered to team; coach contacts support for status updates; renewal conversation next season</td>
+          <td class="journey-pain">⚠ 34% late deliveries drive churn — coaches switch brands after one bad experience before a major competition</td>
+          <td class="journey-ai">🤖 Live order tracker portal gives coaches real-time status; AI flags renewal opportunities 90 days before next season</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="impact-bar">
+    <div class="impact-bar-label">Industry Context</div>
+    <div class="impact-tags">
+      <span class="impact-tag hot">PE firm expects AI technology milestones — quarterly reporting</span>
+      <span class="impact-tag">Custom apparel remake costs $400–$800 per order</span>
+      <span class="impact-tag">Competition deadlines are fixed — 1 late delivery = lost renewal</span>
+      <span class="impact-tag">ERP transition = ideal window to embed AI from day one</span>
+    </div>
+  </div>
+
+</div>
+<div class="page-divider"></div>
+
+<!-- ══ PAGE 2: SOLUTION ══ -->
+<div class="page" id="page2">
+  <nav class="page-nav">
+    <a href="#page1">01 · Overview</a>
+    <a href="#page2" class="active">02 · Solution</a>
+    <a href="#page3">03 · Cost & ROI</a>
+    <a href="#page4">04 · Architecture</a>
+  </nav>
+
+  <div class="section-header">
+    <span class="section-tag solution">Solution</span>
+    <span class="section-title">AI Solution Stack & Problem Mapping</span>
+    <span class="page-num">Page 02 / 04</span>
+  </div>
+
+  <div class="solution-intro">
+    <p>DFW Technologies proposes a <strong>hybrid AI deployment</strong> for Rebel Athletic — private AI for order specifications, design IP, athlete personal data, and production system integration (operationally sensitive and customer IP), and public cloud AI for demand forecasting, customer service, and the coach-facing communication platform (no sensitive data involved). The ERP transition is the ideal integration entry point — embedding AI into new workflows from day one rather than retrofitting legacy systems.</p>
+  </div>
+
+  <div class="solution-grid">
+    <div class="solution-item">
+      <div class="solution-item-header">
+        <div class="solution-icon">✅</div>
+        <div>
+          <div class="solution-item-title">AI Spec Validation System</div>
+          <div class="solution-item-problem">↳ Solves: Problem #1 — Order Errors</div>
+        </div>
+        <span class="ai-badge private">Private AI</span>
+      </div>
+      <p>Private AI validates every custom order specification before it reaches the offshore factory — checking color codes against Rebel's approved palette, size run completeness, embellishment compatibility, and athlete roster data. Catches 80% of remake-causing errors at the source. Integrated directly into the new ERP system so validation happens in real time during order entry, not after.</p>
+      <div class="tech-tags">
+        <span class="tech-tag">Rules Engine + ML</span>
+        <span class="tech-tag">ERP Integration</span>
+        <span class="tech-tag">Spec Validation API</span>
+        <span class="tech-tag">Real-time Alerts</span>
+      </div>
+    </div>
+
+    <div class="solution-item">
+      <div class="solution-item-header">
+        <div class="solution-icon">🏭</div>
+        <div>
+          <div class="solution-item-title">Live Production Order Tracker</div>
+          <div class="solution-item-problem">↳ Solves: Problem #3 — Supply Chain Visibility</div>
+        </div>
+        <span class="ai-badge private">Private AI</span>
+      </div>
+      <p>Real-time order stage tracking — cut → sew → embellishment → QC → ship — visible to Rebel operations team and to coaches via a self-service portal. IoT sensors at factory stages feed production milestones into the ERP. AI flags orders falling behind schedule 2–3 weeks before the delivery deadline, providing time to expedite shipping or proactively communicate with the coach before a surprise late delivery occurs.</p>
+      <div class="tech-tags">
+        <span class="tech-tag">IoT Stage Sensors</span>
+        <span class="tech-tag">ERP Pipeline API</span>
+        <span class="tech-tag">Coach Portal</span>
+        <span class="tech-tag">Delay Alert Engine</span>
+      </div>
+    </div>
+
+    <div class="solution-item">
+      <div class="solution-item-header">
+        <div class="solution-icon">📅</div>
+        <div>
+          <div class="solution-item-title">Competition Calendar Demand Forecasting</div>
+          <div class="solution-item-problem">↳ Solves: Problem #4 — Rush Orders</div>
+        </div>
+        <span class="ai-badge public">Public AI</span>
+      </div>
+      <p>Cloud AI model connects the U.S. cheer competition calendar — regional and national event schedules — with Rebel's historical order data to generate production planning triggers 8–10 weeks ahead of peak demand periods. No customer or design IP involved — external calendar data plus anonymized historical order volumes justify public cloud deployment. Reduces rush order volume 20–25% and cuts premium freight spend.</p>
+      <div class="tech-tags">
+        <span class="tech-tag">Competition Calendar API</span>
+        <span class="tech-tag">Time-Series ML</span>
+        <span class="tech-tag">Production Planning</span>
+        <span class="tech-tag">Azure ML</span>
+      </div>
+    </div>
+
+    <div class="solution-item">
+      <div class="solution-item-header">
+        <div class="solution-icon">🤖</div>
+        <div>
+          <div class="solution-item-title">AI Customer Service Assistant</div>
+          <div class="solution-item-problem">↳ Solves: Problem #2 — Artwork Approval Delays</div>
+        </div>
+        <span class="ai-badge public">Public AI</span>
+      </div>
+      <p>Public LLM handles the high-volume, repetitive tier of customer communication — order status queries, artwork approval workflows, shipping ETA updates, and revision tracking. Frees the Rebel customer service team from reactive support volume to focus on complex escalations and relationship management. Public AI is appropriate because inputs are order metadata and templated communications — no athlete PII or design IP transmitted.</p>
+      <div class="tech-tags">
+        <span class="tech-tag">Claude API</span>
+        <span class="tech-tag">Artwork Approval Flow</span>
+        <span class="tech-tag">Order Status Bot</span>
+        <span class="tech-tag">Email/SMS Integration</span>
+      </div>
+    </div>
+
+    <div class="solution-item">
+      <div class="solution-item-header">
+        <div class="solution-icon">🌐</div>
+        <div>
+          <div class="solution-item-title">Offshore Supply Chain Visibility Layer</div>
+          <div class="solution-item-problem">↳ Solves: Problem #3 — Visibility Gap</div>
+        </div>
+        <span class="ai-badge hybrid">Hybrid AI</span>
+      </div>
+      <p>Integration layer connecting offshore factory production systems to Rebel's ERP via secure API. Production milestone data flows into the private AI layer for delay prediction and alert generation. Aggregated shipment tracking (no order-level detail) uses public logistics APIs for real-time freight visibility. Closes the offshore blind spot that currently makes late deliveries a surprise rather than a manageable exception.</p>
+      <div class="tech-tags">
+        <span class="tech-tag">Factory API Integration</span>
+        <span class="tech-tag">Logistics Tracking API</span>
+        <span class="tech-tag">ERP Sync</span>
+        <span class="tech-tag">Delay Prediction ML</span>
+      </div>
+    </div>
+
+    <div class="solution-item">
+      <div class="solution-item-header">
+        <div class="solution-icon">🎓</div>
+        <div>
+          <div class="solution-item-title">Rapid Onboarding & Training Platform</div>
+          <div class="solution-item-problem">↳ Solves: PE Scaling Requirements</div>
+        </div>
+        <span class="ai-badge public">Public AI</span>
+      </div>
+      <p>Cloud LMS built to support Rebel's PE-driven headcount growth — onboarding new customer service, design, and operations staff at scale without instructor bottlenecks. Role-specific modules for order management, spec validation, ERP workflows, and customer communication. AI assesses competency and personalizes training paths. Directly addresses the PE firm's expectation of scalable operations.</p>
+      <div class="tech-tags">
+        <span class="tech-tag">AI-LMS Platform</span>
+        <span class="tech-tag">Role-Based Modules</span>
+        <span class="tech-tag">Competency Assessment</span>
+        <span class="tech-tag">ERP Training Sims</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="benchmark-callout" style="margin: 24px 48px;">
+    <div class="benchmark-callout-icon">💰</div>
+    <div>
+      <div class="benchmark-callout-title">PE Context: Main Post Partners Investment — What This Means for DFW Technologies</div>
+      <p>Main Post Partners' March 2025 minority investment in Rebel Athletic signals a defined growth mandate. PE-backed companies at this stage are explicitly expected to demonstrate technology adoption milestones on a quarterly basis — the investment thesis includes operational efficiency gains driven by software and AI. This creates a uniquely favorable sales environment: the budget is available, the urgency is real, and the decision-maker (Rebel leadership) has a PE board that wants to see AI deployment happen. DFW Technologies entering now — during the ERP transition window — positions the engagement as foundational infrastructure, not discretionary spend. The fastest path to signature is leading with the spec validation system, which has an immediate, measurable ROI that the PE firm can track from quarter one.</p>
+    </div>
+  </div>
+
+  <div class="policy-section">
+    <div class="col-title">Policies, Compliance & Restrictions to Address</div>
+    <div class="policy-grid">
+      <div class="policy-card">
+        <div class="policy-card-title"><div class="policy-dot"></div>Design IP & Order Data Privacy</div>
+        <p>Custom design files, color specifications, and embellishment details represent Rebel's proprietary product catalog and their clients' team identity. This data must stay in Rebel's private infrastructure — design IP must never be transmitted to public AI APIs or used to train shared models.</p>
+      </div>
+      <div class="policy-card">
+        <div class="policy-card-title"><div class="policy-dot"></div>Athlete Personal Data (COPPA)</div>
+        <p>Cheer teams frequently include minor athletes under 13. Athlete names, numbers, sizes, and any personally identifiable information collected during order entry may be subject to COPPA protections. All athlete data must route exclusively to private AI infrastructure with strict access controls.</p>
+      </div>
+      <div class="policy-card">
+        <div class="policy-card-title"><div class="policy-dot"></div>International Data Transfer (Offshore)</div>
+        <p>Production data transmitted to offshore manufacturing partners crosses international boundaries. Any AI integration connecting to offshore factory systems must comply with applicable data transfer regulations and ensure that customer order details are transmitted only via encrypted, authenticated channels.</p>
+      </div>
+      <div class="policy-card">
+        <div class="policy-card-title"><div class="policy-dot"></div>GDPR — International Clients</div>
+        <p>Rebel serves international cheer organizations. European client data is subject to GDPR — consent management, right to erasure, and data portability requirements apply. The AI customer service platform must respect opt-out signals and data deletion requests from EU-based clients.</p>
+      </div>
+      <div class="policy-card">
+        <div class="policy-card-title"><div class="policy-dot"></div>PE Reporting Requirements</div>
+        <p>Main Post Partners' investment creates a governance obligation — AI deployment milestones must be measurable and reportable on a quarterly basis. All AI workloads must have clear KPI instrumentation from day one so Rebel leadership can demonstrate technology ROI to the PE board.</p>
+      </div>
+      <div class="policy-card">
+        <div class="policy-card-title"><div class="policy-dot"></div>AI Routing Decision</div>
+        <p>Order specifications, design IP, athlete data, and production system integration = private AI only. Demand forecasting (anonymized historical volumes + public calendar), customer service communications (order metadata only), and training platform = appropriate for public cloud AI.</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+<div class="page-divider"></div>
+
+<!-- ══ PAGE 3: COST & ROI ══ -->
+<div class="page" id="page3">
+  <nav class="page-nav">
+    <a href="#page1">01 · Overview</a>
+    <a href="#page2">02 · Solution</a>
+    <a href="#page3" class="active">03 · Cost & ROI</a>
+    <a href="#page4">04 · Architecture</a>
+  </nav>
+
+  <div class="section-header">
+    <span class="section-tag roi">Cost & ROI</span>
+    <span class="section-title">Financial Impact & DFW Tech Capabilities Required</span>
+    <span class="page-num">Page 03 / 04</span>
+  </div>
+
+  <div class="roi-hero">
+    <div class="roi-big">
+      <div class="roi-big-val gold">$200K–$400K</div>
+      <div class="roi-big-lbl">Total Investment · 12 Months</div>
+    </div>
+    <div class="roi-big">
+      <div class="roi-big-val green">$1.4M–$2.2M</div>
+      <div class="roi-big-lbl">Estimated Annual Savings</div>
+    </div>
+    <div class="roi-big">
+      <div class="roi-big-val fast">6–8 mo</div>
+      <div class="roi-big-lbl">Payback Period</div>
+    </div>
+  </div>
+
+  <div class="savings-grid">
+    <div>
+      <div class="savings-section-title">Projected Annual Cost Savings</div>
+      <div class="savings-row">
+        <span class="savings-label">Remake Cost Reduction — Spec Validation (80% error catch rate)</span>
+        <span class="savings-value">$500K–$780K</span>
+      </div>
+      <div class="savings-row">
+        <span class="savings-label">Revenue Retention — On-Time Delivery Improvement</span>
+        <span class="savings-value">$380K–$620K</span>
+      </div>
+      <div class="savings-row">
+        <span class="savings-label">Rush Order Reduction — Demand Forecasting (20–25%)</span>
+        <span class="savings-value">$180K–$320K</span>
+      </div>
+      <div class="savings-row">
+        <span class="savings-label">Customer Service Efficiency — AI Tier-1 Automation</span>
+        <span class="savings-value">$140K–$240K</span>
+      </div>
+      <div class="savings-row">
+        <span class="savings-label">Onboarding Efficiency — New Hire Ramp-Up Speed</span>
+        <span class="savings-value">$80K–$160K</span>
+      </div>
+      <div class="savings-row" style="border-top: 2px solid var(--green); padding-top:14px; margin-top:4px;">
+        <span class="savings-label" style="font-weight:600; color:var(--navy);">Total Estimated Annual Savings</span>
+        <span class="savings-value" style="font-size:16px;">$1.4M–$2.2M</span>
+      </div>
+    </div>
+
+    <div>
+      <div class="savings-section-title">Investment Breakdown</div>
+      <div class="savings-row">
+        <span class="savings-label">Phase 1: ERP Integration Assessment (4 weeks)</span>
+        <span class="savings-value cost">$20K–$35K</span>
+      </div>
+      <div class="savings-row">
+        <span class="savings-label">Phase 2: Spec Validation + Order Tracker (Months 2–5)</span>
+        <span class="savings-value cost">$80K–$140K</span>
+      </div>
+      <div class="savings-row">
+        <span class="savings-label">Phase 3: Supply Chain Visibility + Forecasting (Months 5–9)</span>
+        <span class="savings-value cost">$60K–$120K</span>
+      </div>
+      <div class="savings-row">
+        <span class="savings-label">Phase 4: CS Assistant + Training Platform (Months 9–12)</span>
+        <span class="savings-value cost">$40K–$105K</span>
+      </div>
+      <div class="savings-row">
+        <span class="savings-label">Annual Maintenance & Model Retraining (Year 2+)</span>
+        <span class="savings-value cost">$30K–$55K/yr</span>
+      </div>
+      <div class="savings-row" style="border-top: 2px solid var(--warn); padding-top:14px; margin-top:4px;">
+        <span class="savings-label" style="font-weight:600; color:var(--navy);">Total 12-Month Investment</span>
+        <span class="savings-value cost" style="font-size:16px;">$200K–$400K</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="timeline-section">
+    <div class="timeline-title">Implementation Timeline</div>
+    <div style="display:flex; gap:8px; margin-bottom:12px; font-size:10px; color:var(--text-muted); padding-left:212px;">
+      <span style="flex:1; text-align:left;">Month 0</span>
+      <span style="flex:1; text-align:center;">Month 6</span>
+      <span style="flex:1; text-align:right;">Month 12</span>
+    </div>
+    <div class="timeline-bars">
+      <div class="timeline-row">
+        <div class="timeline-label">ERP Integration Assessment</div>
+        <div class="timeline-bar-wrap">
+          <div class="timeline-bar" style="width:22%; background:var(--steel);">Weeks 1–4</div>
+        </div>
+        <div class="timeline-month">4 wks</div>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-label">AI Spec Validation System</div>
+        <div class="timeline-bar-wrap">
+          <div class="timeline-bar" style="width:90%; margin-left:18%; background:var(--primary);">Months 2–12 (Pilot → Scale)</div>
+        </div>
+        <div class="timeline-month">10 mo</div>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-label">Live Production Order Tracker</div>
+        <div class="timeline-bar-wrap">
+          <div class="timeline-bar" style="width:75%; margin-left:18%; background:var(--navy);">Months 2–10</div>
+        </div>
+        <div class="timeline-month">9 mo</div>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-label">Offshore Supply Chain Visibility</div>
+        <div class="timeline-bar-wrap">
+          <div class="timeline-bar" style="width:55%; margin-left:40%; background:var(--steel);">Months 5–11</div>
+        </div>
+        <div class="timeline-month">7 mo</div>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-label">Demand Forecasting</div>
+        <div class="timeline-bar-wrap">
+          <div class="timeline-bar" style="width:50%; margin-left:40%; background:var(--gold); color:var(--navy);">Months 5–10</div>
+        </div>
+        <div class="timeline-month">6 mo</div>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-label">CS Assistant + Training LMS</div>
+        <div class="timeline-bar-wrap">
+          <div class="timeline-bar" style="width:32%; margin-left:68%; background:var(--accent);">Months 9–12</div>
+        </div>
+        <div class="timeline-month">4 mo</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="capabilities-section">
+    <div class="cap-title">DFW Technologies Capabilities Required</div>
+    <div class="cap-grid">
+      <div class="cap-card">
+        <div class="cap-card-title"><span class="cap-icon">✅</span> Spec Validation AI Engineering</div>
+        <p>Build and deploy a private rules engine + ML model that validates custom apparel specifications against Rebel's approved catalog — color palettes, size grids, embellishment matrices. Must integrate directly into the new ERP system during the current transition window.</p>
+        <div class="cap-required">⚠ Core Requirement</div>
+      </div>
+      <div class="cap-card">
+        <div class="cap-card-title"><span class="cap-icon">🌐</span> Offshore Factory API Integration</div>
+        <p>Build the integration layer connecting offshore manufacturing partner systems to Rebel's ERP — production milestone tracking, QC status, and shipping handoff. Requires secure API development and potentially EDI translation for legacy factory systems.</p>
+        <div class="cap-required">⚠ Core Requirement</div>
+      </div>
+      <div class="cap-card">
+        <div class="cap-card-title"><span class="cap-icon">📡</span> ERP Integration Architecture</div>
+        <p>Deep integration with Rebel's new ERP system — embedding AI validation, order tracking, and forecasting outputs directly into operational workflows. Requires understanding the ERP data model and building AI hooks into order entry, production, and fulfillment stages.</p>
+        <div class="cap-required">⚠ Core Requirement</div>
+      </div>
+      <div class="cap-card">
+        <div class="cap-card-title"><span class="cap-icon">📅</span> Demand Forecasting ML</div>
+        <p>Build the competition calendar demand model — ingesting U.S. cheer competition schedules and historical Rebel order patterns to generate production planning signals 8–10 weeks ahead. Must output directly into ERP production planning module.</p>
+        <div class="cap-required">Required</div>
+      </div>
+      <div class="cap-card">
+        <div class="cap-card-title"><span class="cap-icon">🤖</span> Customer Service LLM Integration</div>
+        <p>Configure and deploy a public LLM-powered customer service assistant — handling order status, artwork approval, and shipping queries. Must integrate with Rebel's CRM and email/SMS channels. Build guardrails to prevent hallucinated order details.</p>
+        <div class="cap-required">Required</div>
+      </div>
+      <div class="cap-card">
+        <div class="cap-card-title"><span class="cap-icon">📊</span> PE Reporting Dashboard</div>
+        <p>Instrument all AI workloads with KPI tracking from day one — remake rate reduction, on-time delivery rate, rush order volume, CS automation rate. Build a lightweight dashboard Rebel leadership can present to Main Post Partners quarterly.</p>
+        <div class="cap-required">Required</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<div class="page-divider"></div>
+
+<!-- ══ PAGE 4: ARCHITECTURE ══ -->
+<div class="page" id="page4">
+  <nav class="page-nav">
+    <a href="#page1">01 · Overview</a>
+    <a href="#page2">02 · Solution</a>
+    <a href="#page3">03 · Cost & ROI</a>
+    <a href="#page4" class="active">04 · Architecture</a>
+  </nav>
+
+  <div class="section-header">
+    <span class="section-tag arch">Architecture</span>
+    <span class="section-title">Hybrid AI Architecture — Rebel Athletic Deployment</span>
+    <span class="page-num">04 / 04</span>
+  </div>
+
+  <div class="arch-intro">
+    <p>Rebel Athletic uses a <strong>hybrid two-domain architecture</strong>: a <strong>Private Operations Domain</strong> for all order specifications, design IP, athlete data, and production system integration (sensitive customer and business data), and a <strong>Public Cloud Domain</strong> for demand forecasting, the customer service assistant, and the training platform (no sensitive data involved). The ERP system sits at the center — the AI integration entry point for the current transition.</p>
+  </div>
+
+  <div class="arch-diagram">
+    <svg class="arch" viewBox="0 0 1000 560" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="arrowB" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#1E3470"/>
+        </marker>
+        <marker id="arrowPB" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#1A3A6B"/>
+        </marker>
+        <marker id="arrowOR" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#E05C00"/>
+        </marker>
+        <marker id="arrowGD" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#D4A017"/>
+        </marker>
+        <marker id="arrowPE" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#7C3AED"/>
+        </marker>
+      </defs>
+
+      <!-- Private Domain -->
+      <rect x="10" y="10" width="455" height="540" rx="6" fill="#EEF2FF" stroke="#1A3A6B" stroke-width="1.5" stroke-dasharray="6,3"/>
+      <text x="22" y="30" font-size="9" font-weight="700" fill="#1A3A6B" letter-spacing="1" font-family="DM Sans, sans-serif">🔒 PRIVATE OPERATIONS DOMAIN (ON-PREMISES)</text>
+
+      <!-- Public Cloud Domain -->
+      <rect x="535" y="10" width="455" height="540" rx="6" fill="#FFF8F0" stroke="#E05C00" stroke-width="1.5" stroke-dasharray="6,3"/>
+      <text x="547" y="30" font-size="9" font-weight="700" fill="#E05C00" letter-spacing="1" font-family="DM Sans, sans-serif">☁️ PUBLIC CLOUD DOMAIN</text>
+
+      <!-- Gateway -->
+      <rect x="467" y="10" width="64" height="540" fill="#07102A"/>
+      <text x="499" y="300" font-size="8" font-weight="700" fill="rgba(255,255,255,0.5)" letter-spacing="1" font-family="DM Sans, sans-serif" transform="rotate(-90,499,300)">SECURE API GATEWAY · ORDER & DESIGN DATA STAYS PRIVATE</text>
+
+      <!-- DATA SOURCES — Private -->
+      <rect x="28" y="460" width="118" height="76" rx="4" fill="#07102A" stroke="#1E3470" stroke-width="1"/>
+      <text x="87" y="486" font-size="9" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">📋 Order Specs</text>
+      <text x="87" y="500" font-size="9" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">Design + Athlete Data</text>
+      <text x="87" y="516" font-size="8" fill="#6B9FE8" text-anchor="middle" font-family="DM Mono, sans-serif">ERP API</text>
+
+      <rect x="158" y="460" width="118" height="76" rx="4" fill="#07102A" stroke="#1E3470" stroke-width="1"/>
+      <text x="217" y="486" font-size="9" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">🏭 Factory</text>
+      <text x="217" y="500" font-size="9" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">Production Milestones</text>
+      <text x="217" y="516" font-size="8" fill="#6B9FE8" text-anchor="middle" font-family="DM Mono, sans-serif">IoT / Factory API</text>
+
+      <rect x="288" y="460" width="118" height="76" rx="4" fill="#07102A" stroke="#1E3470" stroke-width="1"/>
+      <text x="347" y="486" font-size="9" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">👥 CRM + ERP</text>
+      <text x="347" y="500" font-size="9" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">Customer & Order DB</text>
+      <text x="347" y="516" font-size="8" fill="#6B9FE8" text-anchor="middle" font-family="DM Mono, sans-serif">Internal DB</text>
+
+      <!-- DATA SOURCES — Public -->
+      <rect x="553" y="460" width="118" height="76" rx="4" fill="#2A1000" stroke="#8B3A00" stroke-width="1"/>
+      <text x="612" y="486" font-size="9" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">📅 Competition</text>
+      <text x="612" y="500" font-size="9" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">Calendar + History</text>
+      <text x="612" y="516" font-size="8" fill="#FB923C" text-anchor="middle" font-family="DM Mono, sans-serif">Public API + CSV</text>
+
+      <rect x="683" y="460" width="118" height="76" rx="4" fill="#2A1000" stroke="#8B3A00" stroke-width="1"/>
+      <text x="742" y="486" font-size="9" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">📬 Customer</text>
+      <text x="742" y="500" font-size="9" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">Service Queries</text>
+      <text x="742" y="516" font-size="8" fill="#FB923C" text-anchor="middle" font-family="DM Mono, sans-serif">Email / SMS</text>
+
+      <rect x="813" y="460" width="118" height="76" rx="4" fill="#2A1000" stroke="#8B3A00" stroke-width="1"/>
+      <text x="872" y="486" font-size="9" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">👤 HR / Staff</text>
+      <text x="872" y="500" font-size="9" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">Onboarding Data</text>
+      <text x="872" y="516" font-size="8" fill="#FB923C" text-anchor="middle" font-family="DM Mono, sans-serif">HRIS API</text>
+
+      <!-- AI MODELS — Private -->
+      <rect x="28" y="300" width="118" height="130" rx="4" fill="#1E3470" stroke="#1A3A6B" stroke-width="1"/>
+      <text x="87" y="322" font-size="8" font-weight="700" fill="rgba(255,255,255,0.5)" text-anchor="middle" font-family="DM Sans, sans-serif">PRIVATE AI</text>
+      <text x="87" y="338" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Spec</text>
+      <text x="87" y="352" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Validation</text>
+      <text x="87" y="370" font-size="8" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">Rules + ML Engine</text>
+      <text x="87" y="383" font-size="8" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">Real-time alerts</text>
+      <text x="87" y="420" font-size="8" fill="rgba(255,255,255,0.35)" text-anchor="middle" font-family="DM Mono, sans-serif">→ Order Entry</text>
+
+      <rect x="158" y="300" width="118" height="130" rx="4" fill="#1E3470" stroke="#1A3A6B" stroke-width="1"/>
+      <text x="217" y="322" font-size="8" font-weight="700" fill="rgba(255,255,255,0.5)" text-anchor="middle" font-family="DM Sans, sans-serif">PRIVATE AI</text>
+      <text x="217" y="338" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Production</text>
+      <text x="217" y="352" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Delay Predict.</text>
+      <text x="217" y="370" font-size="8" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">LSTM ML Model</text>
+      <text x="217" y="383" font-size="8" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">Milestone tracking</text>
+      <text x="217" y="420" font-size="8" fill="rgba(255,255,255,0.35)" text-anchor="middle" font-family="DM Mono, sans-serif">→ Ops Alerts</text>
+
+      <rect x="288" y="300" width="118" height="130" rx="4" fill="#1E3470" stroke="#1A3A6B" stroke-width="1"/>
+      <text x="347" y="322" font-size="8" font-weight="700" fill="rgba(255,255,255,0.5)" text-anchor="middle" font-family="DM Sans, sans-serif">PRIVATE AI</text>
+      <text x="347" y="338" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">PE Reporting</text>
+      <text x="347" y="352" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Dashboard</text>
+      <text x="347" y="370" font-size="8" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">KPI Instrumentation</text>
+      <text x="347" y="383" font-size="8" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">Quarterly metrics</text>
+      <text x="347" y="420" font-size="8" fill="rgba(255,255,255,0.35)" text-anchor="middle" font-family="DM Mono, sans-serif">→ PE Board View</text>
+
+      <!-- AI MODELS — Public -->
+      <rect x="553" y="300" width="118" height="130" rx="4" fill="#3D1A00" stroke="#8B3A00" stroke-width="1"/>
+      <text x="612" y="322" font-size="8" font-weight="700" fill="rgba(255,255,255,0.5)" text-anchor="middle" font-family="DM Sans, sans-serif">PUBLIC AI</text>
+      <text x="612" y="338" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Demand</text>
+      <text x="612" y="352" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Forecasting</text>
+      <text x="612" y="370" font-size="8" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">Azure ML</text>
+      <text x="612" y="383" font-size="8" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">Calendar-driven</text>
+      <text x="612" y="420" font-size="8" fill="rgba(255,255,255,0.35)" text-anchor="middle" font-family="DM Mono, sans-serif">→ Production Plan</text>
+
+      <rect x="683" y="300" width="118" height="130" rx="4" fill="#3D1A00" stroke="#8B3A00" stroke-width="1"/>
+      <text x="742" y="322" font-size="8" font-weight="700" fill="rgba(255,255,255,0.5)" text-anchor="middle" font-family="DM Sans, sans-serif">PUBLIC AI</text>
+      <text x="742" y="338" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">CS Assistant</text>
+      <text x="742" y="352" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">LLM</text>
+      <text x="742" y="370" font-size="8" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">Claude API</text>
+      <text x="742" y="383" font-size="8" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">Order metadata only</text>
+      <text x="742" y="420" font-size="8" fill="rgba(255,255,255,0.35)" text-anchor="middle" font-family="DM Mono, sans-serif">→ Coach Replies</text>
+
+      <rect x="813" y="300" width="118" height="130" rx="4" fill="#3D1A00" stroke="#8B3A00" stroke-width="1"/>
+      <text x="872" y="322" font-size="8" font-weight="700" fill="rgba(255,255,255,0.5)" text-anchor="middle" font-family="DM Sans, sans-serif">PUBLIC AI</text>
+      <text x="872" y="338" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Training</text>
+      <text x="872" y="352" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">LMS Platform</text>
+      <text x="872" y="370" font-size="8" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">AI-LMS</text>
+      <text x="872" y="383" font-size="8" fill="rgba(255,255,255,0.55)" text-anchor="middle" font-family="DM Sans, sans-serif">Role-based paths</text>
+      <text x="872" y="420" font-size="8" fill="rgba(255,255,255,0.35)" text-anchor="middle" font-family="DM Mono, sans-serif">→ Certifications</text>
+
+      <!-- OUTPUTS -->
+      <rect x="28" y="148" width="408" height="120" rx="4" fill="#07102A" stroke="#1A3A6B" stroke-width="1.5"/>
+      <text x="232" y="168" font-size="9" font-weight="700" fill="#6B9FE8" text-anchor="middle" letter-spacing="0.1em" font-family="DM Sans, sans-serif">REBEL OPERATIONS CENTER (On-Premises)</text>
+      <rect x="42" y="176" width="118" height="76" rx="3" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+      <text x="101" y="198" font-size="9" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">✅ Spec</text>
+      <text x="101" y="212" font-size="9" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Validation Alerts</text>
+      <text x="101" y="234" font-size="8" fill="rgba(255,255,255,0.4)" text-anchor="middle" font-family="DM Mono, sans-serif">Order entry team</text>
+
+      <rect x="172" y="176" width="118" height="76" rx="3" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+      <text x="231" y="198" font-size="9" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">⚠️ Delay</text>
+      <text x="231" y="212" font-size="9" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Early Warnings</text>
+      <text x="231" y="234" font-size="8" fill="rgba(255,255,255,0.4)" text-anchor="middle" font-family="DM Mono, sans-serif">Ops managers</text>
+
+      <rect x="302" y="176" width="120" height="76" rx="3" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+      <text x="362" y="198" font-size="9" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">📊 PE Board</text>
+      <text x="362" y="212" font-size="9" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">KPI Dashboard</text>
+      <text x="362" y="234" font-size="8" fill="rgba(255,255,255,0.4)" text-anchor="middle" font-family="DM Mono, sans-serif">Main Post Partners</text>
+
+      <rect x="553" y="148" width="420" height="120" rx="4" fill="#2A1000" stroke="#E05C00" stroke-width="1.5"/>
+      <text x="763" y="168" font-size="9" font-weight="700" fill="#FB923C" text-anchor="middle" letter-spacing="0.1em" font-family="DM Sans, sans-serif">COACH & CUSTOMER PLATFORM (Cloud)</text>
+      <rect x="567" y="176" width="118" height="76" rx="3" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+      <text x="626" y="198" font-size="9" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">📦 Production</text>
+      <text x="626" y="212" font-size="9" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Order Tracker</text>
+      <text x="626" y="234" font-size="8" fill="rgba(255,255,255,0.4)" text-anchor="middle" font-family="DM Mono, sans-serif">Coach portal</text>
+
+      <rect x="697" y="176" width="118" height="76" rx="3" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+      <text x="756" y="198" font-size="9" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">🤖 CS Bot</text>
+      <text x="756" y="212" font-size="9" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Auto-Responses</text>
+      <text x="756" y="234" font-size="8" fill="rgba(255,255,255,0.4)" text-anchor="middle" font-family="DM Mono, sans-serif">Email / SMS</text>
+
+      <rect x="827" y="176" width="130" height="76" rx="3" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+      <text x="892" y="198" font-size="9" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">🎓 Staff</text>
+      <text x="892" y="212" font-size="9" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Certifications</text>
+      <text x="892" y="234" font-size="8" fill="rgba(255,255,255,0.4)" text-anchor="middle" font-family="DM Mono, sans-serif">New hire LMS</text>
+
+      <!-- Arrows -->
+      <line x1="87" y1="460" x2="87" y2="432" stroke="#1A3A6B" stroke-width="1.5" marker-end="url(#arrowPB)"/>
+      <line x1="217" y1="460" x2="217" y2="432" stroke="#1A3A6B" stroke-width="1.5" marker-end="url(#arrowPB)"/>
+      <line x1="347" y1="460" x2="347" y2="432" stroke="#1A3A6B" stroke-width="1.5" marker-end="url(#arrowPB)"/>
+      <line x1="612" y1="460" x2="612" y2="432" stroke="#E05C00" stroke-width="1.5" marker-end="url(#arrowOR)"/>
+      <line x1="742" y1="460" x2="742" y2="432" stroke="#E05C00" stroke-width="1.5" marker-end="url(#arrowOR)"/>
+      <line x1="872" y1="460" x2="872" y2="432" stroke="#E05C00" stroke-width="1.5" marker-end="url(#arrowOR)"/>
+
+      <line x1="87" y1="300" x2="101" y2="270" stroke="#1A3A6B" stroke-width="1.5" marker-end="url(#arrowPB)"/>
+      <line x1="217" y1="300" x2="231" y2="270" stroke="#1A3A6B" stroke-width="1.5" marker-end="url(#arrowPB)"/>
+      <line x1="347" y1="300" x2="362" y2="270" stroke="#1A3A6B" stroke-width="1.5" marker-end="url(#arrowPB)"/>
+      <line x1="612" y1="300" x2="626" y2="270" stroke="#E05C00" stroke-width="1.5" marker-end="url(#arrowOR)"/>
+      <line x1="742" y1="300" x2="756" y2="270" stroke="#E05C00" stroke-width="1.5" marker-end="url(#arrowOR)"/>
+      <line x1="872" y1="300" x2="892" y2="270" stroke="#E05C00" stroke-width="1.5" marker-end="url(#arrowOR)"/>
+
+      <line x1="450" y1="250" x2="467" y2="250" stroke="#D4A017" stroke-width="2" marker-end="url(#arrowGD)"/>
+      <line x1="535" y1="250" x2="519" y2="250" stroke="#D4A017" stroke-width="2" marker-end="url(#arrowGD)"/>
+      <text x="499" y="244" font-size="7" fill="rgba(255,255,255,0.45)" text-anchor="middle" font-family="DM Mono, sans-serif">TLS/HTTPS</text>
+      <text x="499" y="256" font-size="7" fill="rgba(255,255,255,0.3)" text-anchor="middle" font-family="DM Mono, sans-serif">No design IP crosses</text>
+
+      <text x="6" y="520" font-size="8" fill="#3D5080" font-family="DM Mono, sans-serif" transform="rotate(-90,6,520)">DATA SOURCES</text>
+      <text x="6" y="390" font-size="8" fill="#3D5080" font-family="DM Mono, sans-serif" transform="rotate(-90,6,390)">AI MODELS</text>
+      <text x="6" y="230" font-size="8" fill="#3D5080" font-family="DM Mono, sans-serif" transform="rotate(-90,6,230)">OUTPUTS</text>
+    </svg>
+  </div>
+
+  <div class="arch-legend">
+    <div class="legend-item"><div class="legend-dot" style="background:#1E3470;"></div>Private AI (On-Premises)</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#3D1A00;"></div>Public Cloud AI</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#D4A017;"></div>API Gateway (No Design IP Crosses)</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#1A3A6B;"></div>Private Data Flow</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#E05C00;"></div>Cloud Data Flow</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#07102A;"></div>Data Sources</div>
+  </div>
+
+  <div style="padding: 20px 48px; border-top: 1px solid var(--silver);">
+    <div class="col-title">AI Routing Decision Summary</div>
+    <table class="routing-table">
+      <thead>
+        <tr>
+          <th>Workload</th>
+          <th>AI Routing</th>
+          <th>Rationale</th>
+          <th>Primary Output</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Order Spec Validation</td>
+          <td><span class="ai-badge private">Private AI</span></td>
+          <td>Design IP and athlete personal data — must stay in Rebel's private infrastructure</td>
+          <td>Real-time error alerts during order entry</td>
+        </tr>
+        <tr>
+          <td>Production Delay Prediction</td>
+          <td><span class="ai-badge private">Private AI</span></td>
+          <td>Factory production data and order details are operationally sensitive customer IP</td>
+          <td>Early warning alerts to operations managers</td>
+        </tr>
+        <tr>
+          <td>PE Reporting KPI Dashboard</td>
+          <td><span class="ai-badge private">Private AI</span></td>
+          <td>Business performance data is confidential — internal private cloud deployment</td>
+          <td>Quarterly KPI report for Main Post Partners board</td>
+        </tr>
+        <tr>
+          <td>Demand Forecasting</td>
+          <td><span class="ai-badge public">Public AI</span></td>
+          <td>Anonymized order volumes + public competition calendar — no sensitive data involved</td>
+          <td>Production planning triggers 8–10 weeks ahead</td>
+        </tr>
+        <tr>
+          <td>Customer Service Assistant</td>
+          <td><span class="ai-badge public">Public AI</span></td>
+          <td>Order metadata and templated responses only — no athlete PII or design IP transmitted</td>
+          <td>Automated coach responses for status/approval queries</td>
+        </tr>
+        <tr>
+          <td>Staff Training LMS</td>
+          <td><span class="ai-badge public">Public AI</span></td>
+          <td>No sensitive operational data — scalable cloud deployment for growing PE-backed headcount</td>
+          <td>Role-based training completions and certifications</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<script>
+  document.querySelectorAll('.page-nav a').forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.querySelector(link.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      document.querySelectorAll('.page-nav a').forEach(a => a.classList.remove('active'));
+      link.classList.add('active');
+    });
+  });
+</script>
+</body>
+</html>
