@@ -1,0 +1,7 @@
+cd "C:/Users/krant/OneDrive - The University of Texas at Dallas/.../Sindhura/HTML files"
+git init
+git add dental.html
+git commit -m "Add dental page"
+git branch -M main
+git remote add origin https://github.com/YOUR_USERNAME/dental-dashboard.git
+git push -u origin main
