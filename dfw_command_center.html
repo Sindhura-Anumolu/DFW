@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>DFW Technologies — AI Command Center</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{--bg:#0B1221;--surface:#111827;--surface2:#1C2A3F;--border:#1E3A5F;--accent:#00D4FF;--green:#10B981;--amber:#F59E0B;--rose:#F43F5E;--text:#E2E8F0;--muted:#64748B;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Space Grotesk',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+.header{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 28px;display:flex;align-items:center;justify-content:space-between;}
+.logo-text{font-size:1rem;font-weight:700;color:#fff;}
+.logo-sub{font-size:0.72rem;color:var(--muted);font-family:'JetBrains Mono',monospace;}
+.header-right{display:flex;align-items:center;gap:14px;}
+.live-dot{width:8px;height:8px;background:#10B981;border-radius:50%;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.4;}}
+.hstat .val{font-size:0.88rem;font-weight:600;color:#fff;}
+.hstat .lbl{font-size:0.68rem;color:var(--muted);font-family:'JetBrains Mono',monospace;}
+.divider{width:1px;height:30px;background:var(--border);}
+.layout{display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 60px);}
+.sidebar{background:var(--surface);border-right:1px solid var(--border);padding:18px 0;}
+.sidebar-label{font-size:0.67rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:7px;font-family:'JetBrains Mono',monospace;padding:0 16px;}
+.nav-item{display:flex;align-items:center;gap:8px;padding:8px 16px;cursor:pointer;font-size:0.81rem;color:var(--muted);transition:all .15s;margin-bottom:1px;}
+.nav-item.active{background:var(--surface2);color:#fff;border-left:2px solid var(--accent);}
+.nav-item:hover:not(.active){background:#1C2A3F55;color:var(--text);}
+.nav-count{margin-left:auto;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:1px 7px;font-size:0.67rem;font-family:'JetBrains Mono',monospace;}
+.nav-count.alert{background:#F43F5E18;border-color:#F43F5E44;color:#F43F5E;}
+.sidebar-divider{border:none;border-top:1px solid var(--border);margin:10px 0;}
+.main{padding:22px 26px 32px;overflow:auto;}
+.panel{display:none;}.panel.active{display:block;}
+.kpi-strip{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:18px;}
+.kpi{background:var(--surface);border:1px solid var(--border);border-radius:7px;padding:13px 15px;}
+.kpi-label{font-size:0.67rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.4px;margin-bottom:4px;font-family:'JetBrains Mono',monospace;}
+.kpi-val{font-size:1.4rem;font-weight:700;}
+.kpi-note{font-size:0.69rem;color:var(--muted);margin-top:3px;}
+.kpi-note.up{color:#10B981;}.kpi-note.down{color:#F43F5E;}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-bottom:13px;}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:13px;margin-bottom:13px;}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:7px;padding:16px;}
+.card-title{font-size:0.7rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:12px;font-family:'JetBrains Mono',monospace;}
+.sm-metrics{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;margin-bottom:10px;}
+.sm{background:var(--surface2);border:1px solid var(--border);border-radius:5px;padding:8px 10px;}
+.sm .v{font-size:0.95rem;font-weight:700;}.sm .l{font-size:0.65rem;color:var(--muted);font-family:'JetBrains Mono',monospace;}
+table{width:100%;border-collapse:collapse;}
+th{font-size:0.67rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.4px;padding:8px 11px;text-align:left;border-bottom:1px solid var(--border);font-family:'JetBrains Mono',monospace;}
+td{padding:8px 11px;font-size:0.79rem;border-bottom:1px solid #1C2A3F;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:#1C2A3F55;}
+.chip{display:inline-flex;align-items:center;border-radius:3px;padding:2px 7px;font-size:0.68rem;font-weight:500;font-family:'JetBrains Mono',monospace;}
+.chip-pub{background:#F59E0B18;border:1px solid #F59E0B44;color:#F59E0B;}
+.chip-priv{background:#10B98118;border:1px solid #10B98144;color:#10B981;}
+.chip-hyb{background:#00D4FF18;border:1px solid #00D4FF44;color:#00D4FF;}
+.chip-itar{background:#818CF818;border:1px solid #818CF844;color:#818CF8;}
+.chip-hipaa{background:#FB923C18;border:1px solid #FB923C44;color:#FB923C;}
+.chip-red{background:#F43F5E18;border:1px solid #F43F5E44;color:#F43F5E;}
+.chip-green{background:#10B98118;border:1px solid #10B98144;color:#10B981;}
+.chip-amber{background:#F59E0B18;border:1px solid #F59E0B44;color:#F59E0B;}
+.alert-feed{display:flex;flex-direction:column;gap:8px;}
+.alert-item{background:var(--surface2);border:1px solid var(--border);border-radius:5px;padding:9px 13px;border-left:3px solid;}
+.alert-item.critical{border-left-color:#F43F5E;}.alert-item.warn{border-left-color:#F59E0B;}.alert-item.info{border-left-color:#00D4FF;}.alert-item.ok{border-left-color:#10B981;}
+.alert-time{font-size:0.66rem;color:var(--muted);font-family:'JetBrains Mono',monospace;float:right;}
+.alert-title{font-size:0.79rem;font-weight:600;margin-bottom:2px;}
+.alert-body{font-size:0.75rem;color:var(--muted);}
+.cost-bar{display:flex;align-items:center;gap:10px;margin-bottom:9px;}
+.cost-label{width:120px;font-size:0.77rem;color:var(--muted);}
+.cost-track{flex:1;height:7px;background:var(--surface2);border-radius:3px;overflow:hidden;}
+.cost-fill{height:100%;border-radius:3px;}
+.cost-num{width:58px;text-align:right;font-size:0.74rem;font-family:'JetBrains Mono',monospace;}
+.router-form label{display:block;font-size:0.7rem;color:var(--muted);font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:5px;}
+.router-form select,.router-form textarea{width:100%;background:var(--surface);border:1px solid var(--border);color:var(--text);border-radius:5px;padding:8px 11px;font-size:0.82rem;font-family:'Space Grotesk',sans-serif;outline:none;margin-bottom:12px;}
+.router-form select:focus,.router-form textarea:focus{border-color:var(--accent);}
+.btn{background:linear-gradient(135deg,#00D4FF,#0070F3);color:#fff;border:none;border-radius:5px;padding:9px 18px;font-size:0.82rem;font-weight:600;cursor:pointer;font-family:'Space Grotesk',sans-serif;}
+.btn:hover{opacity:0.88;}
+.result-box{background:var(--surface2);border:1px solid var(--border);border-radius:7px;padding:15px;margin-top:13px;}
+.result-box .reco{font-size:1.05rem;font-weight:700;margin-bottom:8px;}
+.result-meta{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:9px;}
+.result-reason{font-size:0.78rem;color:var(--muted);line-height:1.55;}
+.sector-stub{text-align:center;padding:50px 20px;}
+.sector-stub .icon{font-size:2.8rem;margin-bottom:12px;}
+.sector-stub h2{font-size:1.05rem;font-weight:600;margin-bottom:8px;}
+.sector-stub p{color:var(--muted);font-size:0.83rem;max-width:400px;margin:0 auto 18px;}
+code{background:var(--surface2);padding:2px 8px;border-radius:3px;font-size:0.78rem;font-family:'JetBrains Mono',monospace;}
+</style>
+</head>
+<body>
+<div class="header">
+  <div>
+    <div class="logo-text">🤖 DFW Technologies — AI Command Center</div>
+    <div class="logo-sub">Richardson, TX &middot; SME Client Portfolio &middot; Public/Private Routing</div>
+  </div>
+  <div class="header-right">
+    <div class="hstat"><div class="val">3 Active Clients</div><div class="lbl">Healthcare · Retail · Mfg</div></div>
+    <div class="divider"></div>
+    <div class="hstat"><div class="val" style="color:#10B981;">$218K YTD ROI</div><div class="lbl">Across all sectors</div></div>
+    <div class="divider"></div>
+    <div style="display:flex;align-items:center;gap:6px;"><div class="live-dot"></div><span style="font-size:0.74rem;color:#10B981;font-family:'JetBrains Mono',monospace;">LIVE</span></div>
+  </div>
+</div>
+
+<div class="layout">
+<div class="sidebar">
+  <div style="padding:0 16px;margin-bottom:14px;">
+    <div class="sidebar-label">Overview</div>
+    <div class="nav-item active" onclick="switchPanel('overview',this)"><span>📊</span> Portfolio Overview</div>
+    <div class="nav-item" onclick="switchPanel('router',this)"><span>🔀</span> AI Task Router <span class="nav-count">TOOL</span></div>
+  </div>
+  <div class="sidebar-divider"></div>
+  <div style="padding:0 16px;margin-bottom:14px;">
+    <div class="sidebar-label">Client Sectors</div>
+    <div class="nav-item" onclick="switchPanel('healthcare',this)"><span>🏥</span> Healthcare</div>
+    <div class="nav-item" onclick="switchPanel('retail',this)"><span>🛒</span> Retail</div>
+    <div class="nav-item" onclick="switchPanel('manufacturing',this)"><span>⚙️</span> Manufacturing <span class="nav-count alert">7⚠</span></div>
+  </div>
+  <div class="sidebar-divider"></div>
+  <div style="padding:0 16px;">
+    <div class="sidebar-label">Analytics</div>
+    <div class="nav-item" onclick="switchPanel('costs',this)"><span>💰</span> Cost & ROI</div>
+    <div class="nav-item" onclick="switchPanel('alerts',this)"><span>🔔</span> Alert Feed <span class="nav-count alert">4</span></div>
+  </div>
+</div>
+
+<div class="main">
+
+<!-- OVERVIEW -->
+<div class="panel active" id="panel-overview">
+  <div class="kpi-strip">
+    <div class="kpi"><div class="kpi-label">AI Tasks / Day</div><div class="kpi-val" style="color:var(--accent);">2,847</div><div class="kpi-note up">↑18% MoM</div></div>
+    <div class="kpi"><div class="kpi-label">Private Routed</div><div class="kpi-val" style="color:#10B981;">71%</div><div class="kpi-note">1,821 tasks</div></div>
+    <div class="kpi"><div class="kpi-label">Public Routed</div><div class="kpi-val" style="color:#F59E0B;">29%</div><div class="kpi-note">826 tasks</div></div>
+    <div class="kpi"><div class="kpi-label">Monthly Cost</div><div class="kpi-val" style="color:#fff;">$4,280</div><div class="kpi-note up">↓38% vs all-public</div></div>
+    <div class="kpi"><div class="kpi-label">YTD Client ROI</div><div class="kpi-val" style="color:#10B981;">$218K</div><div class="kpi-note">3 sectors combined</div></div>
+  </div>
+  <div class="grid3">
+    <div class="card">
+      <div class="card-title">🏥 DFW Dental — Healthcare</div>
+      <div class="sm-metrics">
+        <div class="sm"><div class="v" style="color:#10B981;">94%</div><div class="l">No-show reduced</div></div>
+        <div class="sm"><div class="v" style="color:#F59E0B;">$67K</div><div class="l">Claims saved YTD</div></div>
+        <div class="sm"><div class="v" style="color:var(--accent);">100%</div><div class="l">HIPAA private</div></div>
+      </div>
+      <div style="display:flex;gap:5px;flex-wrap:wrap;"><span class="chip chip-hipaa">HIPAA</span><span class="chip chip-priv">Private LLM</span></div>
+    </div>
+    <div class="card">
+      <div class="card-title">🛒 ValuMart — Retail</div>
+      <div class="sm-metrics">
+        <div class="sm"><div class="v" style="color:#10B981;">91%</div><div class="l">Forecast accuracy</div></div>
+        <div class="sm"><div class="v" style="color:#F59E0B;">$38K</div><div class="l">Clearance lift</div></div>
+        <div class="sm"><div class="v" style="color:var(--accent);">68%</div><div class="l">Private routed</div></div>
+      </div>
+      <div style="display:flex;gap:5px;flex-wrap:wrap;"><span class="chip chip-pub">Azure ML</span><span class="chip chip-priv">PII Private</span></div>
+    </div>
+    <div class="card">
+      <div class="card-title">⚙️ TexaComp — Manufacturing</div>
+      <div class="sm-metrics">
+        <div class="sm"><div class="v" style="color:#10B981;">1.8%</div><div class="l">Defect rate</div></div>
+        <div class="sm"><div class="v" style="color:#F59E0B;">$142K</div><div class="l">Downtime avoided</div></div>
+        <div class="sm"><div class="v" style="color:var(--accent);">100%</div><div class="l">ITAR private</div></div>
+      </div>
+      <div style="display:flex;gap:5px;flex-wrap:wrap;"><span class="chip chip-itar">ITAR</span><span class="chip chip-priv">On-Premise</span></div>
+    </div>
+  </div>
+  <div class="grid2">
+    <div class="card">
+      <div class="card-title">AI Task Routing — All Clients</div>
+      <table>
+        <thead><tr><th>Task</th><th>Client</th><th>Route</th><th>Model</th><th>/Day</th></tr></thead>
+        <tbody>
+          <tr><td>No-show prediction</td><td>DFW Dental</td><td><span class="chip chip-priv">Private</span></td><td>On-Prem LLM</td><td>420</td></tr>
+          <tr><td>Claim pre-validation</td><td>DFW Dental</td><td><span class="chip chip-priv">Private</span></td><td>On-Prem LLM</td><td>180</td></tr>
+          <tr><td>Demand forecast</td><td>ValuMart</td><td><span class="chip chip-pub">Public</span></td><td>Azure ML</td><td>310</td></tr>
+          <tr><td>Customer lapse risk</td><td>ValuMart</td><td><span class="chip chip-priv">Private</span></td><td>On-Prem LLM</td><td>95</td></tr>
+          <tr><td>QA defect detection</td><td>TexaComp</td><td><span class="chip chip-itar">ITAR Private</span></td><td>TF On-Prem</td><td>680</td></tr>
+          <tr><td>Delivery scheduling</td><td>TexaComp</td><td><span class="chip chip-itar">ITAR Private</span></td><td>TF On-Prem</td><td>240</td></tr>
+          <tr><td>Clearance pricing</td><td>ValuMart</td><td><span class="chip chip-pub">Public</span></td><td>GPT-4o</td><td>120</td></tr>
+          <tr><td>Recall letter gen.</td><td>DFW Dental</td><td><span class="chip chip-pub">Public</span></td><td>Claude Sonnet</td><td>85</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card">
+      <div class="card-title">Active Alerts</div>
+      <div class="alert-feed">
+        <div class="alert-item critical"><span class="alert-time">09:42</span><div class="alert-title">🔴 TexaComp — Batch HOLD Line 3</div><div class="alert-body">Torque variance ±4.8%. 25 units quarantined. QA supervisor paged.</div></div>
+        <div class="alert-item warn"><span class="alert-time">09:15</span><div class="alert-title">⚠️ TexaComp — Titanium Stock Critical</div><div class="alert-body">8 days supply, 14-day lead time. PO needed immediately.</div></div>
+        <div class="alert-item warn"><span class="alert-time">08:55</span><div class="alert-title">⚠️ ValuMart — SKU-0042 Stockout Risk</div><div class="alert-body">Oat Milk: 3 days stock. Reorder 120 units suggested.</div></div>
+        <div class="alert-item info"><span class="alert-time">08:30</span><div class="alert-title">ℹ️ DFW Dental — 6 High No-Show Risk Today</div><div class="alert-body">Recall calls initiated. 2 rescheduled. 4 pending.</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ROUTER -->
+<div class="panel" id="panel-router">
+  <div class="grid2">
+    <div class="card router-form">
+      <div class="card-title" style="margin-bottom:15px;">🔀 AI Task Router</div>
+      <label>Client Industry</label>
+      <select id="r-industry">
+        <option value="">Select industry...</option>
+        <option value="healthcare">Healthcare / Dental</option>
+        <option value="retail">Retail / E-Commerce</option>
+        <option value="manufacturing">Manufacturing / Defense</option>
+        <option value="legal">Legal / Professional Services</option>
+        <option value="finance">Finance / Accounting</option>
+      </select>
+      <label>Data Sensitivity</label>
+      <select id="r-sensitivity">
+        <option value="">Select level...</option>
+        <option value="low">Low — Non-PII, public data</option>
+        <option value="medium">Medium — Internal business data</option>
+        <option value="high">High — PII / PHI / financial records</option>
+        <option value="critical">Critical — ITAR / HIPAA / regulated</option>
+      </select>
+      <label>Task Description (optional)</label>
+      <textarea id="r-task" rows="3" placeholder="e.g. Predict patient no-show risk using appointment history..."></textarea>
+      <button class="btn" onclick="routeTask()">→ Determine Route</button>
+      <div id="route-result" style="display:none;" class="result-box">
+        <div class="reco" id="r-reco"></div>
+        <div class="result-meta" id="r-meta"></div>
+        <div class="result-reason" id="r-reason"></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Routing Logic Reference</div>
+      <div class="alert-feed">
+        <div class="alert-item ok"><div class="alert-title">☁️ Public Route</div><div class="alert-body">Non-PII tasks, anonymized ML inference, content generation. Models: GPT-4o, Claude Sonnet, Azure ML.</div></div>
+        <div class="alert-item info"><div class="alert-title">🔀 Hybrid Route</div><div class="alert-body">Anonymized signals → public. Customer/patient identifiers → private on-prem.</div></div>
+        <div class="alert-item warn"><div class="alert-title">🔒 Private Route</div><div class="alert-body">PII, PHI, proprietary business logic. On-premise LLM or VPC-isolated deployment.</div></div>
+        <div class="alert-item critical"><div class="alert-title">🛡️ ITAR / HIPAA Mandatory</div><div class="alert-body">Regulated technical or health data. Zero external API calls. Criminal liability for violations.</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- COSTS -->
+<div class="panel" id="panel-costs">
+  <div class="kpi-strip" style="grid-template-columns:repeat(4,1fr);">
+    <div class="kpi"><div class="kpi-label">Monthly AI Spend</div><div class="kpi-val">$4,280</div><div class="kpi-note">Optimized routing</div></div>
+    <div class="kpi"><div class="kpi-label">All-Public Baseline</div><div class="kpi-val" style="color:#F43F5E;">$6,900</div><div class="kpi-note">Pre-optimization</div></div>
+    <div class="kpi"><div class="kpi-label">Monthly Savings</div><div class="kpi-val" style="color:#10B981;">$2,620</div><div class="kpi-note up">38% reduction</div></div>
+    <div class="kpi"><div class="kpi-label">YTD Client ROI</div><div class="kpi-val" style="color:var(--accent);">$218K</div><div class="kpi-note">3 sectors</div></div>
+  </div>
+  <div class="grid2">
+    <div class="card">
+      <div class="card-title">Monthly Cost by Client</div>
+      <div class="cost-bar"><div class="cost-label">DFW Dental</div><div class="cost-track"><div class="cost-fill" style="width:38%;background:#FB923C;"></div></div><div class="cost-num" style="color:#FB923C;">$1,620</div></div>
+      <div class="cost-bar"><div class="cost-label">ValuMart</div><div class="cost-track"><div class="cost-fill" style="width:28%;background:#F59E0B;"></div></div><div class="cost-num" style="color:#F59E0B;">$1,190</div></div>
+      <div class="cost-bar"><div class="cost-label">TexaComp</div><div class="cost-track"><div class="cost-fill" style="width:34%;background:#818CF8;"></div></div><div class="cost-num" style="color:#818CF8;">$1,470</div></div>
+      <hr style="border-color:var(--border);margin:12px 0;"/>
+      <div class="card-title">Public vs. Private Split</div>
+      <div class="cost-bar"><div class="cost-label">Public APIs</div><div class="cost-track"><div class="cost-fill" style="width:29%;background:#F59E0B;"></div></div><div class="cost-num" style="color:#F59E0B;">$1,240</div></div>
+      <div class="cost-bar"><div class="cost-label">Private Infra</div><div class="cost-track"><div class="cost-fill" style="width:71%;background:#10B981;"></div></div><div class="cost-num" style="color:#10B981;">$3,040</div></div>
+    </div>
+    <div class="card">
+      <div class="card-title">ROI by Client (YTD)</div>
+      <table>
+        <thead><tr><th>Client</th><th>AI Invest.</th><th>Value Gen.</th><th>ROI</th></tr></thead>
+        <tbody>
+          <tr><td>DFW Dental</td><td>$19,440</td><td style="color:#10B981;font-weight:600;">$94,000</td><td><span class="chip chip-green">384%</span></td></tr>
+          <tr><td>ValuMart</td><td>$14,280</td><td style="color:#10B981;font-weight:600;">$76,000</td><td><span class="chip chip-green">432%</span></td></tr>
+          <tr><td>TexaComp</td><td>$17,640</td><td style="color:#10B981;font-weight:600;">$142,000</td><td><span class="chip chip-green">705%</span></td></tr>
+          <tr style="font-weight:600;border-top:1px solid var(--border);"><td>Total</td><td>$51,360</td><td style="color:#10B981;">$312,000</td><td><span class="chip chip-green">507%</span></td></tr>
+        </tbody>
+      </table>
+      <div style="margin-top:10px;font-size:0.74rem;color:var(--muted);">ROI = (Value Generated − AI Investment) / Investment × 100. Values include cost savings, revenue lift, and downtime avoidance.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ALERTS -->
+<div class="panel" id="panel-alerts">
+  <div class="card">
+    <div class="card-title">Active Alert Feed — All Clients</div>
+    <div class="alert-feed">
+      <div class="alert-item critical"><span class="alert-time">09:42 AM</span><div class="alert-title">🔴 [TexaComp] Batch TXC-2024-B Quality HOLD</div><div class="alert-body">Line 3 torque variance ±4.8%. 25 units quarantined. ITAR-controlled — private model only. QA supervisor paged.</div></div>
+      <div class="alert-item warn"><span class="alert-time">09:15 AM</span><div class="alert-title">⚠️ [TexaComp] Titanium Grade 5 — Critical Stock</div><div class="alert-body">8 days supply remaining vs. 14-day lead time. Immediate PO recommended for 120 units.</div></div>
+      <div class="alert-item warn"><span class="alert-time">08:55 AM</span><div class="alert-title">⚠️ [ValuMart] SKU-0042 Stockout in 3 Days</div><div class="alert-body">Organic Oat Milk 64oz. Demand: 112/week. Stock: 14 units. Reorder: 120.</div></div>
+      <div class="alert-item info"><span class="alert-time">08:30 AM</span><div class="alert-title">ℹ️ [DFW Dental] 6 High No-Show Risk Today</div><div class="alert-body">Automated recall calls initiated. 2 rescheduled. 4 pending. HIPAA-compliant private model.</div></div>
+      <div class="alert-item ok"><span class="alert-time">07:45 AM</span><div class="alert-title">✅ [ValuMart] Clearance Pricing Applied — 6 Items</div><div class="alert-body">AI markdowns applied. Projected clearance revenue: $720 today. Waste reduction: −34kg.</div></div>
+      <div class="alert-item ok"><span class="alert-time">07:00 AM</span><div class="alert-title">✅ [TexaComp] Lines 2 & 4 — Overnight QA Clear</div><div class="alert-body">Vision AI confidence 99.1%. Zero defects across both lines.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTOR STUBS -->
+<div class="panel" id="panel-healthcare">
+  <div class="card sector-stub">
+    <div class="icon">🏥</div>
+    <h2>DFW Dental — Full Dashboard</h2>
+    <p>Open the dedicated dental dashboard for patient no-show risk, claim validation, and recall prioritization.</p>
+    <div><span class="chip chip-hipaa" style="padding:4px 12px;font-size:0.78rem;">HIPAA Compliant</span>&nbsp;<span class="chip chip-priv" style="padding:4px 12px;font-size:0.78rem;">100% Private LLM</span></div>
+    <div style="margin-top:16px;color:var(--muted);font-size:0.8rem;">→ File: <code>dental_ai_dashboard_light.html</code></div>
+  </div>
+</div>
+<div class="panel" id="panel-retail">
+  <div class="card sector-stub">
+    <div class="icon">🛒</div>
+    <h2>ValuMart — Full Dashboard</h2>
+    <p>Open the dedicated retail dashboard for demand forecasting, clearance pricing, and customer recall tools.</p>
+    <div><span class="chip chip-pub" style="padding:4px 12px;font-size:0.78rem;">Public: Azure ML / GPT-4o</span>&nbsp;<span class="chip chip-priv" style="padding:4px 12px;font-size:0.78rem;">Private: Customer PII</span></div>
+    <div style="margin-top:16px;color:var(--muted);font-size:0.8rem;">→ File: <code>retail_ai_dashboard.html</code></div>
+  </div>
+</div>
+<div class="panel" id="panel-manufacturing">
+  <div class="card sector-stub">
+    <div class="icon">⚙️</div>
+    <h2>TexaComp — Full Dashboard</h2>
+    <p>Open the dedicated manufacturing dashboard for QA monitoring, delivery scheduling, and parts forecasting.</p>
+    <div><span class="chip chip-itar" style="padding:4px 12px;font-size:0.78rem;">ITAR Compliant</span>&nbsp;<span class="chip chip-priv" style="padding:4px 12px;font-size:0.78rem;">100% On-Premise</span></div>
+    <div style="margin-top:16px;color:var(--muted);font-size:0.8rem;">→ File: <code>manufacturing_ai_dashboard.html</code></div>
+  </div>
+</div>
+
+</div><!-- main -->
+</div><!-- layout -->
+
+<script>
+function switchPanel(name, el){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('panel-'+name).classList.add('active');
+  el.classList.add('active');
+}
+const RL={
+  healthcare:{critical:{r:'🛡️ HIPAA Mandatory Private',m:'On-Premise LLM (BAA Required)',c:'~$0.004/task',s:'Critical — PHI',t:'PHI cannot leave your infrastructure. HIPAA requires a BAA that most public LLMs cannot provide. Patient data, clinical notes, and appointment history must route exclusively to your on-premise deployment.'},high:{r:'🔒 Private Route',m:'On-Premise LLM',c:'~$0.004/task',s:'High — PHI',t:'Any patient-linked data is PHI under HIPAA. Route exclusively to private on-premise infrastructure.'},medium:{r:'🔀 Hybrid Route',m:'Private for PII + Public for anonymized',c:'~$0.005/task',s:'Medium',t:'Anonymized clinical patterns can use public models. All patient-linked data stays private.'},low:{r:'☁️ Public Route',m:'Claude Sonnet / GPT-4o',c:'~$0.002/task',s:'Low — Non-PHI',t:'Fully anonymized or synthetic data with no PHI can safely use public APIs.'}},
+  manufacturing:{critical:{r:'🛡️ ITAR Mandatory Private',m:'On-Premise TensorFlow / LLM',c:'~$0.005/task',s:'Critical — ITAR Controlled',t:'ITAR prohibits export of controlled technical data to foreign servers or persons. All defense specs, CAD data, and production details must stay on-premise. Violation risk: federal criminal charges.'},high:{r:'🔒 Private Route',m:'On-Premise LLM',c:'~$0.005/task',s:'High — Proprietary IP',t:'Proprietary manufacturing processes represent competitive IP. On-premise routing prevents inadvertent training data leakage.'},medium:{r:'🔒 Private Route',m:'On-Premise LLM',c:'~$0.004/task',s:'Medium — Internal',t:'Manufacturing operational data often has IP implications. Default to private unless data is truly non-proprietary.'},low:{r:'☁️ Public Route',m:'Azure ML / GPT-4o',c:'~$0.002/task',s:'Low',t:'Anonymized metrics, industry benchmarks, and non-proprietary analysis can use public APIs safely.'}},
+  retail:{critical:{r:'🔒 Private Route',m:'On-Premise LLM',c:'~$0.004/task',s:'High — Customer PII',t:'Customer PII and purchase history must stay private. CCPA/CPRA compliance requires data minimization and purpose limitation.'},high:{r:'🔒 Private Route',m:'On-Premise LLM',c:'~$0.004/task',s:'High — PII',t:'Customer behavioral profiles and transaction data are sensitive PII. Private routing ensures compliance.'},medium:{r:'🔀 Hybrid Route',m:'Anonymized → Public; PII → Private',c:'~$0.003/task',s:'Medium',t:'Aggregate demand signals and pricing logic suit public APIs. Any customer-linked attribute stays private.'},low:{r:'☁️ Public Route',m:'Azure ML / GPT-4o',c:'~$0.002/task',s:'Low',t:'SKU-level forecasting with no customer data and pricing analysis are ideal public cloud workloads.'}},
+  finance:{critical:{r:'🔒 Private Route (SOC2)',m:'On-Premise LLM',c:'~$0.005/task',s:'Critical — Financial Records',t:'SEC/FINRA regulations may prohibit financial data from leaving controlled environments. Client portfolios and transactions route private.'},high:{r:'🔒 Private Route',m:'On-Premise LLM',c:'~$0.004/task',s:'High',t:'Client financial data and investment strategies must be protected from third-party AI pipelines.'},medium:{r:'🔀 Hybrid',m:'Private for client data, Public for market data',c:'~$0.003/task',s:'Medium',t:'Public market data suits public APIs. Client-linked financial data routes private.'},low:{r:'☁️ Public Route',m:'GPT-4o / Claude Sonnet',c:'~$0.002/task',s:'Low',t:'Market research, regulatory summarization, and anonymized reporting are safe for public APIs.'}},
+  legal:{critical:{r:'🔒 Private Route',m:'On-Premise LLM',c:'~$0.005/task',s:'Critical — Privileged',t:'Attorney-client privileged communications must never reach third-party AI systems. Violation could waive privilege. Mandatory private routing.'},high:{r:'🔒 Private Route',m:'On-Premise LLM',c:'~$0.004/task',s:'High — Client Matter',t:'Client case strategy and matters are privileged. Route exclusively to private infrastructure.'},medium:{r:'🔀 Hybrid',m:'Case law research → Public; Client data → Private',c:'~$0.003/task',s:'Medium',t:'Public case law and statutes research is fine for public APIs. Client-specific analysis routes private.'},low:{r:'☁️ Public Route',m:'Claude Sonnet / GPT-4o',c:'~$0.002/task',s:'Low',t:'General legal research, public regulatory summaries, and template drafting without client data work well on public APIs.'}}
+};
+function routeTask(){
+  const industry=document.getElementById('r-industry').value;
+  const sensitivity=document.getElementById('r-sensitivity').value;
+  if(!industry||!sensitivity){alert('Please select an industry and sensitivity level.');return;}
+  const key=sensitivity==='critical'?'critical':sensitivity==='high'?'high':sensitivity==='medium'?'medium':'low';
+  const rec=(RL[industry]||RL.retail)[key];
+  document.getElementById('r-reco').textContent=rec.r;
+  document.getElementById('r-meta').innerHTML=`<span class="chip chip-priv">${rec.m}</span><span class="chip chip-amber">Cost: ${rec.c}</span><span class="chip chip-red">Sensitivity: ${rec.s}</span>`;
+  document.getElementById('r-reason').textContent=rec.t;
+  document.getElementById('route-result').style.display='block';
+}
+</script>
+</body>
+</html>

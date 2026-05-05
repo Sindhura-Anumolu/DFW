@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ValuMart — Retail AI Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --bg: #F7F8FA;
+  --surface: #FFFFFF;
+  --border: #E4E7ED;
+  --navy: #1A2E4A;
+  --teal: #0D7C66;
+  --amber: #D97706;
+  --rose: #DC2626;
+  --sky: #0284C7;
+  --text: #1A2E4A;
+  --muted: #64748B;
+  --tag-bg: #EEF2FF;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+.header{background:var(--navy);padding:18px 32px;display:flex;align-items:center;justify-content:space-between;}
+.header h1{color:#fff;font-size:1.1rem;font-weight:600;letter-spacing:0.3px;}
+.header .sub{color:#94A3B8;font-size:0.78rem;font-family:'DM Mono',monospace;}
+.badge{background:#0D7C6622;color:#2DD4BF;border:1px solid #0D7C6655;border-radius:4px;padding:3px 10px;font-size:0.72rem;font-family:'DM Mono',monospace;}
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;padding:24px 32px 0;}
+.kpi{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px 20px;border-top:3px solid transparent;}
+.kpi.green{border-top-color:#0D7C66;} .kpi.amber{border-top-color:#D97706;} .kpi.sky{border-top-color:#0284C7;} .kpi.rose{border-top-color:#DC2626;}
+.kpi-label{font-size:0.73rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;}
+.kpi-val{font-size:1.7rem;font-weight:700;line-height:1;}
+.kpi-note{font-size:0.73rem;color:var(--muted);margin-top:4px;}
+.tabs{display:flex;gap:4px;padding:20px 32px 0;}
+.tab{padding:9px 18px;border-radius:7px;font-size:0.83rem;font-weight:500;cursor:pointer;border:1px solid transparent;color:var(--muted);transition:all .2s;}
+.tab.active{background:var(--navy);color:#fff;border-color:var(--navy);}
+.tab:hover:not(.active){background:#E2E8F0;color:var(--text);}
+.panel{padding:20px 32px 32px;display:none;}
+.panel.active{display:block;}
+.section-title{font-size:0.85rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:12px;}
+table{width:100%;border-collapse:collapse;background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;}
+th{background:#F1F5F9;font-size:0.75rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.4px;padding:10px 16px;text-align:left;border-bottom:1px solid var(--border);}
+td{padding:10px 16px;font-size:0.83rem;border-bottom:1px solid #F1F5F9;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:#FAFBFC;}
+.pill{display:inline-block;padding:2px 9px;border-radius:20px;font-size:0.72rem;font-weight:500;}
+.pill-red{background:#FEE2E2;color:#B91C1C;}
+.pill-yellow{background:#FEF3C7;color:#92400E;}
+.pill-green{background:#D1FAE5;color:#065F46;}
+.pill-sky{background:#E0F2FE;color:#0369A1;}
+.pill-navy{background:#EEF2FF;color:#3730A3;}
+.alert-box{background:#FFFBEB;border:1px solid #FDE68A;border-left:4px solid #D97706;border-radius:8px;padding:12px 16px;margin-bottom:12px;font-size:0.83rem;}
+.alert-box strong{color:#92400E;}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:20px;}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:16px;}
+.metric-card{background:#F8FAFC;border:1px solid var(--border);border-radius:8px;padding:14px 16px;}
+.metric-card .val{font-size:1.4rem;font-weight:700;margin-bottom:2px;}
+.metric-card .lbl{font-size:0.73rem;color:var(--muted);}
+.progress-bar{height:6px;background:#E2E8F0;border-radius:3px;overflow:hidden;margin-top:6px;}
+.progress-fill{height:100%;border-radius:3px;}
+.ai-chip{display:inline-flex;align-items:center;gap:5px;background:#EFF6FF;border:1px solid #BFDBFE;color:#1D4ED8;border-radius:5px;padding:3px 9px;font-size:0.72rem;font-weight:500;}
+.ai-chip::before{content:'🤖';font-size:0.75rem;}
+.private-chip{display:inline-flex;align-items:center;gap:5px;background:#F0FDF4;border:1px solid #BBF7D0;color:#15803D;border-radius:5px;padding:3px 9px;font-size:0.72rem;font-weight:500;}
+.private-chip::before{content:'🔒';font-size:0.75rem;}
+.public-chip{display:inline-flex;align-items:center;gap:5px;background:#FFF7ED;border:1px solid #FED7AA;color:#C2410C;border-radius:5px;padding:3px 9px;font-size:0.72rem;font-weight:500;}
+.public-chip::before{content:'☁️';font-size:0.75rem;}
+.bar-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;font-size:0.82rem;}
+.bar-row .name{width:140px;color:var(--muted);}
+.bar-row .bar{flex:1;height:8px;background:#E2E8F0;border-radius:4px;overflow:hidden;}
+.bar-row .fill{height:100%;border-radius:4px;background:#0284C7;}
+.bar-row .num{width:50px;text-align:right;font-family:'DM Mono',monospace;font-size:0.78rem;}
+</style>
+</head>
+<body>
+<div class="header">
+  <div>
+    <div class="header h1" style="color:#fff;font-size:1.1rem;font-weight:600;">🛒 ValuMart — Retail AI Dashboard</div>
+    <div class="sub">Richardson CORE District · Public/Private AI Split · DFW Technologies</div>
+  </div>
+  <div style="display:flex;gap:8px;align-items:center;">
+    <span class="badge">LIVE DEMO</span>
+    <span style="color:#64748B;font-size:0.78rem;font-family:'DM Mono',monospace;">Fri Mar 06 2026</span>
+  </div>
+</div>
+
+<div class="kpi-row">
+  <div class="kpi green">
+    <div class="kpi-label">Forecast Accuracy</div>
+    <div class="kpi-val" style="color:#0D7C66;">91.4%</div>
+    <div class="kpi-note">↑ 6.2% vs. manual baseline</div>
+  </div>
+  <div class="kpi amber">
+    <div class="kpi-label">Stockout Risk SKUs</div>
+    <div class="kpi-val" style="color:#D97706;">23</div>
+    <div class="kpi-note">↓ 41% since AI reorder alerts</div>
+  </div>
+  <div class="kpi sky">
+    <div class="kpi-label">Clearance Revenue Lift</div>
+    <div class="kpi-val" style="color:#0284C7;">$38K</div>
+    <div class="kpi-note">This quarter via AI pricing</div>
+  </div>
+  <div class="kpi rose">
+    <div class="kpi-label">Lapsed Customers</div>
+    <div class="kpi-val" style="color:#DC2626;">187</div>
+    <div class="kpi-note">Targeted for recall campaign</div>
+  </div>
+</div>
+
+<div class="tabs">
+  <div class="tab active" onclick="switchTab(0)">📦 Demand Forecast & Reorder</div>
+  <div class="tab" onclick="switchTab(1)">🏷️ Clearance Pricing Engine</div>
+  <div class="tab" onclick="switchTab(2)">👥 Customer Recall Risk</div>
+</div>
+
+<!-- TAB 0: Demand Forecast -->
+<div class="panel active" id="tab0">
+  <div class="three-col">
+    <div class="metric-card">
+      <div class="val" style="color:#0D7C66;">147</div>
+      <div class="lbl">SKUs Forecasted This Week</div>
+      <div class="progress-bar"><div class="progress-fill" style="width:73%;background:#0D7C66;"></div></div>
+    </div>
+    <div class="metric-card">
+      <div class="val" style="color:#D97706;">23</div>
+      <div class="lbl">Reorder Alerts Triggered</div>
+      <div class="progress-bar"><div class="progress-fill" style="width:45%;background:#D97706;"></div></div>
+    </div>
+    <div class="metric-card">
+      <div class="val" style="color:#0284C7;">$12.4K</div>
+      <div class="lbl">Overstock Avoided (est.)</div>
+      <div class="progress-bar"><div class="progress-fill" style="width:62%;background:#0284C7;"></div></div>
+    </div>
+  </div>
+  <div class="alert-box"><strong>⚠️ Reorder Alert:</strong> SKU-0042 (Organic Oat Milk 64oz) — predicted stockout in 3 days. Current stock: 14 units. Suggested order: 120 units. <span class="private-chip">Private LLM</span></div>
+  <div class="alert-box" style="background:#EFF6FF;border-color:#BFDBFE;border-left-color:#0284C7;"><strong style="color:#1D4ED8;">📈 Seasonal Spike:</strong> SKU-0108 (Sunscreen SPF50) forecast up 340% next week. AI model: Azure ML (public cloud). <span class="public-chip">Public API</span></div>
+  <div class="section-title" style="margin-top:8px;">Weekly SKU Demand Forecast</div>
+  <table>
+    <thead><tr><th>SKU</th><th>Product</th><th>Current Stock</th><th>Predicted Demand</th><th>Reorder Qty</th><th>Confidence</th><th>AI Route</th><th>Status</th></tr></thead>
+    <tbody>
+      <tr><td><span style="font-family:'DM Mono',monospace;font-size:0.78rem;">0042</span></td><td>Organic Oat Milk 64oz</td><td>14</td><td>112/wk</td><td>120</td><td>94%</td><td><span class="private-chip">Private</span></td><td><span class="pill pill-red">⚠️ Urgent</span></td></tr>
+      <tr><td><span style="font-family:'DM Mono',monospace;font-size:0.78rem;">0108</span></td><td>Sunscreen SPF50</td><td>88</td><td>310/wk</td><td>250</td><td>87%</td><td><span class="public-chip">Public</span></td><td><span class="pill pill-yellow">📈 Spike</span></td></tr>
+      <tr><td><span style="font-family:'DM Mono',monospace;font-size:0.78rem;">0215</span></td><td>Greek Yogurt Multipack</td><td>204</td><td>190/wk</td><td>—</td><td>91%</td><td><span class="private-chip">Private</span></td><td><span class="pill pill-green">✓ OK</span></td></tr>
+      <tr><td><span style="font-family:'DM Mono',monospace;font-size:0.78rem;">0319</span></td><td>Paper Towels 6-Roll</td><td>37</td><td>95/wk</td><td>80</td><td>89%</td><td><span class="private-chip">Private</span></td><td><span class="pill pill-yellow">⚡ Low</span></td></tr>
+      <tr><td><span style="font-family:'DM Mono',monospace;font-size:0.78rem;">0401</span></td><td>Almond Butter 16oz</td><td>310</td><td>45/wk</td><td>—</td><td>82%</td><td><span class="public-chip">Public</span></td><td><span class="pill pill-sky">↓ Overstock</span></td></tr>
+      <tr><td><span style="font-family:'DM Mono',monospace;font-size:0.78rem;">0512</span></td><td>Baby Wipes 80ct</td><td>61</td><td>78/wk</td><td>40</td><td>96%</td><td><span class="private-chip">Private</span></td><td><span class="pill pill-yellow">⚡ Low</span></td></tr>
+    </tbody>
+  </table>
+  <div style="margin-top:12px;font-size:0.77rem;color:var(--muted);">🔒 Customer purchase history routed to private on-premise model. Non-PII demand signals use Azure ML (public). Cost split: 68% private / 32% public.</div>
+</div>
+
+<!-- TAB 1: Clearance Pricing -->
+<div class="panel" id="tab1">
+  <div class="section-title">AI-Recommended Markdown Pricing</div>
+  <div class="alert-box"><strong>💡 Pricing AI:</strong> Non-PII pricing calculations routed to GPT-4 (public). Customer loyalty tier data processed on-premise. <span class="public-chip">Public API</span></div>
+  <table>
+    <thead><tr><th>Product</th><th>Category</th><th>Days to Expiry</th><th>Current Price</th><th>AI Markdown</th><th>Est. Units Sold</th><th>Revenue Impact</th><th>Action</th></tr></thead>
+    <tbody>
+      <tr><td>Strawberry Yogurt 6pk</td><td>Dairy</td><td>2</td><td>$4.99</td><td><strong style="color:#DC2626;">$1.99 (−60%)</strong></td><td>48</td><td>+$95.52</td><td><span class="pill pill-red">Apply Now</span></td></tr>
+      <tr><td>Sliced Turkey Deli 12oz</td><td>Deli</td><td>3</td><td>$6.49</td><td><strong style="color:#D97706;">$3.99 (−39%)</strong></td><td>31</td><td>+$123.69</td><td><span class="pill pill-yellow">Apply Today</span></td></tr>
+      <tr><td>Whole Grain Bread</td><td>Bakery</td><td>1</td><td>$3.29</td><td><strong style="color:#DC2626;">$0.99 (−70%)</strong></td><td>60</td><td>+$59.40</td><td><span class="pill pill-red">Apply Now</span></td></tr>
+      <tr><td>Spring Mix Salad 5oz</td><td>Produce</td><td>4</td><td>$3.79</td><td><strong style="color:#D97706;">$2.49 (−34%)</strong></td><td>25</td><td>+$62.25</td><td><span class="pill pill-yellow">Apply Today</span></td></tr>
+      <tr><td>Summer Dress (Blue S)</td><td>Apparel</td><td>18</td><td>$29.99</td><td><strong style="color:#0284C7;">$19.99 (−33%)</strong></td><td>12</td><td>+$239.88</td><td><span class="pill pill-sky">Recommend</span></td></tr>
+      <tr><td>BBQ Sauce 3-Pack</td><td>Condiments</td><td>45</td><td>$8.99</td><td><strong style="color:#0D7C66;">$6.99 (−22%)</strong></td><td>20</td><td>+$139.80</td><td><span class="pill pill-green">Optional</span></td></tr>
+    </tbody>
+  </table>
+  <div class="two-col" style="margin-top:16px;">
+    <div class="card">
+      <div class="section-title">Projected Clearance Revenue This Week</div>
+      <div style="font-size:2rem;font-weight:700;color:#0D7C66;margin-bottom:4px;">$720.54</div>
+      <div style="font-size:0.8rem;color:var(--muted);">vs. $0 if items expired unsold</div>
+      <div style="margin-top:12px;font-size:0.82rem;color:var(--muted);">Waste reduction: <strong style="color:#0D7C66;">~34 kg</strong> food not discarded</div>
+    </div>
+    <div class="card">
+      <div class="section-title">Markdown by Category</div>
+      <div class="bar-row"><div class="name">Dairy / Deli</div><div class="bar"><div class="fill" style="width:82%;background:#DC2626;"></div></div><div class="num">82%</div></div>
+      <div class="bar-row"><div class="name">Bakery</div><div class="bar"><div class="fill" style="width:71%;"></div></div><div class="num">71%</div></div>
+      <div class="bar-row"><div class="name">Produce</div><div class="bar"><div class="fill" style="width:55%;background:#0D7C66;"></div></div><div class="num">55%</div></div>
+      <div class="bar-row"><div class="name">Apparel</div><div class="bar"><div class="fill" style="width:33%;background:#D97706;"></div></div><div class="num">33%</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- TAB 2: Customer Recall -->
+<div class="panel" id="tab2">
+  <div class="section-title">Customer Lapse Risk — Loyalty Tier Analysis</div>
+  <div class="alert-box"><strong>🔒 Privacy Note:</strong> All customer PII and purchase history processed on-premise (private LLM). Only anonymized churn scores shared externally. <span class="private-chip">Private LLM</span></div>
+  <table>
+    <thead><tr><th>Customer ID</th><th>Tier</th><th>Last Visit</th><th>Avg. Spend/Mo</th><th>Lapse Score</th><th>Top Category</th><th>Recommended Offer</th><th>AI Route</th></tr></thead>
+    <tbody>
+      <tr><td><span style="font-family:'DM Mono',monospace;font-size:0.78rem;">C-1042</span></td><td><span class="pill pill-navy">Gold</span></td><td>47 days ago</td><td>$312</td><td><span class="pill pill-red">92 — High</span></td><td>Organic / Health</td><td>$15 off $50 health items</td><td><span class="private-chip">Private</span></td></tr>
+      <tr><td><span style="font-family:'DM Mono',monospace;font-size:0.78rem;">C-2871</span></td><td><span class="pill pill-navy">Gold</span></td><td>38 days ago</td><td>$285</td><td><span class="pill pill-red">87 — High</span></td><td>Baby / Household</td><td>Free delivery + 10% off</td><td><span class="private-chip">Private</span></td></tr>
+      <tr><td><span style="font-family:'DM Mono',monospace;font-size:0.78rem;">C-0334</span></td><td><span class="pill pill-sky">Silver</span></td><td>29 days ago</td><td>$148</td><td><span class="pill pill-yellow">74 — Med</span></td><td>Bakery / Deli</td><td>BOGO bakery weekend</td><td><span class="private-chip">Private</span></td></tr>
+      <tr><td><span style="font-family:'DM Mono',monospace;font-size:0.78rem;">C-1509</span></td><td><span class="pill pill-sky">Silver</span></td><td>22 days ago</td><td>$97</td><td><span class="pill pill-yellow">61 — Med</span></td><td>Produce / Snacks</td><td>Produce bundle discount</td><td><span class="private-chip">Private</span></td></tr>
+      <tr><td><span style="font-family:'DM Mono',monospace;font-size:0.78rem;">C-3210</span></td><td><span class="pill pill-green">Bronze</span></td><td>15 days ago</td><td>$54</td><td><span class="pill pill-green">38 — Low</span></td><td>Beverages</td><td>Loyalty points bonus</td><td><span class="private-chip">Private</span></td></tr>
+    </tbody>
+  </table>
+  <div class="two-col" style="margin-top:16px;">
+    <div class="card">
+      <div class="section-title">Recall Campaign Summary</div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div style="display:flex;justify-content:space-between;font-size:0.83rem;"><span>Customers at High Risk</span><strong style="color:#DC2626;">62</strong></div>
+        <div style="display:flex;justify-content:space-between;font-size:0.83rem;"><span>Customers at Medium Risk</span><strong style="color:#D97706;">125</strong></div>
+        <div style="display:flex;justify-content:space-between;font-size:0.83rem;"><span>Offers Sent This Month</span><strong>187</strong></div>
+        <div style="display:flex;justify-content:space-between;font-size:0.83rem;"><span>Recall Rate (est.)</span><strong style="color:#0D7C66;">34%</strong></div>
+        <div style="display:flex;justify-content:space-between;font-size:0.83rem;border-top:1px solid var(--border);padding-top:8px;"><span>Projected Recovered Revenue</span><strong style="color:#0D7C66;">$28,400/mo</strong></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="section-title">Lapse Reasons (AI Inferred)</div>
+      <div class="bar-row"><div class="name">Price sensitivity</div><div class="bar"><div class="fill" style="width:68%;background:#DC2626;"></div></div><div class="num">68%</div></div>
+      <div class="bar-row"><div class="name">Competitor switch</div><div class="bar"><div class="fill" style="width:51%;background:#D97706;"></div></div><div class="num">51%</div></div>
+      <div class="bar-row"><div class="name">Product unavailability</div><div class="bar"><div class="fill" style="width:34%;"></div></div><div class="num">34%</div></div>
+      <div class="bar-row"><div class="name">Seasonal change</div><div class="bar"><div class="fill" style="width:22%;background:#0D7C66;"></div></div><div class="num">22%</div></div>
+    </div>
+  </div>
+</div>
+
+<script>
+function switchTab(i){
+  document.querySelectorAll('.tab').forEach((t,j)=>t.classList.toggle('active',i===j));
+  document.querySelectorAll('.panel').forEach((p,j)=>p.classList.toggle('active',i===j));
+}
+</script>
+</body>
+</html>

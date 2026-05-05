@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>TexaComp — Manufacturing AI Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{--bg:#F0F2F5;--surface:#FFFFFF;--border:#D8DDE6;--steel:#1B2B4B;--orange:#C2410C;--green:#15803D;--yellow:#B45309;--sky:#0369A1;--text:#1B2B4B;--muted:#5C6E8A;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+.header{background:var(--steel);padding:16px 32px;display:flex;align-items:center;justify-content:space-between;border-bottom:3px solid #C2410C;}
+.header h1{color:#fff;font-size:1.05rem;font-weight:600;}
+.header .sub{color:#94A3B8;font-size:0.77rem;font-family:'IBM Plex Mono',monospace;}
+.badge{background:#C2410C22;color:#FB923C;border:1px solid #C2410C55;border-radius:3px;padding:3px 10px;font-size:0.72rem;font-family:'IBM Plex Mono',monospace;}
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;padding:22px 32px 0;}
+.kpi{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px 18px;border-left:4px solid transparent;}
+.kpi.red{border-left-color:#C2410C;} .kpi.green{border-left-color:#15803D;} .kpi.yellow{border-left-color:#B45309;} .kpi.sky{border-left-color:#0369A1;}
+.kpi-label{font-size:0.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:5px;font-family:'IBM Plex Mono',monospace;}
+.kpi-val{font-size:1.6rem;font-weight:700;}
+.kpi-note{font-size:0.72rem;color:var(--muted);margin-top:3px;}
+.tabs{display:flex;gap:2px;padding:18px 32px 0;border-bottom:1px solid var(--border);}
+.tab{padding:10px 20px;font-size:0.82rem;font-weight:500;cursor:pointer;border-bottom:3px solid transparent;color:var(--muted);transition:all .2s;}
+.tab.active{color:var(--steel);border-bottom-color:#C2410C;font-weight:600;}
+.tab:hover:not(.active){color:var(--text);}
+.panel{padding:22px 32px 32px;display:none;}
+.panel.active{display:block;}
+.section-title{font-size:0.73rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:10px;font-family:'IBM Plex Mono',monospace;}
+table{width:100%;border-collapse:collapse;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+th{background:#E8EDF4;font-size:0.73rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.4px;padding:9px 14px;text-align:left;border-bottom:1px solid var(--border);font-family:'IBM Plex Mono',monospace;}
+td{padding:9px 14px;font-size:0.82rem;border-bottom:1px solid #F1F4F8;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:#F8FAFB;}
+.pill{display:inline-block;padding:2px 8px;border-radius:3px;font-size:0.71rem;font-weight:600;font-family:'IBM Plex Mono',monospace;}
+.pill-red{background:#FEE2E2;color:#991B1B;}
+.pill-yellow{background:#FEF3C7;color:#78350F;}
+.pill-green{background:#D1FAE5;color:#064E3B;}
+.pill-sky{background:#E0F2FE;color:#0C4A6E;}
+.pill-gray{background:#F1F5F9;color:#475569;}
+.alert-box{border-radius:6px;padding:11px 15px;margin-bottom:12px;font-size:0.82rem;border-left:4px solid;}
+.alert-red{background:#FFF1F0;border-color:#C2410C;} .alert-red strong{color:#9A3412;}
+.alert-yellow{background:#FFFBEB;border-color:#B45309;} .alert-yellow strong{color:#78350F;}
+.alert-green{background:#F0FDF4;border-color:#15803D;} .alert-green strong{color:#14532D;}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:14px;}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:18px;}
+.metric-card{background:#F5F7FA;border:1px solid var(--border);border-radius:7px;padding:13px 15px;}
+.metric-card .val{font-size:1.35rem;font-weight:700;margin-bottom:2px;}
+.metric-card .lbl{font-size:0.72rem;color:var(--muted);font-family:'IBM Plex Mono',monospace;}
+.progress-bar{height:5px;background:#DDE3EB;border-radius:3px;overflow:hidden;margin-top:6px;}
+.progress-fill{height:100%;border-radius:3px;}
+.private-chip{display:inline-flex;align-items:center;gap:4px;background:#F0FDF4;border:1px solid #BBF7D0;color:#15803D;border-radius:4px;padding:2px 8px;font-size:0.71rem;font-weight:500;}
+.public-chip{display:inline-flex;align-items:center;gap:4px;background:#FFF7ED;border:1px solid #FED7AA;color:#C2410C;border-radius:4px;padding:2px 8px;font-size:0.71rem;font-weight:500;}
+.itar-chip{display:inline-flex;align-items:center;gap:4px;background:#EFF6FF;border:1px solid #BFDBFE;color:#1D4ED8;border-radius:4px;padding:2px 8px;font-size:0.71rem;font-weight:500;}
+.bar-row{display:flex;align-items:center;gap:10px;margin-bottom:7px;font-size:0.81rem;}
+.bar-row .name{width:150px;color:var(--muted);}
+.bar-row .bar{flex:1;height:7px;background:#DDE3EB;border-radius:3px;overflow:hidden;}
+.bar-row .fill{height:100%;border-radius:3px;}
+.bar-row .num{width:45px;text-align:right;font-family:'IBM Plex Mono',monospace;font-size:0.77rem;}
+</style>
+</head>
+<body>
+<div class="header">
+  <div>
+    <div style="color:#fff;font-size:1.05rem;font-weight:600;">⚙️ TexaComp — Manufacturing AI Dashboard</div>
+    <div class="sub">Richardson Industrial · ITAR Compliance · DFW Technologies</div>
+  </div>
+  <div style="display:flex;gap:8px;align-items:center;">
+    <span class="badge">ITAR COMPLIANT</span>
+    <span class="badge" style="background:#15803D22;color:#4ADE80;border-color:#15803D55;">LIVE DEMO</span>
+  </div>
+</div>
+
+<div class="kpi-row">
+  <div class="kpi red">
+    <div class="kpi-label">Defect Rate</div>
+    <div class="kpi-val" style="color:#C2410C;">1.8%</div>
+    <div class="kpi-note">↓ 62% since QA AI deploy</div>
+  </div>
+  <div class="kpi green">
+    <div class="kpi-label">On-Time Delivery</div>
+    <div class="kpi-val" style="color:#15803D;">94.2%</div>
+    <div class="kpi-note">↑ 11% vs. pre-AI baseline</div>
+  </div>
+  <div class="kpi yellow">
+    <div class="kpi-label">Parts Shortage Alerts</div>
+    <div class="kpi-val" style="color:#B45309;">7</div>
+    <div class="kpi-note">Active reorder triggers</div>
+  </div>
+  <div class="kpi sky">
+    <div class="kpi-label">Predictive Maintenance ROI</div>
+    <div class="kpi-val" style="color:#0369A1;">$142K</div>
+    <div class="kpi-note">Downtime avoided YTD</div>
+  </div>
+</div>
+
+<div class="tabs">
+  <div class="tab active" onclick="switchTab(0)">🔬 Defect & QA Monitor</div>
+  <div class="tab" onclick="switchTab(1)">🚚 Delivery & Scheduling</div>
+  <div class="tab" onclick="switchTab(2)">🔩 Inventory & Parts Forecast</div>
+</div>
+
+<!-- TAB 0: Defect & QA -->
+<div class="panel active" id="tab0">
+  <div class="three-col">
+    <div class="metric-card">
+      <div class="val" style="color:#C2410C;">14</div>
+      <div class="lbl">Defects Flagged Today</div>
+      <div class="progress-bar"><div class="progress-fill" style="width:28%;background:#C2410C;"></div></div>
+    </div>
+    <div class="metric-card">
+      <div class="val" style="color:#15803D;">98.2%</div>
+      <div class="lbl">QA Pass Rate (Week)</div>
+      <div class="progress-bar"><div class="progress-fill" style="width:98%;background:#15803D;"></div></div>
+    </div>
+    <div class="metric-card">
+      <div class="val" style="color:#B45309;">3</div>
+      <div class="lbl">Lines Flagged for Review</div>
+      <div class="progress-bar"><div class="progress-fill" style="width:37%;background:#B45309;"></div></div>
+    </div>
+  </div>
+  <div class="alert-box alert-red"><strong>🚨 Critical:</strong> Line 3 – Batch TXC-2024-B — Torque variance exceeds ±2.5% on units 88–112. AI confidence: 97%. Routing to QA supervisor. <span class="itar-chip">🔒 ITAR – Private Only</span></div>
+  <div class="alert-box alert-yellow"><strong>⚠️ Warning:</strong> Line 1 – Shift 2 — Surface finish anomaly detected on 4% of parts. Likely tooling wear. Maintenance scheduled. <span class="private-chip">🔒 Private</span></div>
+  <div class="alert-box alert-green"><strong>✅ Clear:</strong> Line 2 – All batches within tolerance. Vision AI confidence: 99.1%. <span class="private-chip">🔒 Private</span></div>
+  <div class="section-title" style="margin-top:4px;">Batch QA Scorecard — Current Shift</div>
+  <table>
+    <thead><tr><th>Batch ID</th><th>Line</th><th>Shift</th><th>Units Inspected</th><th>Defects</th><th>Defect Rate</th><th>Root Cause (AI)</th><th>Compliance</th><th>Status</th></tr></thead>
+    <tbody>
+      <tr><td><span style="font-family:'IBM Plex Mono',monospace;font-size:0.77rem;">TXC-2024-A</span></td><td>Line 1</td><td>AM</td><td>250</td><td>3</td><td>1.2%</td><td>Tooling wear</td><td><span class="itar-chip">ITAR</span></td><td><span class="pill pill-yellow">Review</span></td></tr>
+      <tr><td><span style="font-family:'IBM Plex Mono',monospace;font-size:0.77rem;">TXC-2024-B</span></td><td>Line 3</td><td>AM</td><td>125</td><td>25</td><td>20%</td><td>Torque variance</td><td><span class="itar-chip">ITAR</span></td><td><span class="pill pill-red">HOLD</span></td></tr>
+      <tr><td><span style="font-family:'IBM Plex Mono',monospace;font-size:0.77rem;">TXC-2024-C</span></td><td>Line 2</td><td>AM</td><td>310</td><td>2</td><td>0.6%</td><td>None detected</td><td><span class="itar-chip">ITAR</span></td><td><span class="pill pill-green">Pass</span></td></tr>
+      <tr><td><span style="font-family:'IBM Plex Mono',monospace;font-size:0.77rem;">TXC-2024-D</span></td><td>Line 1</td><td>PM</td><td>280</td><td>4</td><td>1.4%</td><td>Material inconsistency</td><td><span class="itar-chip">ITAR</span></td><td><span class="pill pill-yellow">Monitor</span></td></tr>
+      <tr><td><span style="font-family:'IBM Plex Mono',monospace;font-size:0.77rem;">TXC-2024-E</span></td><td>Line 4</td><td>PM</td><td>190</td><td>0</td><td>0%</td><td>None detected</td><td><span class="private-chip">Private</span></td><td><span class="pill pill-green">Pass</span></td></tr>
+    </tbody>
+  </table>
+  <div style="margin-top:10px;font-size:0.77rem;color:var(--muted);">🔒 All QA data with ITAR-controlled technical specs routed exclusively to on-premise private LLM. Zero export of controlled technical data. Annual savings vs. manual QA: ~$87K.</div>
+</div>
+
+<!-- TAB 1: Delivery & Scheduling -->
+<div class="panel" id="tab1">
+  <div class="section-title">Order Fulfillment & Delay Risk</div>
+  <div class="alert-box alert-yellow"><strong>⚠️ Delay Risk:</strong> Order ORD-8841 (Honeywell Aerospace) — AI predicts 3-day delay due to Line 3 hold. Proactive customer notification recommended. <span class="private-chip">🔒 Private</span></div>
+  <table>
+    <thead><tr><th>Order ID</th><th>Customer</th><th>Due Date</th><th>% Complete</th><th>Delay Risk</th><th>Bottleneck (AI)</th><th>On-Time Prob.</th><th>Action</th></tr></thead>
+    <tbody>
+      <tr><td><span style="font-family:'IBM Plex Mono',monospace;font-size:0.77rem;">ORD-8841</span></td><td>Honeywell Aerospace</td><td>Mar 09</td><td>64%</td><td><span class="pill pill-red">High</span></td><td>Line 3 QA hold</td><td>31%</td><td><span class="pill pill-red">Escalate</span></td></tr>
+      <tr><td><span style="font-family:'IBM Plex Mono',monospace;font-size:0.77rem;">ORD-9102</span></td><td>L3Harris Tech</td><td>Mar 14</td><td>88%</td><td><span class="pill pill-green">Low</span></td><td>None</td><td>96%</td><td><span class="pill pill-green">On Track</span></td></tr>
+      <tr><td><span style="font-family:'IBM Plex Mono',monospace;font-size:0.77rem;">ORD-9340</span></td><td>Raytheon RTX</td><td>Mar 18</td><td>42%</td><td><span class="pill pill-yellow">Medium</span></td><td>Parts shortage</td><td>74%</td><td><span class="pill pill-yellow">Monitor</span></td></tr>
+      <tr><td><span style="font-family:'IBM Plex Mono',monospace;font-size:0.77rem;">ORD-9501</span></td><td>BAE Systems</td><td>Mar 22</td><td>18%</td><td><span class="pill pill-green">Low</span></td><td>None</td><td>91%</td><td><span class="pill pill-green">On Track</span></td></tr>
+      <tr><td><span style="font-family:'IBM Plex Mono',monospace;font-size:0.77rem;">ORD-9677</span></td><td>Textron Aviation</td><td>Mar 28</td><td>5%</td><td><span class="pill pill-gray">Pending</span></td><td>Not started</td><td>88%</td><td><span class="pill pill-sky">Scheduled</span></td></tr>
+    </tbody>
+  </table>
+  <div class="two-col" style="margin-top:14px;">
+    <div class="card">
+      <div class="section-title">Delivery Performance (Rolling 30 Days)</div>
+      <div class="bar-row"><div class="name">On-Time</div><div class="bar"><div class="fill" style="width:94%;background:#15803D;"></div></div><div class="num">94%</div></div>
+      <div class="bar-row"><div class="name">1-3 Days Late</div><div class="bar"><div class="fill" style="width:4%;background:#B45309;"></div></div><div class="num">4%</div></div>
+      <div class="bar-row"><div class="name">4+ Days Late</div><div class="bar"><div class="fill" style="width:2%;background:#C2410C;"></div></div><div class="num">2%</div></div>
+    </div>
+    <div class="card">
+      <div class="section-title">AI Scheduling Model</div>
+      <div style="font-size:0.82rem;line-height:1.7;color:var(--muted);">
+        Model: <strong style="color:var(--text);">On-Premise TensorFlow</strong><br>
+        Input: Line capacity, QA holds, parts availability<br>
+        Retraining cadence: Weekly<br>
+        Data classification: <span class="itar-chip">ITAR-Controlled</span><br>
+        External API calls: <strong style="color:#15803D;">None — 100% Private</strong>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TAB 2: Inventory & Parts -->
+<div class="panel" id="tab2">
+  <div class="section-title">Raw Materials & Parts Reorder Intelligence</div>
+  <div class="alert-box alert-red"><strong>🔴 Critical Shortage:</strong> Titanium Grade 5 Rod — 8 days of stock remaining. Lead time: 14 days. Immediate PO recommended. <span class="itar-chip">🔒 ITAR</span></div>
+  <div class="alert-box alert-yellow"><strong>⚠️ Low Stock:</strong> Bearing Assembly X-44 — 18 days remaining. Reorder point reached. <span class="private-chip">🔒 Private</span></div>
+  <table>
+    <thead><tr><th>Part / Material</th><th>Current Stock</th><th>Days Remaining</th><th>Lead Time</th><th>AI Forecast Demand</th><th>Reorder Qty</th><th>Compliance</th><th>Alert</th></tr></thead>
+    <tbody>
+      <tr><td>Titanium Grade 5 Rod</td><td>48 units</td><td><strong style="color:#C2410C;">8</strong></td><td>14 days</td><td>6/day</td><td>120 units</td><td><span class="itar-chip">ITAR</span></td><td><span class="pill pill-red">Order NOW</span></td></tr>
+      <tr><td>Bearing Assembly X-44</td><td>180 units</td><td><strong style="color:#B45309;">18</strong></td><td>10 days</td><td>10/day</td><td>200 units</td><td><span class="private-chip">Private</span></td><td><span class="pill pill-yellow">Reorder</span></td></tr>
+      <tr><td>Aluminum Alloy 6061 Sheet</td><td>2,400 lbs</td><td>45</td><td>7 days</td><td>53 lbs/day</td><td>2,000 lbs</td><td><span class="private-chip">Private</span></td><td><span class="pill pill-green">Sufficient</span></td></tr>
+      <tr><td>Precision Fasteners M8</td><td>5,000 pcs</td><td>62</td><td>5 days</td><td>81/day</td><td>—</td><td><span class="private-chip">Private</span></td><td><span class="pill pill-green">Sufficient</span></td></tr>
+      <tr><td>Hydraulic Seals Kit B</td><td>34 kits</td><td>12</td><td>21 days</td><td>3/day</td><td>80 kits</td><td><span class="itar-chip">ITAR</span></td><td><span class="pill pill-red">Order NOW</span></td></tr>
+      <tr><td>Carbon Fiber Prepreg</td><td>820 lbs</td><td>38</td><td>18 days</td><td>22 lbs/day</td><td>500 lbs</td><td><span class="itar-chip">ITAR</span></td><td><span class="pill pill-sky">Plan Ahead</span></td></tr>
+    </tbody>
+  </table>
+  <div style="margin-top:12px;font-size:0.77rem;color:var(--muted);">🔒 All ITAR-controlled parts data, supplier info, and demand forecasts processed exclusively on on-premise infrastructure. No controlled technical data leaves the facility. Estimated annual ROI from predictive inventory: $142K in avoided downtime.</div>
+</div>
+
+<script>
+function switchTab(i){
+  document.querySelectorAll('.tab').forEach((t,j)=>t.classList.toggle('active',i===j));
+  document.querySelectorAll('.panel').forEach((p,j)=>p.classList.toggle('active',i===j));
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DFW Technology · Dental AI Dashboard</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #F0F4F8; font-family: 'Segoe UI', system-ui, sans-serif; }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    button { font-family: inherit; }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #F1F5F9; }
+    ::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 3px; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState, useEffect } = React;
+
+    // ── Data ─────────────────────────────────────────────────────────────────
+    const APPOINTMENTS = [
+      { id:"APT-001", time:"8:00 AM",  type:"Hygiene Cleaning",  insurance:"Delta Dental PPO",  leadDays:3,  priorNoShows:2, risk:"high",   riskScore:87 },
+      { id:"APT-002", time:"8:30 AM",  type:"New Patient Exam",  insurance:"Cigna DPPO",        leadDays:14, priorNoShows:0, risk:"low",    riskScore:18 },
+      { id:"APT-003", time:"9:00 AM",  type:"Crown Prep",        insurance:"Aetna DMO",         leadDays:7,  priorNoShows:1, risk:"medium", riskScore:54 },
+      { id:"APT-004", time:"9:30 AM",  type:"Hygiene Cleaning",  insurance:"Medicaid",          leadDays:1,  priorNoShows:3, risk:"high",   riskScore:93 },
+      { id:"APT-005", time:"10:00 AM", type:"Root Canal",        insurance:"MetLife PPO",       leadDays:21, priorNoShows:0, risk:"low",    riskScore:12 },
+      { id:"APT-006", time:"10:30 AM", type:"Filling",           insurance:"United Concordia",  leadDays:5,  priorNoShows:1, risk:"medium", riskScore:61 },
+      { id:"APT-007", time:"11:00 AM", type:"Hygiene Cleaning",  insurance:"Delta Dental PPO",  leadDays:2,  priorNoShows:0, risk:"low",    riskScore:23 },
+      { id:"APT-008", time:"2:00 PM",  type:"Invisalign Check",  insurance:"Cigna DPPO",        leadDays:9,  priorNoShows:2, risk:"high",   riskScore:78 },
+      { id:"APT-009", time:"2:30 PM",  type:"Extraction",        insurance:"Medicaid",          leadDays:4,  priorNoShows:1, risk:"medium", riskScore:66 },
+      { id:"APT-010", time:"3:00 PM",  type:"Implant Consult",   insurance:"Self-Pay",          leadDays:30, priorNoShows:0, risk:"low",    riskScore:9  },
+    ];
+
+    const CLAIMS = [
+      { id:"CLM-2401", patient:"M. Rodriguez", procedure:"D2740 – Porcelain Crown",        carrier:"Delta Dental PPO",  fee:1200, status:"flag", issue:"Pre-authorization required for D2740 — not submitted" },
+      { id:"CLM-2402", patient:"K. Patel",     procedure:"D1110 – Adult Prophylaxis",      carrier:"Cigna DPPO",        fee:95,   status:"pass", issue:null },
+      { id:"CLM-2403", patient:"T. Williams",  procedure:"D0274 – Bitewing X-Rays (4)",    carrier:"Aetna DMO",         fee:68,   status:"flag", issue:"Frequency limitation: bitewing X-rays covered once per 12 months — last submitted 10 months ago" },
+      { id:"CLM-2404", patient:"S. Johnson",   procedure:"D3330 – Root Canal (Molar)",     carrier:"MetLife PPO",       fee:1400, status:"pass", issue:null },
+      { id:"CLM-2405", patient:"A. Chen",      procedure:"D2160 + D2150",                  carrier:"United Concordia",  fee:380,  status:"flag", issue:"Bundling error: D2160 and D2150 cannot be billed on same tooth same date — carrier requires single code" },
+      { id:"CLM-2406", patient:"L. Thompson",  procedure:"D4341 – Scaling & Root Planing", carrier:"Delta Dental PPO",  fee:260,  status:"pass", issue:null },
+      { id:"CLM-2407", patient:"R. Garcia",    procedure:"D6010 – Implant Fixture",        carrier:"Cigna DPPO",        fee:2200, status:"flag", issue:"Patient annual maximum ($1,500) already at $1,380 — only $120 remaining; patient owes ~$2,080 balance" },
+    ];
+
+    const RECALL = [
+      { id:"P-001", initials:"MR", name:"M. Rodriguez", lastVisit:"Aug 2024", daysOverdue:183, openTx:"Crown (est. $1,200)",           insuranceRenewal:"Apr 2026", annualValue:1850, tier:1, lapsRisk:91 },
+      { id:"P-002", initials:"JL", name:"J. Lee",       lastVisit:"Sep 2024", daysOverdue:152, openTx:null,                            insuranceRenewal:"Jun 2026", annualValue:380,  tier:3, lapsRisk:28 },
+      { id:"P-003", initials:"DW", name:"D. Williams",  lastVisit:"Jul 2024", daysOverdue:214, openTx:"Filling x2 (est. $420)",        insuranceRenewal:"Mar 2026", annualValue:720,  tier:1, lapsRisk:96 },
+      { id:"P-004", initials:"SP", name:"S. Patel",     lastVisit:"Oct 2024", daysOverdue:121, openTx:null,                            insuranceRenewal:"Jan 2027", annualValue:440,  tier:2, lapsRisk:47 },
+      { id:"P-005", initials:"AT", name:"A. Thompson",  lastVisit:"Jun 2024", daysOverdue:245, openTx:"Implant consult (est. $3,800)", insuranceRenewal:"Apr 2026", annualValue:4200, tier:1, lapsRisk:88 },
+      { id:"P-006", initials:"RC", name:"R. Chen",      lastVisit:"Nov 2024", daysOverdue:90,  openTx:null,                            insuranceRenewal:"Dec 2026", annualValue:380,  tier:3, lapsRisk:19 },
+      { id:"P-007", initials:"KG", name:"K. Garcia",    lastVisit:"Aug 2024", daysOverdue:183, openTx:"Root canal (est. $1,400)",      insuranceRenewal:"May 2026", annualValue:2100, tier:1, lapsRisk:83 },
+      { id:"P-008", initials:"BM", name:"B. Martinez",  lastVisit:"Oct 2024", daysOverdue:121, openTx:null,                            insuranceRenewal:"Aug 2026", annualValue:400,  tier:2, lapsRisk:38 },
+    ];
+
+    // ── Icons ─────────────────────────────────────────────────────────────────
+    const Ico = {
+      tooth:    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2C8 2 4 5 4 9c0 2.5 1 4 1 6 0 3 1 5 3 5s2-2 4-2 2 2 4 2 3-2 3-5c0-2 1-3.5 1-6 0-4-4-7-8-7z"/></svg>,
+      shield:   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>,
+      alert:    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>,
+      check:    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>,
+      users:    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>,
+      lock:     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>,
+      cloud:    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 10h-1.26A8 8 0 109 20h9a5 5 0 000-10z"/></svg>,
+      activity: <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>,
+      dollar:   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>,
+    };
+
+    // ── Animated Counter ──────────────────────────────────────────────────────
+    function AnimatedNum({ value, prefix="", suffix="" }) {
+      const [n, setN] = useState(0);
+      useEffect(() => {
+        let cur = 0;
+        const step = value / 60;
+        const t = setInterval(() => {
+          cur += step;
+          if (cur >= value) { setN(value); clearInterval(t); }
+          else setN(Math.floor(cur));
+        }, 16);
+        return () => clearInterval(t);
+      }, [value]);
+      return React.createElement('span', null, prefix + n.toLocaleString() + suffix);
+    }
+
+    // ── Badges ────────────────────────────────────────────────────────────────
+    function PrivateBadge() {
+      return (
+        <span style={{display:"inline-flex",alignItems:"center",gap:4,background:"#DBEAFE",color:"#1E40AF",border:"1px solid #BFDBFE",borderRadius:20,padding:"2px 10px",fontSize:11,fontWeight:700}}>
+          <span style={{color:"#1E40AF"}}>{Ico.lock}</span> PRIVATE AI
+        </span>
+      );
+    }
+    function PublicBadge() {
+      return (
+        <span style={{display:"inline-flex",alignItems:"center",gap:4,background:"#DCFCE7",color:"#166534",border:"1px solid #BBF7D0",borderRadius:20,padding:"2px 10px",fontSize:11,fontWeight:700}}>
+          <span style={{color:"#166534"}}>{Ico.cloud}</span> PUBLIC AI
+        </span>
+      );
+    }
+
+    // ── Risk Badge ────────────────────────────────────────────────────────────
+    function RiskBadge({ risk, score }) {
+      const cfg = {
+        high:   { bg:"#FEE2E2", color:"#991B1B", border:"#FECACA", label:"HIGH RISK",  action:"📞 Call now" },
+        medium: { bg:"#FEF9C3", color:"#854D0E", border:"#FDE68A", label:"MEDIUM",      action:"💬 Text reminder" },
+        low:    { bg:"#DCFCE7", color:"#166534", border:"#BBF7D0", label:"LOW",         action:"✓ No action" },
+      }[risk];
+      return (
+        <div style={{display:"flex",alignItems:"center",gap:8,flexWrap:"wrap"}}>
+          <span style={{background:cfg.bg,color:cfg.color,border:`1px solid ${cfg.border}`,borderRadius:6,padding:"2px 9px",fontSize:11,fontWeight:700,letterSpacing:"0.04em",fontFamily:"monospace"}}>
+            {cfg.label} {score}%
+          </span>
+          <span style={{fontSize:12,color:"#64748B"}}>{cfg.action}</span>
+        </div>
+      );
+    }
+
+    // ── HIPAA Notice ──────────────────────────────────────────────────────────
+    function HipaaNotice({ text }) {
+      return (
+        <div style={{marginTop:12,padding:"10px 16px",background:"#EFF6FF",border:"1px solid #BFDBFE",borderRadius:10,fontSize:12,color:"#1E40AF",display:"flex",alignItems:"center",gap:8}}>
+          <span style={{color:"#1E40AF",flexShrink:0}}>{Ico.lock}</span> {text}
+        </div>
+      );
+    }
+
+    // ── Appeal Generator ──────────────────────────────────────────────────────
+    function AppealGenerator({ claim }) {
+      const [loading, setLoading] = useState(false);
+      const [appeal, setAppeal] = useState(null);
+
+      const generate = async () => {
+        setLoading(true); setAppeal(null);
+        try {
+          const res = await fetch("https://api.anthropic.com/v1/messages", {
+            method:"POST",
+            headers:{"Content-Type":"application/json"},
+            body:JSON.stringify({
+              model:"claude-sonnet-4-20250514", max_tokens:1000,
+              system:"You are a dental billing specialist. Generate a concise professional insurance appeal letter under 200 words. Use [PRACTICE NAME], [PATIENT ID], [DATE OF SERVICE] as placeholders — no real PHI. Professional tone.",
+              messages:[{role:"user",content:`Appeal letter for: Procedure: ${claim.procedure}, Carrier: ${claim.carrier}, Denial reason: ${claim.issue}. Placeholders only.`}]
+            })
+          });
+          const data = await res.json();
+          setAppeal(data.content?.[0]?.text || "Unable to generate. Please try again.");
+        } catch {
+          setAppeal("⚠ API unavailable in this environment.\n\nSample output:\n\n[PRACTICE NAME]\n[Date]\n\nRe: Appeal for Claim [CLAIM ID] — [PATIENT ID]\n\nDear Claims Review Department,\n\nWe are writing to formally appeal the denial of the above-referenced claim and respectfully request reconsideration based on the following...");
+        }
+        setLoading(false);
+      };
+
+      return (
+        <div style={{marginTop:12}}>
+          <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:10,flexWrap:"wrap"}}>
+            <PublicBadge />
+            <span style={{fontSize:12,color:"#64748B"}}>De-identified prompt only — no PHI sent to API</span>
+          </div>
+          <button onClick={generate} disabled={loading} style={{
+            background:loading?"#E2E8F0":"#1E3A5F",color:loading?"#94A3B8":"#fff",
+            border:"none",borderRadius:8,padding:"9px 18px",fontSize:13,fontWeight:600,
+            cursor:loading?"not-allowed":"pointer",transition:"all 0.2s",boxShadow:loading?"none":"0 2px 8px rgba(30,58,95,0.25)"
+          }}>
+            {loading ? "⏳ Generating..." : "✍ Generate Appeal Draft"}
+          </button>
+          {appeal && (
+            <div style={{marginTop:12,background:"#FAFAFA",border:"1px solid #E2E8F0",borderRadius:10,padding:18,fontSize:13,lineHeight:1.75,color:"#374151",fontFamily:"Georgia,serif",whiteSpace:"pre-wrap",boxShadow:"inset 0 1px 3px rgba(0,0,0,0.04)"}}>
+              {appeal}
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    // ── Tab: No-Shows ─────────────────────────────────────────────────────────
+    function NoShowTab() {
+      return (
+        <div>
+          <div style={{marginBottom:18}}>
+            <div style={{fontWeight:700,fontSize:18,color:"#0F172A"}}>Today's Appointment Risk Report</div>
+            <div style={{fontSize:13,color:"#64748B",marginTop:5,display:"flex",alignItems:"center",gap:8,flexWrap:"wrap"}}>
+              Monday, March 2, 2026 · XGBoost model trained on 24 months Canyon Creek history · <PrivateBadge />
+            </div>
+          </div>
+          <div style={{background:"#fff",border:"1px solid #E2E8F0",borderRadius:14,overflow:"hidden",boxShadow:"0 1px 4px rgba(0,0,0,0.06)"}}>
+            <div style={{display:"grid",gridTemplateColumns:"90px 100px 1fr 170px 1fr 220px",padding:"11px 20px",background:"#F8FAFC",borderBottom:"1px solid #E2E8F0",fontSize:11,fontWeight:700,color:"#94A3B8",letterSpacing:"0.07em",gap:8}}>
+              <span>ID</span><span>TIME</span><span>PROCEDURE</span><span>INSURANCE</span><span>RISK FLAGS</span><span>ACTION</span>
+            </div>
+            {APPOINTMENTS.map((apt,i) => (
+              <div key={apt.id} style={{
+                display:"grid",gridTemplateColumns:"90px 100px 1fr 170px 1fr 220px",
+                padding:"13px 20px",alignItems:"center",gap:8,
+                borderTop: i===0?"none":"1px solid #F1F5F9",
+                background: apt.risk==="high"?"#FFF5F5":apt.risk==="medium"?"#FFFBEB":"#fff",
+                transition:"background 0.15s"
+              }}>
+                <span style={{fontSize:12,color:"#94A3B8",fontFamily:"monospace"}}>{apt.id}</span>
+                <span style={{fontSize:13,fontWeight:700,color:"#0F172A"}}>{apt.time}</span>
+                <span style={{fontSize:13,color:"#334155"}}>{apt.type}</span>
+                <span style={{fontSize:12,color:"#64748B"}}>{apt.insurance}</span>
+                <div style={{display:"flex",flexWrap:"wrap",gap:4}}>
+                  {apt.leadDays<=5 && <span style={{background:"#FEE2E2",color:"#991B1B",borderRadius:4,padding:"1px 7px",fontSize:11,fontWeight:600}}>Short lead</span>}
+                  {apt.priorNoShows>=2 && <span style={{background:"#FEE2E2",color:"#991B1B",borderRadius:4,padding:"1px 7px",fontSize:11,fontWeight:600}}>{apt.priorNoShows} prior no-shows</span>}
+                  {apt.insurance==="Medicaid" && <span style={{background:"#FEF9C3",color:"#854D0E",borderRadius:4,padding:"1px 7px",fontSize:11,fontWeight:600}}>Medicaid</span>}
+                  {apt.risk==="low" && <span style={{color:"#CBD5E1",fontSize:11}}>No flags</span>}
+                </div>
+                <RiskBadge risk={apt.risk} score={apt.riskScore} />
+              </div>
+            ))}
+          </div>
+          <HipaaNotice text="All appointment data processed on DFW Technology HIPAA-compliant infrastructure · BAA in place · No PHI transmitted to external APIs" />
+        </div>
+      );
+    }
+
+    // ── Tab: Claims ───────────────────────────────────────────────────────────
+    function ClaimsTab() {
+      const [expanded, setExpanded] = useState(null);
+      return (
+        <div>
+          <div style={{marginBottom:18}}>
+            <div style={{fontWeight:700,fontSize:18,color:"#0F172A"}}>Pre-Submission Claim Validator</div>
+            <div style={{fontSize:13,color:"#64748B",marginTop:5,display:"flex",alignItems:"center",gap:8,flexWrap:"wrap"}}>
+              Today's claim batch · CDT rules + frequency limits + bundling checks · <PrivateBadge />
+            </div>
+          </div>
+          <div style={{display:"flex",flexDirection:"column",gap:10}}>
+            {CLAIMS.map(claim => (
+              <div key={claim.id} style={{
+                background:"#fff",
+                border:`1px solid ${claim.status==="flag"?"#FCD34D":"#BBF7D0"}`,
+                borderRadius:12,overflow:"hidden",
+                boxShadow:"0 1px 4px rgba(0,0,0,0.05)"
+              }}>
+                <div onClick={() => claim.status==="flag" && setExpanded(expanded===claim.id?null:claim.id)}
+                  style={{display:"grid",gridTemplateColumns:"100px 1fr 180px 90px 110px 30px",padding:"14px 20px",alignItems:"center",gap:8,cursor:claim.status==="flag"?"pointer":"default",
+                  background:claim.status==="flag"?"#FFFDF0":"#F0FDF4"}}>
+                  <span style={{fontSize:12,color:"#94A3B8",fontFamily:"monospace"}}>{claim.id}</span>
+                  <div>
+                    <div style={{fontSize:13,fontWeight:600,color:"#0F172A"}}>{claim.procedure}</div>
+                    <div style={{fontSize:11,color:"#64748B"}}>{claim.patient}</div>
+                  </div>
+                  <span style={{fontSize:12,color:"#64748B"}}>{claim.carrier}</span>
+                  <span style={{fontSize:14,fontWeight:700,color:"#0F172A"}}>${claim.fee.toLocaleString()}</span>
+                  <div style={{display:"flex",alignItems:"center",gap:5,fontSize:12,fontWeight:700,color:claim.status==="flag"?"#B45309":"#166534"}}>
+                    <span style={{color:claim.status==="flag"?"#D97706":"#16A34A"}}>{claim.status==="flag"?Ico.alert:Ico.check}</span>
+                    {claim.status==="flag"?"FLAG":"PASS"}
+                  </div>
+                  {claim.status==="flag" && <span style={{color:"#94A3B8",fontSize:14}}>{expanded===claim.id?"▲":"▼"}</span>}
+                </div>
+                {claim.status==="flag" && expanded===claim.id && (
+                  <div style={{padding:"0 20px 20px",borderTop:"1px solid #FEF3C7",background:"#fff"}}>
+                    <div style={{marginTop:14,padding:"12px 16px",background:"#FFFBEB",border:"1px solid #FDE68A",borderRadius:10}}>
+                      <div style={{fontSize:12,fontWeight:700,color:"#B45309",marginBottom:4}}>⚠ DENIAL RISK DETECTED</div>
+                      <div style={{fontSize:13,color:"#374151"}}>{claim.issue}</div>
+                    </div>
+                    <div style={{marginTop:16}}>
+                      <div style={{fontSize:12,fontWeight:700,marginBottom:8,color:"#94A3B8",letterSpacing:"0.05em"}}>APPEAL LETTER GENERATOR</div>
+                      <AppealGenerator claim={claim} />
+                    </div>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+          <HipaaNotice text="Billing validation runs on DFW Technology private infrastructure · Appeal drafts use Public AI with de-identified CDT codes only — no PHI sent to API" />
+        </div>
+      );
+    }
+
+    // ── Tab: Recall ───────────────────────────────────────────────────────────
+    function RecallTab() {
+      const sorted = [...RECALL].sort((a,b) => b.lapsRisk - a.lapsRisk);
+      const t1 = RECALL.filter(p=>p.tier===1).length;
+      const t2 = RECALL.filter(p=>p.tier===2).length;
+      const t3 = RECALL.filter(p=>p.tier===3).length;
+      return (
+        <div>
+          <div style={{marginBottom:18}}>
+            <div style={{fontWeight:700,fontSize:18,color:"#0F172A"}}>Recall Patient Priority List — March 2026</div>
+            <div style={{fontSize:13,color:"#64748B",marginTop:5,display:"flex",alignItems:"center",gap:8,flexWrap:"wrap"}}>
+              Scored on: days overdue, prior misses, open treatment plan, insurance renewal · <PrivateBadge />
+            </div>
+          </div>
+          <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:12,marginBottom:16}}>
+            {[
+              { label:"Tier 1 — Personal Call",   color:"#1D4ED8", bg:"#EFF6FF", border:"#BFDBFE", action:"📞 Dentist or hygienist calls this week", count:t1 },
+              { label:"Tier 2 — Text Message",     color:"#B45309", bg:"#FFFBEB", border:"#FDE68A", action:"💬 Automated text with booking link",     count:t2 },
+              { label:"Tier 3 — Email / Postcard", color:"#166534", bg:"#F0FDF4", border:"#BBF7D0", action:"📮 Standard recall email / postcard",     count:t3 },
+            ].map((t,i) => (
+              <div key={i} style={{background:t.bg,border:`1px solid ${t.border}`,borderRadius:12,padding:"16px 20px",boxShadow:"0 1px 3px rgba(0,0,0,0.04)"}}>
+                <div style={{fontSize:12,fontWeight:700,color:t.color,marginBottom:6}}>{t.label}</div>
+                <div style={{fontSize:30,fontWeight:800,color:t.color,marginBottom:4}}>{t.count} <span style={{fontSize:14,fontWeight:400,color:"#64748B"}}>patients</span></div>
+                <div style={{fontSize:12,color:"#64748B"}}>{t.action}</div>
+              </div>
+            ))}
+          </div>
+          <div style={{background:"#fff",border:"1px solid #E2E8F0",borderRadius:14,overflow:"auto",boxShadow:"0 1px 4px rgba(0,0,0,0.06)"}}>
+            <div style={{minWidth:820}}>
+              <div style={{display:"grid",gridTemplateColumns:"36px 1fr 90px 90px 1fr 110px 110px 120px",padding:"11px 20px",background:"#F8FAFC",borderBottom:"1px solid #E2E8F0",fontSize:11,fontWeight:700,color:"#94A3B8",letterSpacing:"0.06em",gap:8}}>
+                <span></span><span>PATIENT</span><span>LAST VISIT</span><span>OVERDUE</span><span>OPEN TX PLAN</span><span>INS. RENEWAL</span><span>ANNUAL VALUE</span><span>LAPSE RISK</span>
+              </div>
+              {sorted.map((p,i) => (
+                <div key={p.id} style={{
+                  display:"grid",gridTemplateColumns:"36px 1fr 90px 90px 1fr 110px 110px 120px",
+                  padding:"13px 20px",alignItems:"center",gap:8,
+                  borderTop:i===0?"none":"1px solid #F1F5F9",
+                  background:"#fff",transition:"background 0.15s"
+                }}>
+                  <div style={{
+                    width:30,height:30,borderRadius:"50%",
+                    background:p.tier===1?"#DBEAFE":p.tier===2?"#FEF9C3":"#DCFCE7",
+                    color:p.tier===1?"#1D4ED8":p.tier===2?"#92400E":"#166534",
+                    display:"flex",alignItems:"center",justifyContent:"center",fontSize:10,fontWeight:800
+                  }}>{p.initials}</div>
+                  <div>
+                    <div style={{fontSize:13,fontWeight:600,color:"#0F172A"}}>{p.name}</div>
+                    <div style={{fontSize:11,color:"#94A3B8"}}>Tier {p.tier} — {p.tier===1?"Priority call":p.tier===2?"Text":"Email"}</div>
+                  </div>
+                  <span style={{fontSize:12,color:"#64748B"}}>{p.lastVisit}</span>
+                  <span style={{fontSize:12,fontWeight:700,color:p.daysOverdue>180?"#DC2626":"#D97706"}}>{p.daysOverdue}d</span>
+                  <span style={{fontSize:12,color:p.openTx?"#1D4ED8":"#CBD5E1"}}>{p.openTx||"—"}</span>
+                  <span style={{fontSize:12,color:"#64748B"}}>{p.insuranceRenewal}</span>
+                  <span style={{fontSize:13,fontWeight:700,color:"#166534"}}>${p.annualValue.toLocaleString()}</span>
+                  <div style={{display:"flex",alignItems:"center",gap:7}}>
+                    <div style={{flex:1,height:5,background:"#F1F5F9",borderRadius:3,overflow:"hidden"}}>
+                      <div style={{width:`${p.lapsRisk}%`,height:"100%",background:p.lapsRisk>75?"#EF4444":p.lapsRisk>45?"#F59E0B":"#22C55E",borderRadius:3,transition:"width 1s ease"}} />
+                    </div>
+                    <span style={{fontSize:12,fontWeight:700,color:p.lapsRisk>75?"#DC2626":p.lapsRisk>45?"#D97706":"#16A34A",minWidth:34}}>{p.lapsRisk}%</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+          <HipaaNotice text="Patient recall data processed on DFW Technology HIPAA-compliant infrastructure · No patient records transmitted to external APIs" />
+        </div>
+      );
+    }
+
+    // ── Main App ──────────────────────────────────────────────────────────────
+    function App() {
+      const [tab, setTab] = useState("noshows");
+      const [ready, setReady] = useState(false);
+      useEffect(() => { setTimeout(() => setReady(true), 100); }, []);
+
+      const highRisk  = APPOINTMENTS.filter(a=>a.risk==="high").length;
+      const flagged   = CLAIMS.filter(c=>c.status==="flag").length;
+      const tier1     = RECALL.filter(p=>p.tier===1).length;
+      const recallVal = RECALL.filter(p=>p.tier===1).reduce((s,p)=>s+p.annualValue,0);
+
+      const TABS = [
+        { id:"noshows", label:"No-Show Risk",    icon:Ico.activity, badge:highRisk, bc:"#DC2626", tc:"#fff" },
+        { id:"claims",  label:"Claim Validator", icon:Ico.shield,   badge:flagged,  bc:"#D97706", tc:"#fff" },
+        { id:"recall",  label:"Recall Priority", icon:Ico.users,    badge:tier1,    bc:"#2563EB", tc:"#fff" },
+      ];
+
+      const KPIS = [
+        { label:"High-Risk Appointments Today",  value:highRisk,  suffix:" slots",   color:"#DC2626", bg:"#FEF2F2", border:"#FECACA", icon:Ico.alert,    sub:"Personal call recommended" },
+        { label:"Claims Flagged Pre-Submission", value:flagged,   suffix:" claims",  color:"#D97706", bg:"#FFFBEB", border:"#FDE68A", icon:Ico.shield,   sub:`$${CLAIMS.filter(c=>c.status==="flag").reduce((s,c)=>s+c.fee,0).toLocaleString()} at risk` },
+        { label:"Priority Recall Patients",      value:tier1,     suffix:" patients",color:"#2563EB", bg:"#EFF6FF", border:"#BFDBFE", icon:Ico.users,    sub:"Tier 1 — call this week" },
+        { label:"Recall Revenue at Stake",       value:recallVal, prefix:"$",suffix:"",color:"#166534",bg:"#F0FDF4",border:"#BBF7D0",icon:Ico.dollar,  sub:"Tier 1 patients only" },
+      ];
+
+      return (
+        <div style={{minHeight:"100vh",background:"#F0F4F8",fontFamily:"'Segoe UI',system-ui,sans-serif",color:"#0F172A"}}>
+
+          {/* Header */}
+          <div style={{background:"#fff",borderBottom:"1px solid #E2E8F0",padding:"0 32px",boxShadow:"0 1px 3px rgba(0,0,0,0.06)"}}>
+            <div style={{maxWidth:1140,margin:"0 auto",display:"flex",alignItems:"center",justifyContent:"space-between",height:66,flexWrap:"wrap",gap:12}}>
+              <div style={{display:"flex",alignItems:"center",gap:12}}>
+                <div style={{width:38,height:38,background:"linear-gradient(135deg,#2563EB,#1D4ED8)",borderRadius:10,display:"flex",alignItems:"center",justifyContent:"center",color:"#fff",boxShadow:"0 2px 8px rgba(37,99,235,0.35)"}}>
+                  {Ico.tooth}
+                </div>
+                <div>
+                  <div style={{fontWeight:800,fontSize:15,color:"#0F172A",letterSpacing:"-0.01em"}}>DFW Technology</div>
+                  <div style={{fontSize:11,color:"#94A3B8",letterSpacing:"0.06em",fontWeight:600}}>PRIVATE AI LAB · DENTAL PRACTICE SUITE</div>
+                </div>
+              </div>
+              <div style={{display:"flex",alignItems:"center",gap:14,flexWrap:"wrap"}}>
+                <div style={{display:"flex",alignItems:"center",gap:6,background:"#F0FDF4",border:"1px solid #BBF7D0",borderRadius:20,padding:"5px 14px"}}>
+                  <div style={{width:7,height:7,borderRadius:"50%",background:"#22C55E",animation:"pulse 2s infinite"}} />
+                  <span style={{fontSize:12,color:"#166534",fontWeight:700}}>HIPAA Compliant · BAA Active</span>
+                </div>
+                <div style={{fontSize:12,color:"#94A3B8",fontWeight:500}}>Canyon Creek Family Dentistry</div>
+              </div>
+            </div>
+          </div>
+
+          <div style={{maxWidth:1140,margin:"0 auto",padding:"28px 32px"}}>
+
+            {/* KPIs */}
+            <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:16,marginBottom:28}}>
+              {KPIS.map((k,i) => (
+                <div key={i} style={{
+                  background:"#fff",border:`1px solid ${k.border}`,
+                  borderRadius:14,padding:"20px 22px",
+                  boxShadow:`0 2px 8px ${k.border}40`,
+                  opacity:ready?1:0,transform:ready?"translateY(0)":"translateY(10px)",
+                  transition:`all 0.4s ease ${i*0.08}s`
+                }}>
+                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:12}}>
+                    <div style={{fontSize:11,color:"#64748B",lineHeight:1.45,maxWidth:135,fontWeight:500}}>{k.label}</div>
+                    <div style={{width:32,height:32,borderRadius:8,background:k.bg,display:"flex",alignItems:"center",justifyContent:"center",color:k.color,flexShrink:0}}>
+                      {k.icon}
+                    </div>
+                  </div>
+                  <div style={{fontSize:30,fontWeight:800,color:k.color,letterSpacing:"-0.02em"}}>
+                    {ready ? <AnimatedNum value={k.value} prefix={k.prefix||""} suffix={k.suffix} /> : "—"}
+                  </div>
+                  <div style={{fontSize:11,color:"#94A3B8",marginTop:5,fontWeight:500}}>{k.sub}</div>
+                </div>
+              ))}
+            </div>
+
+            {/* Tabs */}
+            <div style={{display:"flex",gap:6,marginBottom:22,flexWrap:"wrap"}}>
+              {TABS.map(t => (
+                <button key={t.id} onClick={()=>setTab(t.id)} style={{
+                  display:"flex",alignItems:"center",gap:8,
+                  background:tab===t.id?"#1E3A5F":"#fff",
+                  border:tab===t.id?"1px solid #1E3A5F":"1px solid #E2E8F0",
+                  color:tab===t.id?"#fff":"#475569",
+                  borderRadius:10,padding:"10px 20px",fontSize:13,fontWeight:600,
+                  cursor:"pointer",transition:"all 0.2s",
+                  boxShadow:tab===t.id?"0 2px 8px rgba(30,58,95,0.3)":"0 1px 2px rgba(0,0,0,0.05)"
+                }}>
+                  <span style={{color:tab===t.id?"#93C5FD":"#94A3B8"}}>{t.icon}</span>
+                  {t.label}
+                  <span style={{background:t.bc,color:t.tc,borderRadius:10,padding:"1px 8px",fontSize:11,fontWeight:700,minWidth:20,textAlign:"center"}}>{t.badge}</span>
+                </button>
+              ))}
+            </div>
+
+            {/* Content */}
+            <div style={{animation:"fadeUp 0.25s ease"}}>
+              {tab==="noshows" && <NoShowTab />}
+              {tab==="claims"  && <ClaimsTab />}
+              {tab==="recall"  && <RecallTab />}
+            </div>
+
+            {/* Footer */}
+            <div style={{marginTop:36,paddingTop:20,borderTop:"1px solid #E2E8F0",display:"flex",justifyContent:"space-between",alignItems:"center",flexWrap:"wrap",gap:8}}>
+              <div style={{fontSize:11,color:"#CBD5E1"}}>DFW Technology Private AI Lab · 1201 International Pkwy, Richardson TX 75081 · HIPAA-eligible AWS infrastructure · BAA on file</div>
+              <div style={{fontSize:11,color:"#CBD5E1"}}>UTD Analytics Practicum · BUAN 6390.502.26S · Spring 2026</div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById("root")).render(React.createElement(App));
+  </script>
+</body>
+</html>
