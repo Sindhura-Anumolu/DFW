@@ -1,0 +1,1368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CCSWB — AI Case Study | DFW Technologies</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --red: #C8102E;
+    --red-light: #E8192E;
+    --red-pale: #fff0f2;
+    --navy: #0A1628;
+    --navy-mid: #1a2d4d;
+    --steel: #2C3E5D;
+    --silver: #E8ECF2;
+    --silver-light: #F4F6FA;
+    --white: #FFFFFF;
+    --text: #1A2332;
+    --text-muted: #5A6880;
+    --accent: #FF6B35;
+    --green: #00875A;
+    --gold: #D4A017;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--silver-light);
+    color: var(--text);
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  /* ── PAGE WRAPPER ── */
+  .page {
+    width: 1100px;
+    margin: 0 auto 60px;
+    background: white;
+    box-shadow: 0 4px 40px rgba(0,0,0,0.10);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* ── NAV TABS ── */
+  .page-nav {
+    display: flex;
+    background: var(--navy);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .page-nav a {
+    flex: 1;
+    text-align: center;
+    padding: 14px 8px;
+    color: rgba(255,255,255,0.5);
+    text-decoration: none;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s;
+  }
+  .page-nav a:hover { color: white; border-bottom-color: var(--red); }
+  .page-nav a.active { color: white; border-bottom-color: var(--red); }
+
+  /* ── SHARED HEADER BAR ── */
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 32px 48px 24px;
+    border-bottom: 1px solid var(--silver);
+  }
+  .section-tag {
+    background: var(--red);
+    color: white;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 2px;
+  }
+  .section-tag.solution { background: var(--navy); }
+  .section-tag.roi { background: var(--green); }
+  .section-tag.arch { background: var(--steel); }
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    color: var(--navy);
+  }
+  .page-num {
+    margin-left: auto;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+
+  /* ══════════════════════════════════════
+     PAGE 1 — COMPANY OVERVIEW
+  ══════════════════════════════════════ */
+  #page1 {}
+
+  .hero {
+    background: var(--navy);
+    padding: 48px 48px 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 300px; height: 300px;
+    background: var(--red);
+    border-radius: 50%;
+    opacity: 0.08;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -40px; left: 200px;
+    width: 200px; height: 200px;
+    background: var(--accent);
+    border-radius: 50%;
+    opacity: 0.05;
+  }
+  .hero-eyebrow {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--red-light);
+    margin-bottom: 12px;
+  }
+  .hero h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 36px;
+    color: white;
+    line-height: 1.15;
+    margin-bottom: 6px;
+  }
+  .hero h1 span { color: var(--red-light); font-style: italic; }
+  .hero-sub {
+    color: rgba(255,255,255,0.55);
+    font-size: 13px;
+    margin-bottom: 32px;
+  }
+  .hero-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+  }
+  .stat-card {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 16px 18px;
+  }
+  .stat-card:first-child { border-radius: 4px 0 0 4px; }
+  .stat-card:last-child { border-radius: 0 4px 4px 0; }
+  .stat-val {
+    font-family: 'DM Serif Display', serif;
+    font-size: 28px;
+    color: white;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .stat-val span { font-size: 16px; color: var(--red-light); }
+  .stat-lbl {
+    font-size: 10px;
+    color: rgba(255,255,255,0.45);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .content-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+  }
+  .content-col {
+    padding: 36px 48px;
+  }
+  .content-col + .content-col {
+    border-left: 1px solid var(--silver);
+  }
+  .col-title {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--red);
+    display: inline-block;
+  }
+  .body-text {
+    color: var(--text-muted);
+    font-size: 13px;
+    line-height: 1.75;
+    margin-bottom: 16px;
+  }
+
+  /* Problem cards */
+  .problem-list { display: flex; flex-direction: column; gap: 12px; }
+  .problem-card {
+    border: 1px solid var(--silver);
+    border-left: 3px solid var(--red);
+    padding: 14px 16px;
+    border-radius: 0 4px 4px 0;
+    background: var(--silver-light);
+  }
+  .problem-card-title {
+    font-weight: 600;
+    font-size: 12px;
+    color: var(--navy);
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .problem-num {
+    background: var(--red);
+    color: white;
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 9px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .problem-card p { color: var(--text-muted); font-size: 12px; line-height: 1.6; }
+
+  .impact-bar {
+    background: var(--navy);
+    color: white;
+    padding: 20px 48px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+  .impact-bar-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: rgba(255,255,255,0.5);
+    white-space: nowrap;
+  }
+  .impact-tags { display: flex; gap: 8px; flex-wrap: wrap; }
+  .impact-tag {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    padding: 5px 12px;
+    border-radius: 2px;
+    font-size: 11px;
+    color: rgba(255,255,255,0.8);
+  }
+  .impact-tag.hot { border-color: var(--red); color: #ff8fa0; }
+
+  /* ══════════════════════════════════════
+     PAGE 2 — SOLUTION
+  ══════════════════════════════════════ */
+  #page2 {}
+
+  .solution-intro {
+    padding: 28px 48px;
+    background: var(--silver-light);
+    border-bottom: 1px solid var(--silver);
+  }
+  .solution-intro p {
+    color: var(--text-muted);
+    max-width: 800px;
+    font-size: 13px;
+    line-height: 1.75;
+  }
+  .solution-intro strong { color: var(--navy); }
+
+  .solution-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border-bottom: 1px solid var(--silver);
+  }
+  .solution-item {
+    padding: 28px 36px;
+    border-right: 1px solid var(--silver);
+    border-bottom: 1px solid var(--silver);
+  }
+  .solution-item:nth-child(2n) { border-right: none; }
+  .solution-item:nth-last-child(-n+2) { border-bottom: none; }
+
+  .solution-item-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 12px;
+  }
+  .solution-icon {
+    width: 36px; height: 36px;
+    background: var(--navy);
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+  .solution-item-title {
+    font-weight: 600;
+    font-size: 13px;
+    color: var(--navy);
+    margin-bottom: 3px;
+  }
+  .solution-item-problem {
+    font-size: 11px;
+    color: var(--red);
+    font-weight: 500;
+  }
+  .solution-item p {
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.7;
+    margin-bottom: 12px;
+  }
+  .tech-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+  .tech-tag {
+    background: var(--silver);
+    color: var(--steel);
+    font-size: 10px;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 2px;
+    font-family: 'DM Mono', monospace;
+  }
+  .ai-badge {
+    font-size: 9px;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 2px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .ai-badge.private { background: #e8f0ff; color: #2952cc; }
+  .ai-badge.public { background: #e6f9f0; color: #00875A; }
+  .ai-badge.hybrid { background: #fff4e6; color: #b85c00; }
+
+  .drishti-callout {
+    margin: 0 48px 0;
+    background: var(--navy);
+    border-left: 4px solid var(--gold);
+    padding: 20px 24px;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  .drishti-callout-icon { font-size: 24px; flex-shrink: 0; }
+  .drishti-callout-title {
+    font-weight: 700;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--gold);
+    margin-bottom: 6px;
+  }
+  .drishti-callout p {
+    font-size: 12px;
+    color: rgba(255,255,255,0.7);
+    line-height: 1.65;
+  }
+
+  .policy-section {
+    padding: 28px 48px;
+    border-top: 1px solid var(--silver);
+  }
+  .policy-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-top: 16px; }
+  .policy-card {
+    border: 1px solid var(--silver);
+    padding: 14px 16px;
+    border-radius: 4px;
+  }
+  .policy-card-title {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .policy-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--red);
+    flex-shrink: 0;
+  }
+  .policy-card p { font-size: 11px; color: var(--text-muted); line-height: 1.6; }
+
+  /* ══════════════════════════════════════
+     PAGE 3 — COST & ROI
+  ══════════════════════════════════════ */
+  #page3 {}
+
+  .roi-hero {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%);
+    padding: 36px 48px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 2px;
+  }
+  .roi-big {
+    padding: 24px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    text-align: center;
+  }
+  .roi-big:first-child { border-radius: 4px 0 0 4px; }
+  .roi-big:last-child { border-radius: 0 4px 4px 0; }
+  .roi-big-val {
+    font-family: 'DM Serif Display', serif;
+    font-size: 40px;
+    color: white;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .roi-big-val.green { color: #4ade80; }
+  .roi-big-val.gold { color: var(--gold); }
+  .roi-big-lbl { font-size: 11px; color: rgba(255,255,255,0.45); text-transform: uppercase; letter-spacing: 0.08em; }
+
+  .savings-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 36px 48px;
+    gap: 32px;
+    border-bottom: 1px solid var(--silver);
+  }
+  .savings-section-title {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--green);
+    display: inline-block;
+  }
+  .savings-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--silver);
+  }
+  .savings-row:last-child { border-bottom: none; }
+  .savings-label { font-size: 12px; color: var(--text-muted); }
+  .savings-value { font-weight: 600; font-size: 13px; color: var(--green); font-family: 'DM Mono', monospace; }
+  .savings-value.cost { color: var(--red); }
+
+  .timeline-section {
+    padding: 28px 48px;
+    border-bottom: 1px solid var(--silver);
+  }
+  .timeline-title {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--navy);
+    display: inline-block;
+  }
+  .timeline-bars { display: flex; flex-direction: column; gap: 10px; }
+  .timeline-row { display: flex; align-items: center; gap: 12px; }
+  .timeline-label { font-size: 11px; color: var(--text-muted); width: 160px; flex-shrink: 0; text-align: right; }
+  .timeline-bar-wrap { flex: 1; height: 28px; background: var(--silver); border-radius: 2px; position: relative; overflow: hidden; }
+  .timeline-bar {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding-left: 10px;
+    font-size: 10px;
+    font-weight: 600;
+    color: white;
+    border-radius: 2px;
+    white-space: nowrap;
+  }
+  .timeline-bar.phase1 { width: 25%; background: var(--steel); }
+  .timeline-bar.phase2 { width: 55%; background: var(--navy); }
+  .timeline-bar.phase3 { width: 100%; background: var(--red); }
+  .timeline-month { font-size: 10px; color: var(--text-muted); width: 60px; font-family: 'DM Mono', monospace; }
+
+  .capabilities-section {
+    padding: 28px 48px;
+  }
+  .cap-title {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--accent);
+    display: inline-block;
+  }
+  .cap-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; }
+  .cap-card {
+    background: var(--silver-light);
+    border: 1px solid var(--silver);
+    padding: 16px;
+    border-radius: 4px;
+  }
+  .cap-card-title {
+    font-weight: 600;
+    font-size: 12px;
+    color: var(--navy);
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .cap-icon { font-size: 14px; }
+  .cap-card p { font-size: 11px; color: var(--text-muted); line-height: 1.6; }
+  .cap-required {
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    margin-top: 8px;
+  }
+
+  /* ══════════════════════════════════════
+     PAGE 4 — ARCHITECTURE
+  ══════════════════════════════════════ */
+  #page4 {}
+
+  .arch-intro {
+    padding: 24px 48px;
+    background: var(--silver-light);
+    border-bottom: 1px solid var(--silver);
+  }
+  .arch-intro p { font-size: 12px; color: var(--text-muted); max-width: 700px; }
+
+  .arch-diagram {
+    padding: 36px 48px;
+  }
+
+  /* SVG Architecture */
+  .arch-svg-wrap { width: 100%; }
+
+  svg.arch {
+    width: 100%;
+    height: 600px;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  /* Legend */
+  .arch-legend {
+    display: flex;
+    gap: 24px;
+    padding: 16px 48px;
+    background: var(--silver-light);
+    border-top: 1px solid var(--silver);
+    flex-wrap: wrap;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+  .legend-dot { width: 12px; height: 12px; border-radius: 2px; flex-shrink: 0; }
+
+  /* ── FOOTER ── */
+  .doc-footer {
+    background: var(--navy);
+    padding: 16px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .doc-footer-left { font-size: 11px; color: rgba(255,255,255,0.35); }
+  .doc-footer-right {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: rgba(255,255,255,0.25);
+    letter-spacing: 0.1em;
+  }
+
+  /* Page divider */
+  .page-divider {
+    height: 8px;
+    background: var(--red);
+    margin-bottom: 60px;
+  }
+
+  /* Routing table */
+  .routing-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    margin-top: 16px;
+  }
+  .routing-table th {
+    background: var(--navy);
+    color: rgba(255,255,255,0.7);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 600;
+    padding: 10px 14px;
+    text-align: left;
+  }
+  .routing-table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--silver);
+    color: var(--text-muted);
+  }
+  .routing-table tr:last-child td { border-bottom: none; }
+  .routing-table tr:nth-child(even) td { background: var(--silver-light); }
+  .routing-table td:first-child { color: var(--navy); font-weight: 500; }
+</style>
+</head>
+<body>
+
+<!-- ══ PAGE 1: COMPANY OVERVIEW ══ -->
+<div class="page" id="page1">
+  <nav class="page-nav">
+    <a href="#page1" class="active">01 · Overview</a>
+    <a href="#page2">02 · Solution</a>
+    <a href="#page3">03 · Cost & ROI</a>
+    <a href="#page4">04 · Architecture</a>
+  </nav>
+
+  <div class="hero">
+    <div class="hero-eyebrow">DFW Technologies · AI Case Study</div>
+    <h1>Coca-Cola Southwest<br><span>Beverages</span></h1>
+    <div class="hero-sub">Beverage Manufacturing & Distribution · Garland, Texas · Arca Continental Subsidiary</div>
+    <div class="hero-stats">
+      <div class="stat-card">
+        <div class="stat-val">9<span>K+</span></div>
+        <div class="stat-lbl">Associates</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val">7</div>
+        <div class="stat-lbl">Production Plants</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val">37</div>
+        <div class="stat-lbl">Distribution Centers</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val">31<span>M</span></div>
+        <div class="stat-lbl">Consumers Served</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-header">
+    <span class="section-tag">Overview</span>
+    <span class="section-title">Company Profile & Operational Scale</span>
+    <span class="page-num">Page 01 / 04</span>
+  </div>
+
+  <div class="content-grid">
+    <div class="content-col">
+      <div class="col-title">About CCSWB</div>
+      <p class="body-text">Coca-Cola Southwest Beverages (CCSWB), a subsidiary of Arca Continental, is one of the largest Coca-Cola bottlers in the United States. Headquartered in Dallas, CCSWB produces, markets, and distributes Coca-Cola brand beverages across Texas, Oklahoma, New Mexico, and Arkansas — a four-state footprint that includes some of the fastest-growing metro regions in the country.</p>
+      <p class="body-text">Operating 7 production plants and 37 sales and distribution facilities, CCSWB runs a "Total Beverage Company" model — covering everything from sparkling soft drinks and waters to teas, coffees, energy drinks, juices, and milk. This portfolio breadth adds significant planning complexity across procurement, manufacturing, and last-mile delivery.</p>
+      <p class="body-text">With 9,000+ associates and a consumer base of 31 million, even marginal operational improvements translate to millions in annual savings — making CCSWB a compelling candidate for AI investment with clear, measurable ROI.</p>
+
+      <div class="col-title" style="margin-top:24px;">Operational Complexity Drivers</div>
+      <div class="impact-tags" style="margin-top:0;">
+        <span class="impact-tag">Multi-state logistics</span>
+        <span class="impact-tag">High SKU count</span>
+        <span class="impact-tag">Seasonal demand spikes</span>
+        <span class="impact-tag">Cold-chain requirements</span>
+        <span class="impact-tag">9,000+ workforce</span>
+        <span class="impact-tag hot">7 plants to coordinate</span>
+      </div>
+    </div>
+
+    <div class="content-col">
+      <div class="col-title">Key Problems Identified</div>
+      <div class="problem-list">
+        <div class="problem-card">
+          <div class="problem-card-title">
+            <div class="problem-num">1</div>
+            Fragmented Demand Forecasting
+          </div>
+          <p>37 distribution centers operate with disconnected demand planning. Seasonal spikes — summer peaks, holiday promotions, regional events — routinely cause over/understocking across the network, increasing waste and lost sales.</p>
+        </div>
+        <div class="problem-card">
+          <div class="problem-card-title">
+            <div class="problem-num">2</div>
+            Reactive Production Line Maintenance
+          </div>
+          <p>Bottling lines run sensitive equipment: fillers, cappers, pasteurizers. Without real-time sensor intelligence, failures are caught reactively. A single unplanned downtime event on a high-speed bottling line costs $50K–$150K in lost production.</p>
+        </div>
+        <div class="problem-card">
+          <div class="problem-card-title">
+            <div class="problem-num">3</div>
+            Inefficient Fleet & Route Operations
+          </div>
+          <p>Delivery operations across 37 DCs lack AI-assisted routing. Without dynamic re-routing based on traffic, weather, and store receiving windows, fuel costs and late-delivery penalties accumulate across the network.</p>
+        </div>
+        <div class="problem-card">
+          <div class="problem-card-title">
+            <div class="problem-num">4</div>
+            Workforce Skill Gaps & Training Scale
+          </div>
+          <p>9,000+ associates across 7 plants with no unified AI-assisted training platform. Line managers spend significant time on manual data gathering instead of coaching — a pattern validated by Invisible AI's deployments at Toyota, where root-cause analysis alone consumed 3–4 hours per day per line manager before AI intervention.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="impact-bar">
+    <div class="impact-bar-label">Industry Context</div>
+    <div class="impact-tags">
+      <span class="impact-tag hot">Unplanned downtime = $50K–$150K per event</span>
+      <span class="impact-tag">Beverage industry AI adoption accelerating</span>
+      <span class="impact-tag">37% of manager time lost to manual data collection</span>
+      <span class="impact-tag">Routing optimization saves 8–12% in fuel costs</span>
+    </div>
+  </div>
+
+</div>
+<div class="page-divider"></div>
+
+<!-- ══ PAGE 2: SOLUTION ══ -->
+<div class="page" id="page2">
+  <nav class="page-nav">
+    <a href="#page1">01 · Overview</a>
+    <a href="#page2" class="active">02 · Solution</a>
+    <a href="#page3">03 · Cost & ROI</a>
+    <a href="#page4">04 · Architecture</a>
+  </nav>
+
+  <div class="section-header">
+    <span class="section-tag solution">Solution</span>
+    <span class="section-title">AI Solution Stack & Problem Mapping</span>
+    <span class="page-num">Page 02 / 04</span>
+  </div>
+
+  <div class="solution-intro">
+    <p>DFW Technologies proposes a <strong>hybrid AI deployment</strong> for CCSWB — private AI on-premises for production-sensitive operations (equipment data, quality control) and public cloud AI for logistics and demand planning where external data feeds are required. This routing decision is driven by data sensitivity, latency requirements, and total cost of ownership across each use case.</p>
+  </div>
+
+  <div class="solution-grid">
+    <div class="solution-item">
+      <div class="solution-item-header">
+        <div class="solution-icon">🏭</div>
+        <div>
+          <div class="solution-item-title">Predictive Maintenance — Bottling Lines</div>
+          <div class="solution-item-problem">↳ Solves: Problem #2 — Reactive Maintenance</div>
+        </div>
+        <span class="ai-badge private">Private AI</span>
+      </div>
+      <p>Deploy IoT sensors on critical bottling line assets (fillers, cappers, pasteurizers) feeding a private on-premises AI anomaly detection model. AI establishes baseline equipment health signatures and flags deviations before they cause failures — shifting from run-to-failure to predict-and-prevent.</p>
+      <div class="tech-tags">
+        <span class="tech-tag">IIoT Sensors</span>
+        <span class="tech-tag">Edge ML</span>
+        <span class="tech-tag">SCADA Integration</span>
+        <span class="tech-tag">Anomaly Detection</span>
+      </div>
+    </div>
+
+    <div class="solution-item">
+      <div class="solution-item-header">
+        <div class="solution-icon">📦</div>
+        <div>
+          <div class="solution-item-title">Demand Forecasting — 37 Distribution Centers</div>
+          <div class="solution-item-problem">↳ Solves: Problem #1 — Fragmented Forecasting</div>
+        </div>
+        <span class="ai-badge public">Public AI</span>
+      </div>
+      <p>Cloud-based forecasting model connects historical sales data, seasonal calendars, regional event data, and weather signals to generate rolling 90-day demand forecasts per DC. No IP-sensitive data involved — external signals improve model accuracy and justify public cloud deployment.</p>
+      <div class="tech-tags">
+        <span class="tech-tag">Time-Series ML</span>
+        <span class="tech-tag">Cloud LLM APIs</span>
+        <span class="tech-tag">ERP Integration</span>
+        <span class="tech-tag">Demand Planning</span>
+      </div>
+    </div>
+
+    <div class="solution-item">
+      <div class="solution-item-header">
+        <div class="solution-icon">🚛</div>
+        <div>
+          <div class="solution-item-title">Route Optimization & Fleet Intelligence</div>
+          <div class="solution-item-problem">↳ Solves: Problem #3 — Fleet Inefficiency</div>
+        </div>
+        <span class="ai-badge public">Public AI</span>
+      </div>
+      <p>AI-powered route optimization integrating real-time traffic, weather, store receiving windows, and vehicle load data to dynamically re-sequence delivery runs. Fleet telematics layer adds temperature monitoring in-transit for cold-chain compliance. Reduces miles, fuel, and late-delivery fees.</p>
+      <div class="tech-tags">
+        <span class="tech-tag">Route Optimization AI</span>
+        <span class="tech-tag">Telematics API</span>
+        <span class="tech-tag">Cold-Chain IoT</span>
+        <span class="tech-tag">Last-Mile Analytics</span>
+      </div>
+    </div>
+
+    <div class="solution-item">
+      <div class="solution-item-header">
+        <div class="solution-icon">👁️</div>
+        <div>
+          <div class="solution-item-title">Computer Vision Quality Inspection</div>
+          <div class="solution-item-problem">↳ Solves: Problem #2 (secondary) — Quality Control</div>
+        </div>
+        <span class="ai-badge private">Private AI</span>
+      </div>
+      <p>Edge-deployed computer vision on bottling lines detects label misalignment, fill-level deviations, and cap seal defects in real time — at line speed. Reduces manual inspection labor and catches defects before products leave the plant. Deployed on-premises for latency and IP reasons.</p>
+      <div class="tech-tags">
+        <span class="tech-tag">Computer Vision</span>
+        <span class="tech-tag">Edge Inference</span>
+        <span class="tech-tag">Quality Models</span>
+        <span class="tech-tag">Camera Hardware</span>
+      </div>
+    </div>
+
+    <div class="solution-item">
+      <div class="solution-item-header">
+        <div class="solution-icon">🎓</div>
+        <div>
+          <div class="solution-item-title">AI-Assisted Workforce Training Platform</div>
+          <div class="solution-item-problem">↳ Solves: Problem #4 — Training Gaps at Scale</div>
+        </div>
+        <span class="ai-badge public">Public AI</span>
+      </div>
+      <p>Scalable cloud-based LMS with role-specific training modules for 9,000+ associates. AI personalizes learning paths based on role, current skill assessment, and performance data. Video-based SOPs (modeled on Invisible AI's edge vision approach) for equipment monitoring, alert response, and quality procedures. Competency gates before certification.</p>
+      <div class="tech-tags">
+        <span class="tech-tag">AI-LMS</span>
+        <span class="tech-tag">Video SOPs</span>
+        <span class="tech-tag">Skill Assessment</span>
+        <span class="tech-tag">Personalized Learning</span>
+      </div>
+    </div>
+
+    <div class="solution-item">
+      <div class="solution-item-header">
+        <div class="solution-icon">📊</div>
+        <div>
+          <div class="solution-item-title">Unified Operations Dashboard</div>
+          <div class="solution-item-problem">↳ Solves: All Problems — Visibility Layer</div>
+        </div>
+        <span class="ai-badge hybrid">Hybrid</span>
+      </div>
+      <p>Centralized operations dashboard aggregating plant equipment health, DC inventory levels, fleet status, and demand forecast accuracy in one view. Accessible to plant managers across all 7 facilities. Private data stays on-prem; logistics and forecast data pulled from cloud layer.</p>
+      <div class="tech-tags">
+        <span class="tech-tag">Data Integration</span>
+        <span class="tech-tag">Real-time Dashboards</span>
+        <span class="tech-tag">API Gateway</span>
+        <span class="tech-tag">Role-Based Access</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="drishti-callout" style="margin: 24px 48px;">
+    <div class="drishti-callout-icon">🔬</div>
+    <div>
+      <div class="drishti-callout-title">Industry Benchmark: Invisible AI — Active Platform, Deployed at Toyota, Ford & Aerospace Manufacturers</div>
+      <p>Invisible AI's edge-based computer vision platform — deployed across all 14 Toyota Motor North America manufacturing plants — is the leading active reference for this solution class. Using self-contained edge AI devices (NVIDIA Jetson chipset, 3D depth cameras, up to 4TB on-device storage), it processes assembly line video entirely on-premises with no cloud dependency. Toyota reports root-cause analysis reduced from 3–4 hours to minutes; manufacturers cite 3–5x ROI per device in efficiency gains alone, with every minute of downtime prevented saving $1,000. DFW Technologies applies this same edge-AI + computer vision methodology to CCSWB's bottling operations — adapting the approach from automotive assembly to beverage manufacturing at SME scale, without the enterprise price tag.</p>
+    </div>
+  </div>
+
+  <div class="policy-section">
+    <div class="col-title">Policies, Compliance & Restrictions to Address</div>
+    <div class="policy-grid">
+      <div class="policy-card">
+        <div class="policy-card-title"><div class="policy-dot"></div>FDA Food Safety Modernization Act (FSMA)</div>
+        <p>AI quality inspection systems must support FSMA traceability requirements. All defect detection logs must be audit-ready and retained per FDA guidelines.</p>
+      </div>
+      <div class="policy-card">
+        <div class="policy-card-title"><div class="policy-dot"></div>Arca Continental Data Governance</div>
+        <p>As an Arca Continental subsidiary, CCSWB's production and sales data is subject to parent company data governance policies. Any cloud-connected system must align with Arca's approved vendor list and data residency requirements.</p>
+      </div>
+      <div class="policy-card">
+        <div class="policy-card-title"><div class="policy-dot"></div>NLRA & Union Considerations</div>
+        <p>AI-based worker monitoring (including training performance tracking) must comply with National Labor Relations Act provisions. Worker data usage in AI systems requires transparent communication and potentially union consultation at unionized plants.</p>
+      </div>
+      <div class="policy-card">
+        <div class="policy-card-title"><div class="policy-dot"></div>DOT Fleet Compliance</div>
+        <p>Fleet telematics and AI routing tools must align with DOT hours-of-service regulations. Driver data collected through telematics is subject to ELD mandate requirements.</p>
+      </div>
+      <div class="policy-card">
+        <div class="policy-card-title"><div class="policy-dot"></div>Cold Chain Temperature Logs</div>
+        <p>Temperature monitoring IoT data must be retained and auditable per Coca-Cola brand standards for beverage quality. Any cold-chain breach must trigger documented incident response.</p>
+      </div>
+      <div class="policy-card">
+        <div class="policy-card-title"><div class="policy-dot"></div>Data Routing Decision</div>
+        <p>Production line sensor data and equipment health data must remain on-premises (private AI). Demand forecasting and routing data may use public cloud services where no production IP is involved.</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+<div class="page-divider"></div>
+
+<!-- ══ PAGE 3: COST & ROI ══ -->
+<div class="page" id="page3">
+  <nav class="page-nav">
+    <a href="#page1">01 · Overview</a>
+    <a href="#page2">02 · Solution</a>
+    <a href="#page3" class="active">03 · Cost & ROI</a>
+    <a href="#page4">04 · Architecture</a>
+  </nav>
+
+  <div class="section-header">
+    <span class="section-tag roi">Cost & ROI</span>
+    <span class="section-title">Financial Impact & DFW Tech Capabilities Required</span>
+    <span class="page-num">Page 03 / 04</span>
+  </div>
+
+  <div class="roi-hero">
+    <div class="roi-big">
+      <div class="roi-big-val gold">$400K–700K</div>
+      <div class="roi-big-lbl">Total Investment · 14 Months</div>
+    </div>
+    <div class="roi-big">
+      <div class="roi-big-val green">$2.4M–4.1M</div>
+      <div class="roi-big-lbl">Estimated Annual Savings</div>
+    </div>
+    <div class="roi-big">
+      <div class="roi-big-val">18–24 mo</div>
+      <div class="roi-big-lbl">Payback Period</div>
+    </div>
+  </div>
+
+  <div class="savings-grid">
+    <div>
+      <div class="savings-section-title">Projected Annual Cost Savings</div>
+      <div class="savings-row">
+        <span class="savings-label">Predictive Maintenance — Downtime Reduction (20–25%)</span>
+        <span class="savings-value">$800K–$1.2M</span>
+      </div>
+      <div class="savings-row">
+        <span class="savings-label">Route Optimization — Fuel & Delivery Efficiency (8–12%)</span>
+        <span class="savings-value">$600K–$900K</span>
+      </div>
+      <div class="savings-row">
+        <span class="savings-label">Demand Forecasting — Inventory Waste Reduction (15–20%)</span>
+        <span class="savings-value">$500K–$800K</span>
+      </div>
+      <div class="savings-row">
+        <span class="savings-label">Quality Vision — Defect Catch Rate Improvement</span>
+        <span class="savings-value">$300K–$600K</span>
+      </div>
+      <div class="savings-row">
+        <span class="savings-label">Training Efficiency — Manager Time Recaptured</span>
+        <span class="savings-value">$200K–$400K</span>
+      </div>
+      <div class="savings-row" style="border-top: 2px solid var(--green); padding-top:14px; margin-top:4px;">
+        <span class="savings-label" style="font-weight:600; color:var(--navy);">Total Estimated Annual Savings</span>
+        <span class="savings-value" style="font-size:16px;">$2.4M–$4.1M</span>
+      </div>
+    </div>
+
+    <div>
+      <div class="savings-section-title">Investment Breakdown</div>
+      <div class="savings-row">
+        <span class="savings-label">Phase 1: Discovery & Assessment (6 weeks)</span>
+        <span class="savings-value cost">$30K–$50K</span>
+      </div>
+      <div class="savings-row">
+        <span class="savings-label">Phase 2: Pilot — Garland Plant (4 months)</span>
+        <span class="savings-value cost">$120K–$200K</span>
+      </div>
+      <div class="savings-row">
+        <span class="savings-label">Phase 3: Scale — All 7 Plants + 37 DCs (9 months)</span>
+        <span class="savings-value cost">$250K–$450K</span>
+      </div>
+      <div class="savings-row">
+        <span class="savings-label">Hardware (sensors, cameras, edge nodes)</span>
+        <span class="savings-value cost">Included in phases</span>
+      </div>
+      <div class="savings-row">
+        <span class="savings-label">Annual Maintenance & Model Retraining (Year 2+)</span>
+        <span class="savings-value cost">$40K–$80K/yr</span>
+      </div>
+      <div class="savings-row" style="border-top: 2px solid var(--red); padding-top:14px; margin-top:4px;">
+        <span class="savings-label" style="font-weight:600; color:var(--navy);">Total 14-Month Investment</span>
+        <span class="savings-value cost" style="font-size:16px;">$400K–$700K</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="timeline-section">
+    <div class="timeline-title">Implementation Timeline</div>
+    <div style="display:flex; gap:8px; margin-bottom:12px; font-size:10px; color:var(--text-muted); padding-left:172px;">
+      <span style="flex:1; text-align:left;">Month 0</span>
+      <span style="flex:1; text-align:center;">Month 6</span>
+      <span style="flex:1; text-align:right;">Month 14</span>
+    </div>
+    <div class="timeline-bars">
+      <div class="timeline-row">
+        <div class="timeline-label">Discovery & Assessment</div>
+        <div class="timeline-bar-wrap">
+          <div class="timeline-bar phase1" style="width:22%;">Weeks 1–6</div>
+        </div>
+        <div class="timeline-month">6 wks</div>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-label">Garland Plant Pilot</div>
+        <div class="timeline-bar-wrap">
+          <div class="timeline-bar phase2" style="width:50%; margin-left:22%;">Months 2–5</div>
+        </div>
+        <div class="timeline-month">4 mo</div>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-label">Scale — All Plants</div>
+        <div class="timeline-bar-wrap">
+          <div class="timeline-bar phase3" style="width:64%; margin-left:36%;">Months 6–14</div>
+        </div>
+        <div class="timeline-month">9 mo</div>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-label">Demand Forecasting</div>
+        <div class="timeline-bar-wrap">
+          <div class="timeline-bar" style="width:78%; margin-left:22%; background:var(--accent);">Months 2–14 (parallel)</div>
+        </div>
+        <div class="timeline-month">12 mo</div>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-label">Training Platform</div>
+        <div class="timeline-bar-wrap">
+          <div class="timeline-bar" style="width:55%; margin-left:45%; background:var(--green);">Months 6–14</div>
+        </div>
+        <div class="timeline-month">9 mo</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="capabilities-section">
+    <div class="cap-title">DFW Technologies Capabilities Required</div>
+    <div class="cap-grid">
+      <div class="cap-card">
+        <div class="cap-card-title"><span class="cap-icon">🔧</span> IIoT Sensor Integration</div>
+        <p>Ability to source, deploy, and integrate industrial IoT sensors into existing SCADA and PLC infrastructure. Requires on-site hardware deployment teams and OPC-UA/Modbus protocol expertise.</p>
+        <div class="cap-required">⚠ Core Requirement</div>
+      </div>
+      <div class="cap-card">
+        <div class="cap-card-title"><span class="cap-icon">🧠</span> Private AI / Edge ML Deployment</div>
+        <p>On-premises AI model deployment capability — including edge hardware provisioning, model training on client data, and ongoing retraining pipelines. Must operate without internet dependency.</p>
+        <div class="cap-required">⚠ Core Requirement</div>
+      </div>
+      <div class="cap-card">
+        <div class="cap-card-title"><span class="cap-icon">👁</span> Computer Vision Engineering</div>
+        <p>Computer vision model development and deployment for bottling line quality inspection. Requires camera hardware selection, model training on defect datasets, and real-time inference at line speed.</p>
+        <div class="cap-required">⚠ Core Requirement</div>
+      </div>
+      <div class="cap-card">
+        <div class="cap-card-title"><span class="cap-icon">☁️</span> Cloud AI Integration</div>
+        <p>Ability to build and manage cloud-based demand forecasting and routing optimization pipelines. Includes API integration with third-party traffic, weather, and logistics data providers.</p>
+        <div class="cap-required">Required</div>
+      </div>
+      <div class="cap-card">
+        <div class="cap-card-title"><span class="cap-icon">📚</span> AI Training Platform Build</div>
+        <p>Capability to build or configure an AI-enhanced LMS — including video SOP authoring, role-specific module design, competency assessment AI, and integration with HR systems for 9,000+ users.</p>
+        <div class="cap-required">Required</div>
+      </div>
+      <div class="cap-card">
+        <div class="cap-card-title"><span class="cap-icon">🔗</span> ERP / Systems Integration</div>
+        <p>Experience integrating AI outputs with enterprise ERP systems (SAP, Oracle) for demand and inventory data flow. Data pipeline engineering across on-prem and cloud environments.</p>
+        <div class="cap-required">Required</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<div class="page-divider"></div>
+
+<!-- ══ PAGE 4: ARCHITECTURE ══ -->
+<div class="page" id="page4">
+  <nav class="page-nav">
+    <a href="#page1">01 · Overview</a>
+    <a href="#page2">02 · Solution</a>
+    <a href="#page3">03 · Cost & ROI</a>
+    <a href="#page4" class="active">04 · Architecture</a>
+  </nav>
+
+  <div class="section-header">
+    <span class="section-tag arch">Architecture</span>
+    <span class="section-title">Hybrid AI Architecture — CCSWB Deployment</span>
+    <span class="page-num">Page 04 / 04</span>
+  </div>
+
+  <div class="arch-intro">
+    <p>The architecture follows a <strong>two-lane AI routing model</strong>: sensitive operational data (equipment sensors, quality inspection) stays on-premises behind private AI nodes; logistics and demand data flows through a secure cloud layer. A central API gateway manages data exchange between the two environments without exposing production IP.</p>
+  </div>
+
+  <div class="arch-diagram">
+    <svg class="arch" viewBox="0 0 1000 560" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="arrow" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#5A6880"/>
+        </marker>
+        <marker id="arrow-red" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#C8102E"/>
+        </marker>
+        <marker id="arrow-green" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#00875A"/>
+        </marker>
+        <marker id="arrow-gold" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#D4A017"/>
+        </marker>
+      </defs>
+
+      <!-- Background lanes -->
+      <!-- Private AI Zone -->
+      <rect x="10" y="10" width="455" height="540" rx="6" fill="#F0F4FF" stroke="#2C3E5D" stroke-width="1.5" stroke-dasharray="6,3"/>
+      <text x="20" y="30" font-size="9" font-weight="700" fill="#2C3E5D" letter-spacing="1" font-family="DM Sans, sans-serif">PRIVATE AI ZONE (ON-PREMISES)</text>
+
+      <!-- Public Cloud Zone -->
+      <rect x="535" y="10" width="455" height="540" rx="6" fill="#F0FFF8" stroke="#00875A" stroke-width="1.5" stroke-dasharray="6,3"/>
+      <text x="545" y="30" font-size="9" font-weight="700" fill="#00875A" letter-spacing="1" font-family="DM Sans, sans-serif">PUBLIC CLOUD ZONE</text>
+
+      <!-- API Gateway center strip -->
+      <rect x="468" y="10" width="62" height="540" rx="0" fill="#1a2d4d"/>
+      <text x="499" y="290" font-size="8" font-weight="700" fill="rgba(255,255,255,0.6)" letter-spacing="1" font-family="DM Sans, sans-serif" transform="rotate(-90,499,290)">API GATEWAY · SECURE BRIDGE</text>
+
+      <!-- ─── LAYER 1: DATA SOURCES (bottom) ─── -->
+      <!-- Bottling Line Sensors -->
+      <rect x="30" y="460" width="130" height="70" rx="4" fill="#0A1628" stroke="#2C3E5D" stroke-width="1"/>
+      <text x="95" y="488" font-size="9" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">🏭 Bottling Line</text>
+      <text x="95" y="502" font-size="9" fill="rgba(255,255,255,0.6)" text-anchor="middle" font-family="DM Sans, sans-serif">IoT Sensors</text>
+      <text x="95" y="516" font-size="8" fill="#C8102E" text-anchor="middle" font-family="DM Mono, monospace">OPC-UA / Modbus</text>
+
+      <!-- Quality Cameras -->
+      <rect x="175" y="460" width="130" height="70" rx="4" fill="#0A1628" stroke="#2C3E5D" stroke-width="1"/>
+      <text x="240" y="488" font-size="9" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">👁 Vision Cameras</text>
+      <text x="240" y="502" font-size="9" fill="rgba(255,255,255,0.6)" text-anchor="middle" font-family="DM Sans, sans-serif">Quality Inspection</text>
+      <text x="240" y="516" font-size="8" fill="#C8102E" text-anchor="middle" font-family="DM Mono, monospace">RTSP / Edge</text>
+
+      <!-- ERP / Sales -->
+      <rect x="320" y="460" width="130" height="70" rx="4" fill="#0A1628" stroke="#2C3E5D" stroke-width="1"/>
+      <text x="385" y="488" font-size="9" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">📊 ERP / SCADA</text>
+      <text x="385" y="502" font-size="9" fill="rgba(255,255,255,0.6)" text-anchor="middle" font-family="DM Sans, sans-serif">Production Data</text>
+      <text x="385" y="516" font-size="8" fill="#C8102E" text-anchor="middle" font-family="DM Mono, monospace">SQL / REST API</text>
+
+      <!-- Cloud data sources -->
+      <rect x="555" y="460" width="130" height="70" rx="4" fill="#002D1F" stroke="#00875A" stroke-width="1"/>
+      <text x="620" y="488" font-size="9" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">📅 Sales History</text>
+      <text x="620" y="502" font-size="9" fill="rgba(255,255,255,0.6)" text-anchor="middle" font-family="DM Sans, sans-serif">Order Data</text>
+      <text x="620" y="516" font-size="8" fill="#00875A" text-anchor="middle" font-family="DM Mono, monospace">ERP Export</text>
+
+      <rect x="700" y="460" width="130" height="70" rx="4" fill="#002D1F" stroke="#00875A" stroke-width="1"/>
+      <text x="765" y="488" font-size="9" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">🌐 External Signals</text>
+      <text x="765" y="502" font-size="9" fill="rgba(255,255,255,0.6)" text-anchor="middle" font-family="DM Sans, sans-serif">Weather, Traffic</text>
+      <text x="765" y="516" font-size="8" fill="#00875A" text-anchor="middle" font-family="DM Mono, monospace">3rd Party APIs</text>
+
+      <rect x="845" y="460" width="130" height="70" rx="4" fill="#002D1F" stroke="#00875A" stroke-width="1"/>
+      <text x="910" y="488" font-size="9" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">👥 HR Systems</text>
+      <text x="910" y="502" font-size="9" fill="rgba(255,255,255,0.6)" text-anchor="middle" font-family="DM Sans, sans-serif">Workforce Data</text>
+      <text x="910" y="516" font-size="8" fill="#00875A" text-anchor="middle" font-family="DM Mono, monospace">HRIS API</text>
+
+      <!-- ─── LAYER 2: AI MODELS ─── -->
+      <!-- Private AI Models -->
+      <rect x="30" y="320" width="130" height="100" rx="4" fill="#2C3E5D" stroke="#4A6080" stroke-width="1"/>
+      <text x="95" y="345" font-size="8" font-weight="700" fill="rgba(255,255,255,0.5)" text-anchor="middle" letter-spacing="0.08em" font-family="DM Sans, sans-serif">PRIVATE AI MODEL</text>
+      <text x="95" y="363" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Predictive</text>
+      <text x="95" y="377" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Maintenance</text>
+      <text x="95" y="395" font-size="8" fill="#8BA0C0" text-anchor="middle" font-family="DM Sans, sans-serif">Anomaly Detection</text>
+      <text x="95" y="408" font-size="8" fill="#8BA0C0" text-anchor="middle" font-family="DM Sans, sans-serif">Equipment Health ML</text>
+
+      <rect x="175" y="320" width="130" height="100" rx="4" fill="#2C3E5D" stroke="#4A6080" stroke-width="1"/>
+      <text x="240" y="345" font-size="8" font-weight="700" fill="rgba(255,255,255,0.5)" text-anchor="middle" letter-spacing="0.08em" font-family="DM Sans, sans-serif">PRIVATE AI MODEL</text>
+      <text x="240" y="363" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Computer Vision</text>
+      <text x="240" y="377" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Quality Control</text>
+      <text x="240" y="395" font-size="8" fill="#8BA0C0" text-anchor="middle" font-family="DM Sans, sans-serif">Defect Detection</text>
+      <text x="240" y="408" font-size="8" fill="#8BA0C0" text-anchor="middle" font-family="DM Sans, sans-serif">Real-time Edge Inference</text>
+
+      <rect x="320" y="320" width="130" height="100" rx="4" fill="#2C3E5D" stroke="#4A6080" stroke-width="1"/>
+      <text x="385" y="345" font-size="8" font-weight="700" fill="rgba(255,255,255,0.5)" text-anchor="middle" letter-spacing="0.08em" font-family="DM Sans, sans-serif">PRIVATE AI MODEL</text>
+      <text x="385" y="363" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Operations</text>
+      <text x="385" y="377" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Dashboard</text>
+      <text x="385" y="395" font-size="8" fill="#8BA0C0" text-anchor="middle" font-family="DM Sans, sans-serif">Plant-side Aggregation</text>
+      <text x="385" y="408" font-size="8" fill="#8BA0C0" text-anchor="middle" font-family="DM Sans, sans-serif">Alert Routing</text>
+
+      <!-- Cloud AI Models -->
+      <rect x="555" y="320" width="130" height="100" rx="4" fill="#004D30" stroke="#007A4D" stroke-width="1"/>
+      <text x="620" y="345" font-size="8" font-weight="700" fill="rgba(255,255,255,0.5)" text-anchor="middle" letter-spacing="0.08em" font-family="DM Sans, sans-serif">CLOUD AI MODEL</text>
+      <text x="620" y="363" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Demand</text>
+      <text x="620" y="377" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Forecasting</text>
+      <text x="620" y="395" font-size="8" fill="#7BCCA8" text-anchor="middle" font-family="DM Sans, sans-serif">Time-Series ML</text>
+      <text x="620" y="408" font-size="8" fill="#7BCCA8" text-anchor="middle" font-family="DM Sans, sans-serif">90-Day DC Forecasts</text>
+
+      <rect x="700" y="320" width="130" height="100" rx="4" fill="#004D30" stroke="#007A4D" stroke-width="1"/>
+      <text x="765" y="345" font-size="8" font-weight="700" fill="rgba(255,255,255,0.5)" text-anchor="middle" letter-spacing="0.08em" font-family="DM Sans, sans-serif">CLOUD AI MODEL</text>
+      <text x="765" y="363" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Route</text>
+      <text x="765" y="377" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Optimization</text>
+      <text x="765" y="395" font-size="8" fill="#7BCCA8" text-anchor="middle" font-family="DM Sans, sans-serif">Dynamic Re-routing</text>
+      <text x="765" y="408" font-size="8" fill="#7BCCA8" text-anchor="middle" font-family="DM Sans, sans-serif">Fleet Telematics AI</text>
+
+      <rect x="845" y="320" width="130" height="100" rx="4" fill="#004D30" stroke="#007A4D" stroke-width="1"/>
+      <text x="910" y="345" font-size="8" font-weight="700" fill="rgba(255,255,255,0.5)" text-anchor="middle" letter-spacing="0.08em" font-family="DM Sans, sans-serif">CLOUD AI MODEL</text>
+      <text x="910" y="363" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Training LMS</text>
+      <text x="910" y="377" font-size="10" font-weight="600" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Platform</text>
+      <text x="910" y="395" font-size="8" fill="#7BCCA8" text-anchor="middle" font-family="DM Sans, sans-serif">Personalized Learning</text>
+      <text x="910" y="408" font-size="8" fill="#7BCCA8" text-anchor="middle" font-family="DM Sans, sans-serif">9,000+ Associates</text>
+
+      <!-- ─── LAYER 3: OUTPUTS (top) ─── -->
+      <rect x="30" y="155" width="415" height="120" rx="4" fill="#0A1628" stroke="#C8102E" stroke-width="1.5"/>
+      <text x="240" y="177" font-size="9" font-weight="700" fill="#C8102E" text-anchor="middle" letter-spacing="0.1em" font-family="DM Sans, sans-serif">PLANT OPERATIONS CENTER (On-Premises)</text>
+      <!-- 3 output boxes inside -->
+      <rect x="45" y="187" width="118" height="72" rx="3" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+      <text x="104" y="210" font-size="9" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">⚠️ Maintenance</text>
+      <text x="104" y="224" font-size="9" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Alerts</text>
+      <text x="104" y="242" font-size="8" fill="rgba(255,255,255,0.4)" text-anchor="middle" font-family="DM Sans, sans-serif">Real-time to floor</text>
+
+      <rect x="175" y="187" width="118" height="72" rx="3" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+      <text x="234" y="210" font-size="9" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">✅ Quality</text>
+      <text x="234" y="224" font-size="9" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Pass / Reject</text>
+      <text x="234" y="242" font-size="8" fill="rgba(255,255,255,0.4)" text-anchor="middle" font-family="DM Sans, sans-serif">At line speed</text>
+
+      <rect x="305" y="187" width="125" height="72" rx="3" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+      <text x="367" y="210" font-size="9" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">📊 Plant Manager</text>
+      <text x="367" y="224" font-size="9" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Dashboard</text>
+      <text x="367" y="242" font-size="8" fill="rgba(255,255,255,0.4)" text-anchor="middle" font-family="DM Sans, sans-serif">All 7 plants</text>
+
+      <rect x="555" y="155" width="420" height="120" rx="4" fill="#002D1F" stroke="#00875A" stroke-width="1.5"/>
+      <text x="765" y="177" font-size="9" font-weight="700" fill="#00875A" text-anchor="middle" letter-spacing="0.1em" font-family="DM Sans, sans-serif">CLOUD ANALYTICS & PLANNING CENTER</text>
+      <rect x="570" y="187" width="118" height="72" rx="3" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+      <text x="629" y="210" font-size="9" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">📦 DC Inventory</text>
+      <text x="629" y="224" font-size="9" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Forecasts</text>
+      <text x="629" y="242" font-size="8" fill="rgba(255,255,255,0.4)" text-anchor="middle" font-family="DM Sans, sans-serif">37 DCs, 90-day view</text>
+
+      <rect x="700" y="187" width="118" height="72" rx="3" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+      <text x="759" y="210" font-size="9" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">🚛 Route Plans</text>
+      <text x="759" y="224" font-size="9" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">& Fleet Status</text>
+      <text x="759" y="242" font-size="8" fill="rgba(255,255,255,0.4)" text-anchor="middle" font-family="DM Sans, sans-serif">Dynamic daily</text>
+
+      <rect x="830" y="187" width="130" height="72" rx="3" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+      <text x="895" y="210" font-size="9" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">🎓 Training</text>
+      <text x="895" y="224" font-size="9" fill="white" text-anchor="middle" font-family="DM Sans, sans-serif">Progress Tracking</text>
+      <text x="895" y="242" font-size="8" fill="rgba(255,255,255,0.4)" text-anchor="middle" font-family="DM Sans, sans-serif">9,000+ associates</text>
+
+      <!-- Arrows: Sources → AI Models -->
+      <line x1="95" y1="460" x2="95" y2="422" stroke="#5A6880" stroke-width="1.5" marker-end="url(#arrow)"/>
+      <line x1="240" y1="460" x2="240" y2="422" stroke="#5A6880" stroke-width="1.5" marker-end="url(#arrow)"/>
+      <line x1="385" y1="460" x2="385" y2="422" stroke="#5A6880" stroke-width="1.5" marker-end="url(#arrow)"/>
+      <line x1="620" y1="460" x2="620" y2="422" stroke="#5A6880" stroke-width="1.5" marker-end="url(#arrow)"/>
+      <line x1="765" y1="460" x2="765" y2="422" stroke="#5A6880" stroke-width="1.5" marker-end="url(#arrow)"/>
+      <line x1="910" y1="460" x2="910" y2="422" stroke="#5A6880" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+      <!-- Arrows: AI Models → Output layers -->
+      <line x1="95" y1="320" x2="95" y2="277" stroke="#C8102E" stroke-width="1.5" marker-end="url(#arrow-red)"/>
+      <line x1="240" y1="320" x2="240" y2="277" stroke="#C8102E" stroke-width="1.5" marker-end="url(#arrow-red)"/>
+      <line x1="385" y1="320" x2="385" y2="277" stroke="#C8102E" stroke-width="1.5" marker-end="url(#arrow-red)"/>
+      <line x1="620" y1="320" x2="620" y2="277" stroke="#00875A" stroke-width="1.5" marker-end="url(#arrow-green)"/>
+      <line x1="765" y1="320" x2="765" y2="277" stroke="#00875A" stroke-width="1.5" marker-end="url(#arrow-green)"/>
+      <line x1="910" y1="320" x2="910" y2="277" stroke="#00875A" stroke-width="1.5" marker-end="url(#arrow-green)"/>
+
+      <!-- Gateway arrows -->
+      <line x1="450" y1="250" x2="468" y2="250" stroke="#D4A017" stroke-width="2" marker-end="url(#arrow-gold)"/>
+      <line x1="535" y1="250" x2="520" y2="250" stroke="#D4A017" stroke-width="2" marker-end="url(#arrow-gold)"/>
+      <text x="499" y="245" font-size="8" fill="rgba(255,255,255,0.5)" text-anchor="middle" font-family="DM Mono, sans-serif">TLS/HTTPS</text>
+
+      <!-- Labels for layers -->
+      <text x="5" y="510" font-size="8" fill="#5A6880" font-family="DM Mono, sans-serif" transform="rotate(-90,5,510)">DATA SOURCES</text>
+      <text x="5" y="400" font-size="8" fill="#5A6880" font-family="DM Mono, sans-serif" transform="rotate(-90,5,400)">AI MODELS</text>
+      <text x="5" y="230" font-size="8" fill="#5A6880" font-family="DM Mono, sans-serif" transform="rotate(-90,5,230)">OUTPUTS</text>
+    </svg>
+  </div>
+
+  <div class="arch-legend">
+    <div class="legend-item">
+      <div class="legend-dot" style="background:#2C3E5D;"></div>
+      Private AI (On-Premises)
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background:#004D30;"></div>
+      Public Cloud AI
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background:#D4A017;"></div>
+      API Gateway (Secure Bridge)
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background:#C8102E;"></div>
+      Private Data Flow
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background:#00875A;"></div>
+      Cloud Data Flow
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background:#0A1628;"></div>
+      Data Sources
+    </div>
+  </div>
+
+  <div style="padding: 20px 48px; border-top: 1px solid var(--silver);">
+    <div class="col-title">AI Routing Decision Summary</div>
+    <table class="routing-table">
+      <thead>
+        <tr>
+          <th>Workload</th>
+          <th>AI Routing</th>
+          <th>Rationale</th>
+          <th>Primary Output</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Bottling Line Predictive Maintenance</td>
+          <td><span class="ai-badge private">Private</span></td>
+          <td>Operational IP, real-time latency, no cloud dependency acceptable</td>
+          <td>Maintenance alerts to floor supervisors</td>
+        </tr>
+        <tr>
+          <td>Computer Vision Quality Inspection</td>
+          <td><span class="ai-badge private">Private</span></td>
+          <td>At-line-speed inference, edge hardware required</td>
+          <td>Pass/reject signal at bottling station</td>
+        </tr>
+        <tr>
+          <td>Demand Forecasting (37 DCs)</td>
+          <td><span class="ai-badge public">Public Cloud</span></td>
+          <td>Needs external weather/event data; no IP sensitivity</td>
+          <td>90-day inventory recommendations per DC</td>
+        </tr>
+        <tr>
+          <td>Route Optimization & Fleet</td>
+          <td><span class="ai-badge public">Public Cloud</span></td>
+          <td>Real-time traffic/weather APIs require cloud connectivity</td>
+          <td>Daily route plans for delivery fleet</td>
+        </tr>
+        <tr>
+          <td>Workforce Training Platform</td>
+          <td><span class="ai-badge public">Public Cloud</span></td>
+          <td>9,000+ users; scalability requires cloud; no sensitive data</td>
+          <td>Training completion, skill certifications</td>
+        </tr>
+        <tr>
+          <td>Operations Dashboard</td>
+          <td><span class="ai-badge hybrid">Hybrid</span></td>
+          <td>Aggregates private plant data + cloud logistics data</td>
+          <td>Unified view for plant & operations managers</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<script>
+  // Smooth scroll nav
+  document.querySelectorAll('.page-nav a').forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.querySelector(link.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      document.querySelectorAll('.page-nav a').forEach(a => a.classList.remove('active'));
+      link.classList.add('active');
+    });
+  });
+</script>
+</body>
+</html>
